@@ -11,6 +11,8 @@
 |
 */
 
+use App\DataAccess\Eloquent\User;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -18,3 +20,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/user/{user}', function (User $user) {
+    var_dump($user->articles);
+});
