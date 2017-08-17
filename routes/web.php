@@ -22,5 +22,8 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/user/{user}', function (User $user) {
+    // TODO: make dashboard
     var_dump($user->articles);
 });
+
+Route::resource('/user/{user}/articles', 'ArticleController');
