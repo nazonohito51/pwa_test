@@ -40,7 +40,11 @@ class ArticleController extends Controller
 
     public function show(User $user, Article $article)
     {
-        
+        var_dump($user->name);
+        var_dump($article->title);
+        var_dump($article->body);
+        var_dump($article->created_at);
+        var_dump($article->updated_at);
     }
 
     public function edit(User $user, Article $article)
