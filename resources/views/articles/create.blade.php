@@ -11,7 +11,7 @@
                         <form class="form-horizontal" method="POST" action="{{ route('articles.store', $user->name) }}">
                             {{ csrf_field() }}
 
-                            <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                            <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
                                 <label for="title" class="col-md-4 control-label">Title</label>
 
                                 <div class="col-md-6">
