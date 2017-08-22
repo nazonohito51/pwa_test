@@ -49,16 +49,32 @@ class ArticleController extends Controller
 
     public function edit(User $user, Article $article)
     {
-        
+        return view('articles.edit', [
+            'user' => $user,
+            'article' => $article
+        ]);
     }
 
-    public function update(User $user, Article $article)
+    public function update(Request $request, User $user, Article $article)
     {
-        
+        $this->validate($request, [
+            'title' => ['required', 'string', 'max:255'],
+            'body' => ['required', 'string', 'max:65535'],
+        ]);
+
+        $article->title = $request->get('title');
+        $article->body = $request->get('body');
+        $article->save();
+
+        return redirect()->route('articles.index', ['user' => $user->name]);
     }
 
     public function destroy(User $user, Article $article)
     {
+        if ($article->delete()) {
+            return redirect()->route('articles.index', ['user' => $user->name]);
+        }
 
+        return redirect()->back()->with('summary', 'deleting record is failed.');
     }
 }
