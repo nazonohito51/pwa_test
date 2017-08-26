@@ -9,8 +9,8 @@
 
                     <div id="app">
                         @{{ hoge }}
-                        <router-link to="/top">トップページ</router-link>
-                        <router-link to="/users">ユーザー一覧ページ</router-link>
+                        <router-link :to="{ name: 'top' }">トップページ</router-link>
+                        <router-link :to="{ name: 'users' }">ユーザー一覧ページ</router-link>
                         <router-view></router-view>
                     </div>
                 </div>

@@ -21,12 +21,14 @@ const router = new VueRouter({
     routes: [
         {
             path: '/top',
+            name: 'top',
             component: {
                 template: '<div>トップページです。</div>'
             }
         },
         {
             path: '/users',
+            name: 'users',
             component: {
                 template: '<div>ユーザー一覧ページです。</div>'
             }
