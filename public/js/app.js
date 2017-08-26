@@ -807,11 +807,13 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('example', __webpack_requi
 var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
     routes: [{
         path: '/top',
+        name: 'top',
         component: {
             template: '<div>トップページです。</div>'
         }
     }, {
         path: '/users',
+        name: 'users',
         component: {
             template: '<div>ユーザー一覧ページです。</div>'
         }
