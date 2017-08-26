@@ -29,12 +29,10 @@ const router = new VueRouter({
         {
             path: '/users',
             name: 'users',
-            component: {
-                template: '<div>ユーザー一覧ページです。</div>'
-            }
+            component: require('./components/Articles.vue')
         }
     ]
-})
+});
 
 const app = new Vue({
     el: '#app',
