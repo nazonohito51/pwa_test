@@ -27,3 +27,4 @@ Route::get('/user/{user}', function (User $user) {
 });
 
 Route::resource('/user/{user}/articles', 'ArticleController');
+Route::get('/vue', 'VueController@test');
