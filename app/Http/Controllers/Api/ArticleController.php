@@ -34,7 +34,7 @@ class ArticleController extends Controller
             'published' => true,
         ]);
 
-        return redirect()->route('articles.index', ['user' => $user->id]);
+        return redirect()->route('articles.index', ['user' => $user->name]);
     }
 
     public function show(User $user, Article $article)
