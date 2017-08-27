@@ -12,4 +12,9 @@ class FrontController
     {
         return view('front.onsen');
     }
+
+    public function onsenVue()
+    {
+        return view('front.onsenVue');
+    }
 }
