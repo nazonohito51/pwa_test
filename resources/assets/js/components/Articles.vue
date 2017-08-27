@@ -1,12 +1,13 @@
 <template>
     <div>
-        <div class="loading" v-if="loading">ロード中...</div>
+        <div class="loading" v-if="loading">Loading...</div>
         <div v-if="error" class="error">
             {{ error }}
         </div>
-        <!-- usersがロードされたら各ユーザーの名前を表示する -->
-        <div v-for="user in users" :key="user.id">
-            <h2>{{ user.name }}</h2>
+        <!-- articlesがロードされたら各ユーザーの名前を表示する -->
+        <div v-for="article in articles" :key="article.id">
+            <h2>{{ article.title }}</h2>
+            <p>{{ article.body }}</p>
         </div>
     </div>
 </template>
@@ -17,7 +18,7 @@
             return {
                 loading: false,
                 // 初期値の空配列を定義
-                users: function () { return [] },
+                articles: function () { return [] },
                 error: null
             }
         },
@@ -35,13 +36,13 @@
         methods: {
             fetchData: function () {
                 this.loading = true;
-                // 取得したデータの結果をusersに格納する
-                getUsers((function (err, users) {
+                // 取得したデータの結果をarticlesに格納する
+                getarticles((function (err, articles) {
                     this.loading = false;
                     if (err) {
                         this.error = err.toString();
                     } else {
-                        this.users = users;
+                        this.articles = articles;
                     }
                 }).bind(this))
             }
@@ -49,18 +50,12 @@
     }
 
     // 擬似的にAPI経由で情報を取得したようにする
-    let getUsers = function (callback) {
+    let getarticles = function (callback) {
         setTimeout(function () {
-            callback(null, [
-                {
-                    id: '001',
-                    name: 'Takuya Tejima'
-                },
-                {
-                    id: '002',
-                    name: 'Yohei Noda'
-                }
-            ])
-        }, 1000)
+            axios.get("/api/user/test/articles").then(
+                response => {
+                    callback(null, response.data);
+                });
+        }, 500);
     }
 </script>
