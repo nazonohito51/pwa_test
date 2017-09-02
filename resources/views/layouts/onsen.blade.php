@@ -16,10 +16,12 @@
     @yield('styles')
 </head>
 <body>
+
 <div id="app">
     @yield('content')
 </div>
 
+@yield('vue_templates')
 @yield('scripts')
 </body>
 </html>
