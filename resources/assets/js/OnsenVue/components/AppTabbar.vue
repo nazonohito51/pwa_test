@@ -12,6 +12,7 @@
 <script>
     import Page1 from '../pages/Page1.vue';
     import Page2 from '../pages/Page2.vue';
+    import Settings from '../pages/Settings.vue';
 
     export default {
         data () {
@@ -30,8 +31,8 @@
                     },
                     {
                         icon: this.md() ? null : 'fa-gear',
-                        label: 'Page2',
-                        page: Page2
+                        label: 'Settings',
+                        page: Settings
                     }
                 ]
             };
