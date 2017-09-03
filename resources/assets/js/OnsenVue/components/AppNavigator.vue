@@ -6,28 +6,11 @@
 </template>
 
 <script>
-    import Page1 from '../pages/Page1.vue';
-    import Page2 from '../pages/Page2.vue';
+    import AppTabbar from './AppTabbar.vue';
 
     export default {
-        data () {
-            return {
-                pages: [
-                    {
-                        component: Page1,
-                        label: 'page1 label',
-                        desc: 'page1 desc.'
-                    },
-                    {
-                        component: Page2,
-                        label: 'page2 label',
-                        desc: 'page2 desc.'
-                    }
-                ]
-            };
-        },
         beforeCreate() {
-            this.$store.commit('navigator/push', Page1);
+            this.$store.commit('navigator/push', AppTabbar);
         },
         computed: {
             pageStack() {
