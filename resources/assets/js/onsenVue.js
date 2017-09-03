@@ -14,8 +14,6 @@ import 'onsenui/css/onsen-css-components.css';
 import Vue from 'vue';
 import Vuex from 'vuex';
 import VueOnsen from 'vue-onsenui'; // This already imports 'onsenui'
-import storeLike from './store.js';
-import AppNavigator from './components/OnsenUI/AppNavigator.vue';
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -26,13 +24,11 @@ import AppNavigator from './components/OnsenUI/AppNavigator.vue';
 Vue.use(Vuex);
 Vue.use(VueOnsen);
 
+import AppNavigator from './OnsenVue/components/AppNavigator.vue';
+import storeLike from './OnsenVue/store.js';
+
 const app = new Vue({
     el: '#app',
     render: h => h(AppNavigator),
-    store: new Vuex.Store(storeLike),
-    data: {
-        hoge: 'hogehogehoge-'
-    }
-    // ,
-    // template: '<navigator></navigator><v-ons-button>Click Me</v-ons-button>'
+    store: new Vuex.Store(storeLike)
 });
