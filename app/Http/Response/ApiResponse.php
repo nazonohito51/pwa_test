@@ -11,7 +11,7 @@ class ApiResponse implements Responsable
     private $message;
     private $data;
 
-    public function __construct(StatusInterface $status, $message = '', Jsonable $data = null)
+    public function __construct(StatusInterface $status, $message = '', $data = null)
     {
         $this->status = $status;
         $this->message = $message;
@@ -25,10 +25,14 @@ class ApiResponse implements Responsable
 
     public function toResponse($request)
     {
-        return response()->json([
+        $ret = [
             'status' => $this->status->getApiStatusCode(),
             'message' => $this->message,
-            'data' => $this->data ? $this->data : null
-        ]);
+        ];
+        if ($this->data) {
+            $ret = array_merge($ret, $this->data);
+        }
+
+        return response()->json($ret);
     }
 }
