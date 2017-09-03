@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    public function show(Request $request, User $user)
+    {
+        return new ApiResponse(new SuccessStatus(), 'getting user is succeeded', ['user' => $user]);
+    }
+
     public function update(Request $request, User $user)
     {
         $this->validate($request, [
@@ -18,6 +23,6 @@ class UserController extends Controller
         $user->nickname = $request->get('nickname');
         $user->save();
 
-        return new ApiResponse(new SuccessStatus(), 'updating user nickname is succeeded.', $user);
+        return new ApiResponse(new SuccessStatus(), 'updating user nickname is succeeded.', ['user' => $user]);
     }
 }
