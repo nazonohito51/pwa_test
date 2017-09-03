@@ -18,6 +18,6 @@ class UserController extends Controller
         $user->nickname = $request->get('nickname');
         $user->save();
 
-        return new ApiResponse(new SuccessStatus(), 'updating user nickname is succeeded.');
+        return new ApiResponse(new SuccessStatus(), 'updating user nickname is succeeded.', $user);
     }
 }
