@@ -14,7 +14,7 @@ class AddNicknameToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('nickname')->default('nickname')->after('name');
+            $table->string('nickname')->default('ニックネーム')->after('name');
         });
     }
 
