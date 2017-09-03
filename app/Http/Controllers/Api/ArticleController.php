@@ -5,10 +5,18 @@ namespace App\Http\Controllers\Api;
 use App\DataAccess\Eloquent\Article;
 use App\DataAccess\Eloquent\User;
 use App\Http\Controllers\Controller;
+use App\Http\Response\ApiResponse;
+use App\Http\Response\ApiStatus\SuccessStatus;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
+    public function all()
+    {
+        $articles = Article::all();
+        return new ApiResponse(new SuccessStatus(), 'getting articles is succeeded.', ['articles' => $articles]);
+    }
+
     public function index(User $user)
     {
         return $user->articles->toJson();

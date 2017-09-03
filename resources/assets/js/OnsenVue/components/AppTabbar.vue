@@ -12,6 +12,7 @@
 <script>
     import Page1 from '../pages/Page1.vue';
     import Page2 from '../pages/Page2.vue';
+    import Timeline from '../pages/Articles/Timeline.vue';
     import Settings from '../pages/Settings.vue';
 
     export default {
@@ -21,8 +22,8 @@
                 tabs: [
                     {
                         icon: this.md() ? null : 'fa-list',
-                        label: 'Page1',
-                        page: Page1
+                        label: 'Timeline',
+                        page: Timeline
                     },
                     {
                         icon: this.md() ? null : 'fa-magic',

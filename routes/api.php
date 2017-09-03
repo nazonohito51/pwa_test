@@ -19,5 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group([], function () {
     Route::get('/user/{user}', 'Api\UserController@show');
     Route::put('/user/{user}', 'Api\UserController@update');
+    Route::get('/articles', 'Api\ArticleController@all');
     Route::resource('/user/{user}/articles', 'Api\ArticleController');
 });
