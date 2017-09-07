@@ -32,7 +32,7 @@ class UserController extends Controller
             'endpoint' => ['required', 'string', 'max:255']
         ]);
 
-        $user->notifications()->updateOrCreate([
+        $user->push_notification()->updateOrCreate([
             'endpoint' => $request->get('endpoint')
         ]);
 

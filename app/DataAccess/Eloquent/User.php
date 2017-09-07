@@ -38,8 +38,8 @@ class User extends Authenticatable
         return $this->hasMany(Article::class);
     }
 
-    public function notification()
+    public function push_notification()
     {
-        return $this->hasOne(Notification::class);
+        return $this->hasOne(PushNotification::class);
     }
 }
