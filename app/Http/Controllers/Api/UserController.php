@@ -25,4 +25,17 @@ class UserController extends Controller
 
         return new ApiResponse(new SuccessStatus(), 'updating user nickname is succeeded.', ['user' => $user]);
     }
+
+    public function storeNotification(Request $request, User $user)
+    {
+        $this->validate($request, [
+            'endpoint' => ['required', 'string', 'max:255']
+        ]);
+
+        $user->notifications()->updateOrCreate([
+            'endpoint' => $request->get('endpoint')
+        ]);
+
+        return new ApiResponse(new SuccessStatus(), 'store user notification is succeeded');
+    }
 }
