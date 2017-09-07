@@ -32,6 +32,26 @@ function urlB64ToUint8Array(base64String) {
     return outputArray;
 }
 
+function updateSubscriptionOnServer(subscription) {
+    if (subscription) {
+        axios.post("/api/user/test/notification", {
+            endpoint: subscription.endpoint
+        }).then(
+            response => {
+                console.log(response);
+
+                if (response.error) {
+                    console.log('updating subscription on server is failed.')
+                } else {
+                    console.log('updating subscription on server is succeeded.')
+                }
+            }
+        );
+    } else {
+        console.log('updating subscription on server is failed.')
+    }
+}
+
 function subscribeUser() {
     const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);
     swRegistration.pushManager.subscribe({
@@ -41,7 +61,7 @@ function subscribeUser() {
         .then(function (subscription) {
             console.log('User is subscribed:', subscription);
 
-            // updateSubscriptionOnServer(subscription);
+            updateSubscriptionOnServer(subscription);
 
             isSubscribed = true;
         })
