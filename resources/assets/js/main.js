@@ -34,21 +34,31 @@ function urlB64ToUint8Array(base64String) {
 
 function updateSubscriptionOnServer(subscription) {
     if (subscription) {
-        axios.post("/api/user/test/notification", {
-            endpoint: subscription.endpoint
+        const key = subscription.getKey('p256dh');
+        const token = subscription.getKey('auth');
+
+        axios.put("/api/user/test/notification", {
+            endpoint: subscription.endpoint,
+            key: key ? btoa(String.fromCharCode.apply(null, new Uint8Array(key))) : null,
+            token: token ? btoa(String.fromCharCode.apply(null, new Uint8Array(token))) : null
         }).then(
             response => {
                 console.log(response);
 
                 if (response.error) {
-                    console.log('updating subscription on server is failed.')
+                    console.log('updating subscription on server is failed.');
                 } else {
-                    console.log('updating subscription on server is succeeded.')
+                    console.log('updating subscription on server is succeeded.');
                 }
             }
-        );
+        ).catch(function (err) {
+            // if update subscription on server is failed, unsubscribe subscription
+            subscription.unsubscribe().then(function (successful) {
+                console.log('unsubscribing is succeeded.', successful);
+            });
+        });
     } else {
-        console.log('updating subscription on server is failed.')
+        console.log('updating subscription on server is failed.');
     }
 }
 
@@ -60,6 +70,8 @@ function subscribeUser() {
     })
         .then(function (subscription) {
             console.log('User is subscribed:', subscription);
+            console.log('User is subscribed:', subscription.getKey('p256dh'));
+            console.log('User is subscribed:', subscription.getKey('auth'));
 
             updateSubscriptionOnServer(subscription);
 
@@ -67,7 +79,6 @@ function subscribeUser() {
         })
         .catch(function (err) {
             console.log('Failed to subscribe the user: ', err);
-            updateBtn();
         });
 }
 
