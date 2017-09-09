@@ -36,11 +36,18 @@ function updateSubscriptionOnServer(subscription) {
     if (subscription) {
         const key = subscription.getKey('p256dh');
         const token = subscription.getKey('auth');
+        let contentEncoding;
+        if ('supportedContentEncodings' in PushManager) {
+            contentEncoding = PushManager.supportedContentEncodings.includes('aes128gcm') ? 'aes128gcm' : 'aesgcm';
+        } else {
+            contentEncoding = 'aesgcm';
+        }
 
         axios.put("/api/user/test/notification", {
             endpoint: subscription.endpoint,
             key: key ? btoa(String.fromCharCode.apply(null, new Uint8Array(key))) : null,
-            token: token ? btoa(String.fromCharCode.apply(null, new Uint8Array(token))) : null
+            token: token ? btoa(String.fromCharCode.apply(null, new Uint8Array(token))) : null,
+            contentEncoding: contentEncoding
         }).then(
             response => {
                 console.log(response);
