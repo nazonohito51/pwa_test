@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PushNotification extends Model
 {
-    protected $fillable = ['user_id', 'endpoint'];
+    protected $fillable = ['user_id', 'endpoint', 'key', 'token'];
 
     public function user()
     {

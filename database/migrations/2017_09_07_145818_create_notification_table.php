@@ -17,8 +17,11 @@ class CreateNotificationTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned()->unique();
             $table->string('endpoint');
+            $table->string('key')->nullable();
+            $table->string('token')->nullable();
             $table->timestamps();
 
+            // SQLite3はデフォルト外部参照キーに非対応、Laravelからこれを有効にする方法がわからないので一時的に無効
 //            $table->foreign('user_id')->reference('id')->on('users');
         });
     }
@@ -30,6 +33,6 @@ class CreateNotificationTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('Notification');
+        Schema::dropIfExists('push_notifications');
     }
 }
