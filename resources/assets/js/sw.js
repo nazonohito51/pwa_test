@@ -4,7 +4,7 @@ self.addEventListener('push', function(event) {
 
     const title = 'Push Codelab';
     const options = {
-        body: 'Yay it works.',
+        body: event.data.text(),
         icon: '../images/icon.gif',
         badge: '../images/icon.gif'
     };
