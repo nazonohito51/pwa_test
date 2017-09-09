@@ -39,7 +39,13 @@ class SendPushNotifications extends Command
      */
     public function handle()
     {
-        $webPush = new WebPush();
+        $webPush = new WebPush([
+            'VAPID' => [
+                'subject' => 'https://github.com/nazonhito51/pwa_test/',
+                'publicKey' => 'BJbwhdyPzgvLnBmxYat8cGJSck_wy0Ph_vRTPHemglPtSrmiLZ1R05yFbnfQJen-MbS97RejCn3xm6Y4v1ZvZ1Q',
+                'privateKey' => 'bOHQ5fmaaNfZiwsc2xhFFH8_iJVCsYbnfScaMPTuQQw',
+            ],
+        ]);
         $users = User::all();
 
         foreach ($users as $user) {
@@ -47,7 +53,7 @@ class SendPushNotifications extends Command
 
             if ($notification = $user->push_notification) {
                 $this->info($notification->endpoint);
-                $webPush->sendNotification($notification->endpoint, 'hello!');
+                $webPush->sendNotification($notification->endpoint, 'hello!', $notification->key, $notification->token, true);
             }
         }
         $webPush->flush();
