@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 use App\DataAccess\Eloquent\User;
 use App\Http\Controllers\Controller;
 use App\Http\Response\ApiResponse;
+use App\Http\Response\ApiStatus\NotFoundStatus;
 use App\Http\Response\ApiStatus\SuccessStatus;
 use Illuminate\Http\Request;
 
@@ -12,6 +13,17 @@ class UserController extends Controller
     public function show(Request $request, User $user)
     {
         return new ApiResponse(new SuccessStatus(), 'getting user is succeeded', ['user' => $user]);
+    }
+
+    public function showByApiToken($api_token)
+    {
+        $user = User::where('api_token', '=', $api_token);
+
+        if ($user) {
+            return new ApiResponse(new SuccessStatus(), 'getting user is succeeded', ['user' => $user]);
+        } else {
+            return new ApiResponse(new NotFoundStatus(), 'not found');
+        }
     }
 
     public function update(Request $request, User $user)
