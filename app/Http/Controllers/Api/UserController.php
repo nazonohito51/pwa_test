@@ -52,12 +52,15 @@ class UserController extends Controller
             'token' => ['string', 'max:255'],
         ]);
 
-        $user->push_notification()->updateOrCreate([
+        $push_notification = $user->push_notification()->updateOrCreate([
             'endpoint' => $request->get('endpoint'),
             'key' => $request->get('key'),
             'token' => $request->get('token'),
         ]);
 
-        return new ApiResponse(new SuccessStatus(), 'store user notification is succeeded');
+        return new ApiResponse(new SuccessStatus(), 'store user notification is succeeded', [
+            'user' => $user,
+            'push_notification' => $push_notification
+        ]);
     }
 }
