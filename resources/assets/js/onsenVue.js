@@ -29,6 +29,25 @@ import storeLike from './OnsenVue/store.js';
 
 const app = new Vue({
     el: '#app',
+    data: {
+        credential: {
+            name: null,
+            api_token: null
+        }
+    },
     render: h => h(AppNavigator),
-    store: new Vuex.Store(storeLike)
+    store: new Vuex.Store(storeLike),
+    created: function () {
+        const username = document.head.querySelector('meta[name="app-username"]');
+        const api_token = document.head.querySelector('meta[name="api-token"]');
+
+        if (username) {
+            this.credential.name = username.content;
+        }
+        if (api_token) {
+            this.credential.api_token = api_token.content;
+        }
+
+        console.log(this.credential);
+    }
 });
