@@ -29,25 +29,118 @@ import storeLike from './OnsenVue/store.js';
 
 const app = new Vue({
     el: '#app',
-    data: {
-        credential: {
-            name: null,
-            api_token: null
-        }
+    data: function () {
+        return {
+            applicationServerPublicKey: 'BJbwhdyPzgvLnBmxYat8cGJSck_wy0Ph_vRTPHemglPtSrmiLZ1R05yFbnfQJen-MbS97RejCn3xm6Y4v1ZvZ1Q',
+            credential: {
+                name: null,
+                api_token: null
+            },
+            isSubscribed: false,
+            swRegistration: null
+        };
     },
     render: h => h(AppNavigator),
     store: new Vuex.Store(storeLike),
     created: function () {
-        const username = document.head.querySelector('meta[name="app-username"]');
-        const api_token = document.head.querySelector('meta[name="api-token"]');
+        this.getCredential();
+        this.registerServiceWorker();
+    },
+    methods: {
+        getCredential: function () {
+            const username = document.head.querySelector('meta[name="app-username"]');
+            const api_token = document.head.querySelector('meta[name="api-token"]');
 
-        if (username) {
-            this.credential.name = username.content;
-        }
-        if (api_token) {
-            this.credential.api_token = api_token.content;
-        }
+            if (username) {
+                this.credential.name = username.content;
+            }
+            if (api_token) {
+                this.credential.api_token = api_token.content;
+            }
+        },
+        registerServiceWorker: function () {
+            if ('serviceWorker' in navigator && 'PushManager' in window) {
+                console.log('Service Worker and Push is supported');
 
-        console.log(this.credential);
+                navigator.serviceWorker.register('js/sw.js').then(function (swReg) {
+                    console.log('Service Worker is registered', swReg);
+
+                    swRegistration = swReg;
+                    this.subscribeUser();
+                }).catch(function (error) {
+                    console.error('Service Worker Error', error);
+                });
+            } else {
+                console.warn('Push messaging is not supported');
+            }
+        },
+        subscribeUser: function () {
+            const applicationServerKey = this.urlB64ToUint8Array(this.applicationServerPublicKey);
+            this.swRegistration.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: applicationServerKey
+            }).then(function (subscription) {
+                console.log('User is subscribed:', subscription);
+                console.log('User is subscribed:', subscription.getKey('p256dh'));
+                console.log('User is subscribed:', subscription.getKey('auth'));
+
+                // updateSubscriptionOnServer(subscription);
+
+                this.isSubscribed = true;
+            }).catch(function (err) {
+                console.log('Failed to subscribe the user: ', err);
+            });
+        },
+        updateSubscriptionOnServer: function (subscription) {
+            if (subscription) {
+                const key = subscription.getKey('p256dh');
+                const token = subscription.getKey('auth');
+                let contentEncoding;
+                if ('supportedContentEncodings' in PushManager) {
+                    contentEncoding = PushManager.supportedContentEncodings.includes('aes128gcm') ? 'aes128gcm' : 'aesgcm';
+                } else {
+                    contentEncoding = 'aesgcm';
+                }
+
+                // TODO: fix url
+                axios.put("/api/user/test/notification", {
+                    endpoint: subscription.endpoint,
+                    key: key ? btoa(String.fromCharCode.apply(null, new Uint8Array(key))) : null,
+                    token: token ? btoa(String.fromCharCode.apply(null, new Uint8Array(token))) : null,
+                    contentEncoding: contentEncoding
+                }).then(
+                    response => {
+                        console.log(response);
+
+                        if (response.error) {
+                            console.log('updating subscription on server is failed.');
+                        } else {
+                            console.log('updating subscription on server is succeeded.');
+                        }
+                    }
+                ).catch(function (err) {
+                    // if update subscription on server is failed, unsubscribe subscription
+                    subscription.unsubscribe().then(function (successful) {
+                        console.log('unsubscribing is succeeded.', successful);
+                    });
+                });
+            } else {
+                console.log('updating subscription on server is failed.');
+            }
+        },
+        urlB64ToUint8Array: function () {
+            const padding = '='.repeat((4 - base64String.length % 4) % 4);
+            const base64 = (base64String + padding)
+                .replace(/\-/g, '+')
+                .replace(/_/g, '/');
+
+            const rawData = window.atob(base64);
+            const outputArray = new Uint8Array(rawData.length);
+
+            for (let i = 0; i < rawData.length; ++i) {
+                outputArray[i] = rawData.charCodeAt(i);
+            }
+            return outputArray;
+        }
     }
 });
