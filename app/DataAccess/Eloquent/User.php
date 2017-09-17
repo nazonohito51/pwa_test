@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'role', 'api_token'
     ];
 
     /**
@@ -28,6 +28,11 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function isInterimUser()
+    {
+        return $this->role == 'interim';
+    }
+
     public function getRouteKeyName()
     {
         return 'name';
@@ -38,8 +43,8 @@ class User extends Authenticatable
         return $this->hasMany(Article::class);
     }
 
-    public function push_notification()
+    public function push_notifications()
     {
-        return $this->hasOne(PushNotification::class);
+        return $this->hasMany(PushNotification::class);
     }
 }

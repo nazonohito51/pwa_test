@@ -69,7 +69,7 @@ const app = new Vue({
             if ('serviceWorker' in navigator && 'PushManager' in window) {
                 console.log('Service Worker and Push is supported');
 
-                navigator.serviceWorker.register('js/sw.js').then(function (registration) {
+                navigator.serviceWorker.register('/sw.js', {scope: '/'}).then(function (registration) {
                     console.log('Service Worker is registered', registration);
 
                     this.$store.commit('serviceWorker/setRegistration', registration);
@@ -81,9 +81,18 @@ const app = new Vue({
                 console.warn('Push messaging is not supported');
             }
         },
+        checkSubscription: function () {
+            this.swRegistration.pushManager.getSubscription()
+                .then(function (subscription) {
+                    if (subscription !== null) {
+                        this.$store.commit('serviceWorker/subscribe');
+                    } else {
+                        this.$store.commit('serviceWorker/unsubscribe');
+                    }
+                });
+        },
         subscribeUser: function () {
             const applicationServerKey = this.urlB64ToUint8Array(this.applicationServerPublicKey);
-
             if (this.swRegistration) {
                 this.swRegistration.pushManager.subscribe({
                     userVisibleOnly: true,
@@ -107,28 +116,26 @@ const app = new Vue({
                     contentEncoding = 'aesgcm';
                 }
 
-                // TODO: fix url
-                // axios.put("/api/user/test/notification", {
-                //     endpoint: subscription.endpoint,
-                //     key: key ? btoa(String.fromCharCode.apply(null, new Uint8Array(key))) : null,
-                //     token: token ? btoa(String.fromCharCode.apply(null, new Uint8Array(token))) : null,
-                //     contentEncoding: contentEncoding
-                // }).then(
-                //     response => {
-                //         console.log(response);
-                //
-                //         if (response.error) {
-                //             console.log('updating subscription on server is failed.');
-                //         } else {
-                //             console.log('updating subscription on server is succeeded.');
-                //         }
-                //     }
-                // ).catch(function (err) {
-                //     // if update subscription on server is failed, unsubscribe subscription
-                //     subscription.unsubscribe().then(function (successful) {
-                //         console.log('unsubscribing is succeeded.', successful);
-                //     });
-                // });
+                axios.post("/api/interim_user", {
+                    endpoint: subscription.endpoint,
+                    key: key ? btoa(String.fromCharCode.apply(null, new Uint8Array(key))) : null,
+                    token: token ? btoa(String.fromCharCode.apply(null, new Uint8Array(token))) : null,
+                    contentEncoding: contentEncoding
+                }).then(
+                    response => {
+                        console.log(response);
+
+                        if (response.error) {
+                            console.log('updating subscription on server is failed.');
+                        } else {
+                            console.log('updating subscription on server is succeeded.');
+                        }
+                    }
+                ).catch(function (err) {
+                    subscription.unsubscribe().then(function (successful) {
+                        console.log('unsubscribing is succeeded.', successful);
+                    });
+                });
             } else {
                 console.log('updating subscription on server is failed.');
             }

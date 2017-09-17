@@ -51,13 +51,11 @@ class SendPushNotifications extends Command
         foreach ($users as $user) {
             $this->info($user->name);
 
-            if ($notification = $user->push_notification) {
+            foreach ($user->push_notifications as $notification) {
                 $this->info($notification->endpoint);
                 $webPush->sendNotification($notification->endpoint, 'hello!', $notification->key, $notification->token, true);
             }
         }
         $webPush->flush();
-
-        return 'ok';
     }
 }
