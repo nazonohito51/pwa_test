@@ -35,6 +35,7 @@ const app = new Vue({
             applicationServerPublicKey: 'BJbwhdyPzgvLnBmxYat8cGJSck_wy0Ph_vRTPHemglPtSrmiLZ1R05yFbnfQJen-MbS97RejCn3xm6Y4v1ZvZ1Q',
             credential: {
                 name: null,
+                nickname: null,
                 api_token: null
             }
         };
@@ -58,14 +59,30 @@ const app = new Vue({
     methods: {
         getCredential: function () {
             const username = document.head.querySelector('meta[name="app-username"]');
+            const nickname = document.head.querySelector('meta[name="app-nickname"]');
             const api_token = document.head.querySelector('meta[name="api-token"]');
 
             if (username) {
                 this.credential.name = username.content;
             }
+            if (nickname) {
+                this.credential.nickname = nickname.content;
+            }
             if (api_token) {
                 this.credential.api_token = api_token.content;
             }
+        },
+        updateCredential: function (username, nickname, api_token) {
+            this.credential.name = username;
+            this.credential.nickname = nickname;
+            this.credential.api_token = api_token;
+
+            const username_dom = document.head.querySelector('meta[name="app-username"]');
+            const nickname_dom = document.head.querySelector('meta[name="app-nickname"]');
+            const api_token_dom = document.head.querySelector('meta[name="api-token"]');
+            username_dom.content = username;
+            nickname_dom.content = nickname;
+            api_token_dom.content = api_token;
         },
         registerServiceWorker: function () {
             if ('serviceWorker' in navigator && 'PushManager' in window) {
@@ -131,6 +148,7 @@ const app = new Vue({
                         if (response.error) {
                             console.log('updating subscription on server is failed.');
                         } else {
+                            this.updateCredential(response.data.name, response.data.nickname, response.data.api_token);
                             console.log('updating subscription on server is succeeded.');
                         }
                     }
