@@ -1,5 +1,25 @@
 export default {
     modules: {
+        serviceWorker: {
+            strict: true,
+            namespaced: true,
+            state: {
+                registration: null,
+                isSubscribed: false
+            },
+            mutations: {
+                setRegistration(state, registration) {
+                    state.registration = registration;
+                },
+                subscribe(state) {
+                    state.isSubscribed = true;
+                },
+                unsubscribe(state) {
+                    state.isSubscribed = false;
+                }
+            }
+        },
+
         navigator: {
             strict: true,
             namespaced: true,
