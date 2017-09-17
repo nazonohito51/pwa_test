@@ -52,6 +52,8 @@ const app = new Vue({
     created: function () {
         this.getCredential();
         this.registerServiceWorker();
+        this.checkSubscription();
+        this.subscribeUser();
     },
     methods: {
         getCredential: function () {
@@ -73,7 +75,6 @@ const app = new Vue({
                     console.log('Service Worker is registered', registration);
 
                     this.$store.commit('serviceWorker/setRegistration', registration);
-                    this.subscribeUser();
                 }.bind(this)).catch(function (error) {
                     console.error('Service Worker Error', error);
                 });
@@ -82,19 +83,21 @@ const app = new Vue({
             }
         },
         checkSubscription: function () {
-            this.swRegistration.pushManager.getSubscription()
-                .then(function (subscription) {
+            if (this.swRegistration) {
+                this.swRegistration.pushManager.getSubscription().then(function (subscription) {
                     if (subscription !== null) {
                         this.$store.commit('serviceWorker/subscribe');
                     } else {
                         this.$store.commit('serviceWorker/unsubscribe');
                     }
                 });
+            }
         },
         subscribeUser: function () {
             const applicationServerKey = this.urlB64ToUint8Array(this.applicationServerPublicKey);
-            if (this.swRegistration) {
-                this.swRegistration.pushManager.subscribe({
+
+            navigator.serviceWorker.ready.then(function (registration) {
+                registration.pushManager.subscribe({
                     userVisibleOnly: true,
                     applicationServerKey: applicationServerKey
                 }).then(function (subscription) {
@@ -103,7 +106,7 @@ const app = new Vue({
                 }.bind(this)).catch(function (err) {
                     console.log('Failed to subscribe the user: ', err);
                 });
-            }
+            }.bind(this));
         },
         updateSubscriptionOnServer: function (subscription) {
             if (subscription) {
