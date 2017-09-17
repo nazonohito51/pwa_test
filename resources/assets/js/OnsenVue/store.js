@@ -1,5 +1,22 @@
 export default {
     modules: {
+        credential: {
+            strict: true,
+            namespaced: true,
+            state: {
+                name: null,
+                nickname: null,
+                api_token: null
+            },
+            mutations: {
+                update(state, name, nickname, api_token) {
+                    state.name = name;
+                    state.nickname = nickname;
+                    state.api_token = api_token;
+                }
+            }
+        },
+
         serviceWorker: {
             strict: true,
             namespaced: true,
