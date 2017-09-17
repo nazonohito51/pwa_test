@@ -23,6 +23,7 @@ import VueOnsen from 'vue-onsenui'; // This already imports 'onsenui'
 
 Vue.use(Vuex);
 Vue.use(VueOnsen);
+Vue.config.debug = true;
 
 import AppNavigator from './OnsenVue/components/AppNavigator.vue';
 import storeLike from './OnsenVue/store.js';
@@ -35,10 +36,16 @@ const app = new Vue({
             credential: {
                 name: null,
                 api_token: null
-            },
-            isSubscribed: false,
-            swRegistration: null
+            }
         };
+    },
+    computed: {
+        swRegistration() {
+            return this.$store.state.serviceWorker.registration;
+        },
+        isSubscribed() {
+            return this.$store.state.serviceWorker.isSubscribed;
+        }
     },
     render: h => h(AppNavigator),
     store: new Vuex.Store(storeLike),
@@ -62,12 +69,12 @@ const app = new Vue({
             if ('serviceWorker' in navigator && 'PushManager' in window) {
                 console.log('Service Worker and Push is supported');
 
-                navigator.serviceWorker.register('js/sw.js').then(function (swReg) {
-                    console.log('Service Worker is registered', swReg);
+                navigator.serviceWorker.register('js/sw.js').then(function (registration) {
+                    console.log('Service Worker is registered', registration);
 
-                    swRegistration = swReg;
+                    this.$store.commit('serviceWorker/setRegistration', registration);
                     this.subscribeUser();
-                }).catch(function (error) {
+                }.bind(this)).catch(function (error) {
                     console.error('Service Worker Error', error);
                 });
             } else {
@@ -76,20 +83,18 @@ const app = new Vue({
         },
         subscribeUser: function () {
             const applicationServerKey = this.urlB64ToUint8Array(this.applicationServerPublicKey);
-            this.swRegistration.pushManager.subscribe({
-                userVisibleOnly: true,
-                applicationServerKey: applicationServerKey
-            }).then(function (subscription) {
-                console.log('User is subscribed:', subscription);
-                console.log('User is subscribed:', subscription.getKey('p256dh'));
-                console.log('User is subscribed:', subscription.getKey('auth'));
 
-                // updateSubscriptionOnServer(subscription);
-
-                this.isSubscribed = true;
-            }).catch(function (err) {
-                console.log('Failed to subscribe the user: ', err);
-            });
+            if (this.swRegistration) {
+                this.swRegistration.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: applicationServerKey
+                }).then(function (subscription) {
+                    this.updateSubscriptionOnServer(subscription);
+                    this.$store.commit('serviceWorker/subscribe');
+                }.bind(this)).catch(function (err) {
+                    console.log('Failed to subscribe the user: ', err);
+                });
+            }
         },
         updateSubscriptionOnServer: function (subscription) {
             if (subscription) {
@@ -103,32 +108,32 @@ const app = new Vue({
                 }
 
                 // TODO: fix url
-                axios.put("/api/user/test/notification", {
-                    endpoint: subscription.endpoint,
-                    key: key ? btoa(String.fromCharCode.apply(null, new Uint8Array(key))) : null,
-                    token: token ? btoa(String.fromCharCode.apply(null, new Uint8Array(token))) : null,
-                    contentEncoding: contentEncoding
-                }).then(
-                    response => {
-                        console.log(response);
-
-                        if (response.error) {
-                            console.log('updating subscription on server is failed.');
-                        } else {
-                            console.log('updating subscription on server is succeeded.');
-                        }
-                    }
-                ).catch(function (err) {
-                    // if update subscription on server is failed, unsubscribe subscription
-                    subscription.unsubscribe().then(function (successful) {
-                        console.log('unsubscribing is succeeded.', successful);
-                    });
-                });
+                // axios.put("/api/user/test/notification", {
+                //     endpoint: subscription.endpoint,
+                //     key: key ? btoa(String.fromCharCode.apply(null, new Uint8Array(key))) : null,
+                //     token: token ? btoa(String.fromCharCode.apply(null, new Uint8Array(token))) : null,
+                //     contentEncoding: contentEncoding
+                // }).then(
+                //     response => {
+                //         console.log(response);
+                //
+                //         if (response.error) {
+                //             console.log('updating subscription on server is failed.');
+                //         } else {
+                //             console.log('updating subscription on server is succeeded.');
+                //         }
+                //     }
+                // ).catch(function (err) {
+                //     // if update subscription on server is failed, unsubscribe subscription
+                //     subscription.unsubscribe().then(function (successful) {
+                //         console.log('unsubscribing is succeeded.', successful);
+                //     });
+                // });
             } else {
                 console.log('updating subscription on server is failed.');
             }
         },
-        urlB64ToUint8Array: function () {
+        urlB64ToUint8Array: function (base64String) {
             const padding = '='.repeat((4 - base64String.length % 4) % 4);
             const base64 = (base64String + padding)
                 .replace(/\-/g, '+')
