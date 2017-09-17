@@ -32,12 +32,7 @@ const app = new Vue({
     el: '#app',
     data: function () {
         return {
-            applicationServerPublicKey: 'BJbwhdyPzgvLnBmxYat8cGJSck_wy0Ph_vRTPHemglPtSrmiLZ1R05yFbnfQJen-MbS97RejCn3xm6Y4v1ZvZ1Q',
-            credential: {
-                name: null,
-                nickname: null,
-                api_token: null
-            }
+            applicationServerPublicKey: 'BJbwhdyPzgvLnBmxYat8cGJSck_wy0Ph_vRTPHemglPtSrmiLZ1R05yFbnfQJen-MbS97RejCn3xm6Y4v1ZvZ1Q'
         };
     },
     computed: {
@@ -62,20 +57,12 @@ const app = new Vue({
             const nickname = document.head.querySelector('meta[name="app-nickname"]');
             const api_token = document.head.querySelector('meta[name="api-token"]');
 
-            if (username) {
-                this.credential.name = username.content;
-            }
-            if (nickname) {
-                this.credential.nickname = nickname.content;
-            }
-            if (api_token) {
-                this.credential.api_token = api_token.content;
+            if (username && nickname && api_token) {
+                this.$store.commit('credential/update', username.content, nickname.content, api_token.content);
             }
         },
         updateCredential: function (username, nickname, api_token) {
-            this.credential.name = username;
-            this.credential.nickname = nickname;
-            this.credential.api_token = api_token;
+            this.$store.commit('credential/update', username, nickname, api_token);
 
             const username_dom = document.head.querySelector('meta[name="app-username"]');
             const nickname_dom = document.head.querySelector('meta[name="app-nickname"]');
