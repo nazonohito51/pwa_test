@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddNicknameToUsers extends Migration
+class AddEncodingColumnToPushNotifications extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddNicknameToUsers extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('nickname')->default('仮ユーザさん')->after('name');
+        Schema::table('push_notifications', function (Blueprint $table) {
+            $table->string('content_encoding')->after('token');
         });
     }
 
@@ -25,8 +25,8 @@ class AddNicknameToUsers extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('nickname');
+        Schema::table('push_notifications', function (Blueprint $table) {
+            $table->dropColumn(['content_encoding']);
         });
     }
 }
