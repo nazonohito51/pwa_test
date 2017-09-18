@@ -25,7 +25,10 @@
 </template>
 
 <script>
+    import apiClientMixin from '../../mixins/apiClient.js';
+
     export default {
+        mixins: [apiClientMixin],
         created: function () {
             this.getUser();
         },
@@ -37,7 +40,7 @@
         },
         methods: {
             getUser: function() {
-                axios.get("/api/user/test").then(
+                this.getApiClient().get("/api/user/test").then(
                     response => {
                         console.log(response);
 
