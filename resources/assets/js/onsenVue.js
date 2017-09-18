@@ -56,9 +56,11 @@ const app = new Vue({
             const username_dom = document.head.querySelector('meta[name="app-username"]');
             const nickname_dom = document.head.querySelector('meta[name="app-nickname"]');
             const api_token_dom = document.head.querySelector('meta[name="api-token"]');
-            username_dom.content = username;
-            nickname_dom.content = nickname;
-            api_token_dom.content = api_token;
+            if (username_dom && nickname_dom && api_token_dom) {
+                username_dom.content = username;
+                nickname_dom.content = nickname;
+                api_token_dom.content = api_token;
+            }
         }
     }
 });
