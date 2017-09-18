@@ -39,7 +39,6 @@ const app = new Vue({
 
         this.registerServiceWorker();
         this.checkSubscription();
-        this.subscribeUser();
     },
     methods: {
         getCredential: function () {

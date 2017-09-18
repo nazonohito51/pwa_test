@@ -12,7 +12,7 @@
                     プッシュ通知
                 </label>
                 <div class="right">
-                    <v-ons-switch input-id="notification_switch" @change="notificationChange">
+                    <v-ons-switch input-id="notification_switch" v-model="isSubscribed" :disabled="isSubscribed">
                     </v-ons-switch>
                 </div>
             </ons-list-item>
@@ -22,13 +22,30 @@
 
 <script>
     import User from './Settings/User.vue';
+    import serviceWorkerMixin from '../mixins/serviceWorker.js';
 
     export default {
+        mixins: [serviceWorkerMixin],
+        computed: {
+            isSubscribed: {
+                get: function () {
+                    return this.$store.state.serviceWorker.isSubscribed;
+                },
+                set: function (value) {
+                    if (value === true) {
+                        this.subscribeUser();
+                    } else {
+                        console.log('Unsubscribe is not supported.')
+                    }
+                }
+            }
+        },
         methods: {
             pushUserPage() {
                 this.$store.commit('navigator/push', User);
             },
             notificationChange(event) {
+                console.log(this.isSubscribed);
                 if (event.value === true) {
                     this.$store.commit('serviceWorker/subscribe');
                 } else {
