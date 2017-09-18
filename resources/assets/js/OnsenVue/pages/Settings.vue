@@ -12,7 +12,7 @@
                     プッシュ通知
                 </label>
                 <div class="right">
-                    <v-ons-switch input-id="notification_switch" v-model="notificationSwitch">
+                    <v-ons-switch input-id="notification_switch" @change="notificationChange">
                     </v-ons-switch>
                 </div>
             </ons-list-item>
@@ -24,14 +24,16 @@
     import User from './Settings/User.vue';
 
     export default {
-        data() {
-            return {
-                notificationSwitch: false
-            };
-        },
         methods: {
             pushUserPage() {
                 this.$store.commit('navigator/push', User);
+            },
+            notificationChange(event) {
+                if (event.value === true) {
+                    this.$store.commit('serviceWorker/subscribe');
+                } else {
+                    this.$store.commit('serviceWorker/unsubscribe');
+                }
             }
         }
     };
