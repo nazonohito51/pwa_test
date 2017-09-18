@@ -21,6 +21,7 @@ export default {
             strict: true,
             namespaced: true,
             state: {
+                applicationServerPublicKey: 'BJbwhdyPzgvLnBmxYat8cGJSck_wy0Ph_vRTPHemglPtSrmiLZ1R05yFbnfQJen-MbS97RejCn3xm6Y4v1ZvZ1Q',
                 registration: null,
                 isSubscribed: false
             },
