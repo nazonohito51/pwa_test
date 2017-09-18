@@ -40,36 +40,21 @@
         },
         methods: {
             getUser: function() {
-                this.getApiClient().get("/api/user/test").then(
-                    response => {
-                        console.log(response);
-
-                        if (response.error) {
-                            this.$ons.notification.toast('ユーザ情報の取得に失敗しました。', {timeout: 2000});
-                        } else {
-                            this.nickname = response.data.user.nickname;
-                            this.originalNickname = response.data.user.nickname;
-                        }
-                    }
-                );
+                this.getRequest("/api/user/test", function (response) {
+                    this.nickname = response.data.user.nickname;
+                    this.originalNickname = response.data.user.nickname;
+                }.bind(this), function () {
+                    this.$ons.notification.toast('ユーザ情報の取得に失敗しました。', {timeout: 2000});
+                }.bind(this));
             },
             updateUserNickName: function() {
-                axios.put("/api/user/test", {
-                    nickname: this.nickname
-                }).then(
-                    response => {
-                        console.log(response);
-
-                        if (response.error) {
-                            this.$ons.notification.toast('ニックネームの更新に失敗しました。', {timeout: 2000});
-                        } else {
-                            this.nickname = response.data.user.nickname;
-                            this.originalNickname = response.data.user.nickname;
-
-                            this.$ons.notification.toast('ニックネームを更新しました。', {timeout: 2000});
-                        }
-                    }
-                );
+                this.putRequest("/api/user/test", {nickname: this.nickname}, function (response) {
+                    this.nickname = response.data.user.nickname;
+                    this.originalNickname = response.data.user.nickname;
+                    this.$ons.notification.toast('ニックネームを更新しました。', {timeout: 2000});
+                }.bind(this), function () {
+                    this.$ons.notification.toast('ニックネームの更新に失敗しました。', {timeout: 2000});
+                }.bind(this));
             }
         },
         computed: {
