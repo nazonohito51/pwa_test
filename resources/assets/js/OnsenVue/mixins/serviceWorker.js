@@ -37,7 +37,7 @@ export default {
                 });
             }
         },
-        subscribeUser: function () {
+        subscribeUser: function (callback) {
             const applicationServerKey = this.urlB64ToUint8Array(this.applicationServerPublicKey);
 
             navigator.serviceWorker.ready.then(function (registration) {
@@ -47,6 +47,7 @@ export default {
                 }).then(function (subscription) {
                     this.updateSubscriptionOnServer(subscription);
                     this.$store.commit('serviceWorker/subscribe');
+                    callback();
                 }.bind(this)).catch(function (err) {
                     console.log('Failed to subscribe the user: ', err);
                 });

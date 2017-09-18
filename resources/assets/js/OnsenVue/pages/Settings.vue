@@ -17,6 +17,10 @@
                 </div>
             </ons-list-item>
         </v-ons-list>
+
+        <v-ons-dialog cancelable :visible.sync="registrationDialogVisible">
+            <p style="text-align: center">アプリが利用可能になりました！</p>
+        </v-ons-dialog>
     </v-ons-page>
 </template>
 
@@ -26,6 +30,11 @@
 
     export default {
         mixins: [serviceWorkerMixin],
+        data: function () {
+            return {
+                registrationDialogVisible: false
+            }
+        },
         computed: {
             isSubscribed: {
                 get: function () {
@@ -33,7 +42,9 @@
                 },
                 set: function (value) {
                     if (value === true) {
-                        this.subscribeUser();
+                        this.subscribeUser(function () {
+                            this.registrationDialogVisible = true;
+                        }.bind(this));
                     } else {
                         console.log('Unsubscribe is not supported.')
                     }
