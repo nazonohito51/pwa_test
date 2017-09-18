@@ -91,6 +91,7 @@ class UserController extends Controller
 
             $user = User::create([
                 'name' => $unique_name,
+                'nickname' => '名無しの誰かさん',
                 'email' => $unique_name . '@test.com',
                 'password' => bcrypt(str_random(60)),
                 'role' => 'interim',
