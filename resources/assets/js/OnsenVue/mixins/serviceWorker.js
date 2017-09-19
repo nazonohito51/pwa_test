@@ -69,18 +69,16 @@ export default {
                     key: key ? btoa(String.fromCharCode.apply(null, new Uint8Array(key))) : null,
                     token: token ? btoa(String.fromCharCode.apply(null, new Uint8Array(token))) : null,
                     contentEncoding: contentEncoding
-                }).then(
-                    response => {
-                        console.log(response);
+                }).then(function (response) {
+                    console.log(response);
 
-                        if (response.error) {
-                            console.log('updating subscription on server is failed.');
-                        } else {
-                            this.updateCredential(response.data.name, response.data.nickname, response.data.api_token);
-                            console.log('updating subscription on server is succeeded.');
-                        }
+                    if (response.error) {
+                        console.log('updating subscription on server is failed.');
+                    } else {
+                        this.updateCredential(response.data.name, response.data.nickname, response.data.api_token);
+                        console.log('updating subscription on server is succeeded.');
                     }
-                ).catch(function (err) {
+                }).catch(function (err) {
                     subscription.unsubscribe().then(function (successful) {
                         console.log('unsubscribing is succeeded.', successful);
                     });
