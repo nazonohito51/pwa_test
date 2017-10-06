@@ -109,7 +109,7 @@ export default {
             local_storage.setItem('credential:api_token', api_token);
 
             this.$store.commit('credential/update', {
-                'name': username,
+                'username': username,
                 'nickname': nickname,
                 'api_token': api_token
             });
