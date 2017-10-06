@@ -82,6 +82,7 @@ export default {
                 }.bind(this)).catch(function (err) {
                     subscription.unsubscribe().then(function (successful) {
                         console.log('unsubscribing is succeeded.', successful);
+                        this.$store.commit('serviceWorker/unsubscribe');
                     });
                 }.bind(this));
             } else {
