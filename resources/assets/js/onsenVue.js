@@ -40,9 +40,14 @@ const app = new Vue({
     },
     methods: {
         getCredential: function () {
-            const username = document.head.querySelector('meta[name="app-username"]');
-            const nickname = document.head.querySelector('meta[name="app-nickname"]');
-            const api_token = document.head.querySelector('meta[name="api-token"]');
+            // const username = document.head.querySelector('meta[name="app-username"]');
+            // const nickname = document.head.querySelector('meta[name="app-nickname"]');
+            // const api_token = document.head.querySelector('meta[name="api-token"]');
+
+            const local_storage = window.localStorage;
+            const username = local_storage.getItem('credential:username');
+            const nickname = local_storage.getItem('credential:nickname');
+            const api_token = local_storage.getItem('credential:api_token');
 
             if (username && nickname && api_token) {
                 this.$store.commit('credential/update', username.content, nickname.content, api_token.content);

@@ -9,10 +9,14 @@ export default {
                 api_token: null
             },
             mutations: {
-                update(state, name, nickname, api_token) {
-                    state.name = name;
-                    state.nickname = nickname;
-                    state.api_token = api_token;
+                update(state, payload) {
+                    console.log('update commit.');
+                    console.log('name: ' + payload.name);
+                    console.log('nickname: ' + payload.nickname);
+                    console.log('api_token: ' + payload.api_token);
+                    state.name = payload.name;
+                    state.nickname = payload.nickname;
+                    state.api_token = payload.api_token;
                 }
             }
         },
