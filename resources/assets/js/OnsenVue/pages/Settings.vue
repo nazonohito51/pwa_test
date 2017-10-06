@@ -16,6 +16,7 @@
                     </v-ons-switch>
                 </div>
             </ons-list-item>
+            <v-ons-list-item tappable @click="checkCredential()">認証情報確認</v-ons-list-item>
         </v-ons-list>
 
         <v-ons-dialog cancelable :visible.sync="registrationDialogVisible">
@@ -62,6 +63,11 @@
                 } else {
                     this.$store.commit('serviceWorker/unsubscribe');
                 }
+            },
+            checkCredential() {
+                console.log('name: ' + this.$store.state.credential.name);
+                console.log('nickname: ' + this.$store.state.credential.nickname);
+                console.log('api_token: ' + this.$store.state.credential.api_token);
             }
         }
     };
