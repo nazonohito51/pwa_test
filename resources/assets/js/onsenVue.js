@@ -50,7 +50,7 @@ const app = new Vue({
             const api_token = local_storage.getItem('credential:api_token');
 
             if (username && nickname && api_token) {
-                this.$store.commit('credential/update', username.content, nickname.content, api_token.content);
+                this.updateCredential(username, nickname, api_token);
             }
         },
     }
