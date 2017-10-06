@@ -13,6 +13,11 @@ export default {
                     state.username = payload.username;
                     state.nickname = payload.nickname;
                     state.api_token = payload.api_token;
+
+                    const local_storage = window.localStorage;
+                    local_storage.setItem('credential:username', username);
+                    local_storage.setItem('credential:nickname', nickname);
+                    local_storage.setItem('credential:api_token', api_token);
                 }
             }
         },

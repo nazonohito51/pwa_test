@@ -103,11 +103,6 @@ export default {
             return outputArray;
         },
         updateCredential: function (username, nickname, api_token) {
-            const local_storage = window.localStorage;
-            local_storage.setItem('credential:username', username);
-            local_storage.setItem('credential:nickname', nickname);
-            local_storage.setItem('credential:api_token', api_token);
-
             this.$store.commit('credential/update', {
                 'username': username,
                 'nickname': nickname,
