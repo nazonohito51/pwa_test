@@ -40,7 +40,7 @@
         },
         methods: {
             getUser: function() {
-                const username = this.$store.state.credential.name;
+                const username = this.$store.state.credential.username;
                 this.getRequest("/api/user/" + username, function (response) {
                     this.nickname = response.data.user.nickname;
                     this.originalNickname = response.data.user.nickname;

@@ -68,7 +68,7 @@
                 }
             },
             checkCredential() {
-                console.log('name: ' + this.$store.state.credential.name);
+                console.log('username: ' + this.$store.state.credential.username);
                 console.log('nickname: ' + this.$store.state.credential.nickname);
                 console.log('api_token: ' + this.$store.state.credential.api_token);
             }
