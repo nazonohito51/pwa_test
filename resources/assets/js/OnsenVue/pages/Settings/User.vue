@@ -40,7 +40,8 @@
         },
         methods: {
             getUser: function() {
-                this.getRequest("/api/user/test", function (response) {
+                const username = this.$store.state.credential.name;
+                this.getRequest("/api/user/" + username, function (response) {
                     this.nickname = response.data.user.nickname;
                     this.originalNickname = response.data.user.nickname;
                 }.bind(this), function () {
@@ -48,7 +49,7 @@
                 }.bind(this));
             },
             updateUserNickName: function() {
-                this.putRequest("/api/user/test", {nickname: this.nickname}, function (response) {
+                this.putRequest("/api/user/" +  + username, {nickname: this.nickname}, function (response) {
                     this.nickname = response.data.user.nickname;
                     this.originalNickname = response.data.user.nickname;
                     this.$ons.notification.toast('ニックネームを更新しました。', {timeout: 2000});

@@ -19,6 +19,7 @@ export default {
                     console.log('Service Worker is registered', registration);
 
                     this.$store.commit('serviceWorker/setRegistration', registration);
+                    this.checkSubscription();
                 }.bind(this)).catch(function (error) {
                     console.error('Service Worker Error', error);
                 });
@@ -34,7 +35,7 @@ export default {
                     } else {
                         this.$store.commit('serviceWorker/unsubscribe');
                     }
-                });
+                }.bind(this));
             }
         },
         subscribeUser: function (callback) {
@@ -78,11 +79,11 @@ export default {
                         this.updateCredential(response.data.name, response.data.nickname, response.data.api_token);
                         console.log('updating subscription on server is succeeded.');
                     }
-                }).catch(function (err) {
+                }.bind(this)).catch(function (err) {
                     subscription.unsubscribe().then(function (successful) {
                         console.log('unsubscribing is succeeded.', successful);
                     });
-                });
+                }.bind(this));
             } else {
                 console.log('updating subscription on server is failed.');
             }
@@ -100,6 +101,18 @@ export default {
                 outputArray[i] = rawData.charCodeAt(i);
             }
             return outputArray;
+        },
+        updateCredential: function (username, nickname, api_token) {
+            this.$store.commit('credential/update', username, nickname, api_token);
+
+            const username_dom = document.head.querySelector('meta[name="app-username"]');
+            const nickname_dom = document.head.querySelector('meta[name="app-nickname"]');
+            const api_token_dom = document.head.querySelector('meta[name="api-token"]');
+            if (username_dom && nickname_dom && api_token_dom) {
+                username_dom.content = username;
+                nickname_dom.content = nickname;
+                api_token_dom.content = api_token;
+            }
         }
     }
 };

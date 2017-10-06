@@ -36,9 +36,7 @@ const app = new Vue({
     store: new Vuex.Store(storeLike),
     created: function () {
         this.getCredential();
-
         this.registerServiceWorker();
-        this.checkSubscription();
     },
     methods: {
         getCredential: function () {
@@ -50,17 +48,5 @@ const app = new Vue({
                 this.$store.commit('credential/update', username.content, nickname.content, api_token.content);
             }
         },
-        updateCredential: function (username, nickname, api_token) {
-            this.$store.commit('credential/update', username, nickname, api_token);
-
-            const username_dom = document.head.querySelector('meta[name="app-username"]');
-            const nickname_dom = document.head.querySelector('meta[name="app-nickname"]');
-            const api_token_dom = document.head.querySelector('meta[name="api-token"]');
-            if (username_dom && nickname_dom && api_token_dom) {
-                username_dom.content = username;
-                nickname_dom.content = nickname;
-                api_token_dom.content = api_token;
-            }
-        }
     }
 });
