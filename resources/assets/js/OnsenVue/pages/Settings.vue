@@ -6,7 +6,7 @@
 
         <v-ons-list>
             <v-ons-list-header>アカウント</v-ons-list-header>
-            <v-ons-list-item modifier="chevron" tappable @click="pushUserPage()">ユーザ設定</v-ons-list-item>
+            <v-ons-list-item modifier="chevron" tappable @click="pushUserPage()" v-if="isRegistered">ユーザ設定</v-ons-list-item>
             <ons-list-item>
                 <label class="center" for="notification_switch">
                     プッシュ通知
@@ -37,6 +37,9 @@
             }
         },
         computed: {
+            isRegistered: function () {
+                return this.isSubscribed;
+            },
             isSubscribed: {
                 get: function () {
                     return this.$store.state.serviceWorker.isSubscribed;
