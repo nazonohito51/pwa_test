@@ -12,7 +12,7 @@
                     プッシュ通知
                 </label>
                 <div class="right">
-                    <v-ons-switch input-id="notification_switch" v-model="isSubscribed" :disabled="isSubscribed">
+                    <v-ons-switch input-id="notification_switch" v-model="subscribeSwitch" :disabled="subscribeSwitch">
                     </v-ons-switch>
                 </div>
             </ons-list-item>
@@ -33,8 +33,12 @@
         mixins: [serviceWorkerMixin],
         data: function () {
             return {
+                subscribeSwitch: false,
                 registrationDialogVisible: false
             }
+        },
+        created: function () {
+            this.subscribeSwitch = this.$store.state.serviceWorker.isSubscribed;
         },
         computed: {
             isRegistered: function () {
@@ -46,8 +50,12 @@
                 },
                 set: function (value) {
                     if (value === true) {
-                        this.subscribeUser(function () {
-                            this.registrationDialogVisible = true;
+                        this.$ons.notification.confirm('プッシュ通知を許可しますか？').then(function (response) {
+                            if (response) {
+                                this.subscribeUser(function () {
+                                    this.registrationDialogVisible = true;
+                                }.bind(this));
+                            }
                         }.bind(this));
                     } else {
                         console.log('Unsubscribe is not supported.')
@@ -71,6 +79,23 @@
                 console.log('username: ' + this.$store.state.credential.username);
                 console.log('nickname: ' + this.$store.state.credential.nickname);
                 console.log('api_token: ' + this.$store.state.credential.api_token);
+            }
+        },
+        watch: {
+            subscribeSwitch: function (value) {
+                if (value === true) {
+                    this.$ons.notification.confirm('プッシュ通知を許可しますか？').then(function (response) {
+                        if (response) {
+                            this.subscribeUser(function () {
+                                this.registrationDialogVisible = true;
+                            }.bind(this));
+                        } else {
+                            this.subscribeSwitch = false;
+                        }
+                    }.bind(this));
+                } else {
+//                    this.$ons.notification.alert('現在プッシュ通知の解除は対応しておりません。');
+                }
             }
         }
     };
