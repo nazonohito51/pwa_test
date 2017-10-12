@@ -43,37 +43,11 @@
         computed: {
             isRegistered: function () {
                 return this.isSubscribed;
-            },
-            isSubscribed: {
-                get: function () {
-                    return this.$store.state.serviceWorker.isSubscribed;
-                },
-                set: function (value) {
-                    if (value === true) {
-                        this.$ons.notification.confirm('プッシュ通知を許可しますか？').then(function (response) {
-                            if (response) {
-                                this.subscribeUser(function () {
-                                    this.registrationDialogVisible = true;
-                                }.bind(this));
-                            }
-                        }.bind(this));
-                    } else {
-                        console.log('Unsubscribe is not supported.')
-                    }
-                }
             }
         },
         methods: {
             pushUserPage() {
                 this.$store.commit('navigator/push', User);
-            },
-            notificationChange(event) {
-                console.log(this.isSubscribed);
-                if (event.value === true) {
-                    this.$store.commit('serviceWorker/subscribe');
-                } else {
-                    this.$store.commit('serviceWorker/unsubscribe');
-                }
             },
             checkCredential() {
                 console.log('username: ' + this.$store.state.credential.username);
