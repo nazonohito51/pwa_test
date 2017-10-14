@@ -18,7 +18,7 @@ class UserController extends Controller
 
     public function showByApiToken($api_token)
     {
-        $user = User::where('api_token', '=', $api_token);
+        $user = User::where('api_token', '=', $api_token)->first();
 
         if ($user) {
             return new ApiResponse(new SuccessStatus(), 'getting user is succeeded', ['user' => $user]);
