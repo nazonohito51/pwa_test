@@ -27,13 +27,14 @@
 </template>
 
 <script>
+    import apiClientMixin from '../../mixins/apiClient.js';
+
     export default {
+        mixins: [apiClientMixin],
         data: function () {
             return {
                 loading: false,
-                // 初期値の空配列を定義
-                articles: function () { return [] },
-                error: null
+                articles: function () { return [] }
             }
         },
         methods: {
@@ -42,28 +43,17 @@
             },
             fetchData: function () {
                 this.loading = true;
-                // 取得したデータの結果をarticlesに格納する
-                getarticles((function (err, response) {
-                    this.loading = false;
 
-                    if (response.error) {
-                        this.error = response.error.toString();
-                    } else {
-                        this.articles = response.articles;
-                    }
-                }).bind(this))
+//                setTimeout(function () {
+                this.getRequest("/api/articles", function (response) {
+                    this.articles = response.data.articles;
+                    this.loading = false;
+                }.bind(this), function () {
+                    this.$ons.notification.toast('ツイートの一覧の取得に失敗しました。', {timeout: 2000});
+                    this.loading = false;
+                }.bind(this));
+//                }, 5000);
             }
         }
-    }
-
-    // 擬似的にAPI経由で情報を取得したようにする
-    let getarticles = function (callback) {
-        setTimeout(function () {
-            axios.get("/api/articles").then(
-                response => {
-                    console.log(response);
-                    callback(null, response.data);
-                });
-        }, 500);
     }
 </script>
