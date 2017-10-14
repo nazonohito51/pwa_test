@@ -23,6 +23,11 @@
             </v-ons-list-item>
         </v-ons-list>
 
+        <v-ons-modal :visible="loading" @click="loading=false">
+            <p style="text-align: center">
+                Loading <v-ons-icon icon="fa-spinner" spin></v-ons-icon>
+            </p>
+        </v-ons-modal>
     </v-ons-page>
 </template>
 
@@ -52,7 +57,7 @@
                     this.$ons.notification.toast('ツイートの一覧の取得に失敗しました。', {timeout: 2000});
                     this.loading = false;
                 }.bind(this));
-//                }, 5000);
+//                }.bind(this), 5000);
             }
         }
     }
