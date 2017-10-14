@@ -17,8 +17,9 @@ class CreateNotificationTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned()->unique();
             $table->string('endpoint');
-            $table->string('key')->nullable();
-            $table->string('token')->nullable();
+            $table->string('key');
+            $table->string('token');
+            $table->string('content_encoding');
             $table->timestamps();
 
             // SQLite3はデフォルト外部参照キーに非対応、Laravelからこれを有効にする方法がわからないので一時的に無効
