@@ -24,6 +24,19 @@ export default {
                 reject_callback();
             });
         },
+        postRequest: function (uri, params, resolve_callback, reject_callback) {
+            this.apiClient.post(uri, params).then(function (response) {
+                console.log(response);
+
+                if (response.error) {
+                    reject_callback();
+                } else {
+                    resolve_callback(response);
+                }
+            }).catch(function (error) {
+                reject_callback();
+            });
+        },
         putRequest: function (uri, params, resolve_callback, reject_callback) {
             this.apiClient.put(uri, params).then(function (response) {
                 console.log(response);
