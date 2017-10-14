@@ -11,8 +11,8 @@
 
 <script>
     import Page1 from '../pages/Page1.vue';
-    import Page2 from '../pages/Page2.vue';
     import Timeline from '../pages/Articles/Timeline.vue';
+    import Editor from '../pages/Articles/Editor.vue';
     import Settings from '../pages/Settings.vue';
 
     export default {
@@ -27,8 +27,8 @@
                     },
                     {
                         icon: this.md() ? null : 'fa-magic',
-                        label: 'Page2',
-                        page: Page2
+                        label: 'Tweet',
+                        page: Editor
                     },
                     {
                         icon: this.md() ? null : 'fa-gear',
