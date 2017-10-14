@@ -31,8 +31,10 @@ export default {
             if (this.swRegistration) {
                 this.swRegistration.pushManager.getSubscription().then(function (subscription) {
                     if (subscription !== null) {
+                        console.log('is subscribed already.');
                         this.$store.commit('serviceWorker/subscribe');
                     } else {
+                        console.log('is not subscribed yet.');
                         this.$store.commit('serviceWorker/unsubscribe');
                     }
                 }.bind(this));
