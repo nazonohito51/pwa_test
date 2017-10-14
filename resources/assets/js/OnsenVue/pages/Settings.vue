@@ -1,5 +1,5 @@
 <template>
-    <v-ons-page>
+    <v-ons-page @show="init()">
         <v-ons-toolbar>
             <div class="center">Settings</div>
         </v-ons-toolbar>
@@ -12,7 +12,7 @@
                     プッシュ通知
                 </label>
                 <div class="right">
-                    <v-ons-switch input-id="notification_switch" v-model="subscribeSwitch" :disabled="subscribeSwitch">
+                    <v-ons-switch input-id="notification_switch" v-model="subscribeSwitch" :disabled="subscribeSwitch" @change="subscribeConfirm">
                     </v-ons-switch>
                 </div>
             </ons-list-item>
@@ -37,15 +37,15 @@
                 registrationDialogVisible: false
             }
         },
-        created: function () {
-            this.subscribeSwitch = this.$store.state.serviceWorker.isSubscribed;
-        },
         computed: {
             isRegistered: function () {
-                return this.isSubscribed;
+                return this.subscribeSwitch;
             }
         },
         methods: {
+            init() {
+                this.subscribeSwitch = this.$store.state.serviceWorker.isSubscribed;
+            },
             pushUserPage() {
                 this.$store.commit('navigator/push', User);
             },
@@ -53,11 +53,9 @@
                 console.log('username: ' + this.$store.state.credential.username);
                 console.log('nickname: ' + this.$store.state.credential.nickname);
                 console.log('api_token: ' + this.$store.state.credential.api_token);
-            }
-        },
-        watch: {
-            subscribeSwitch: function (value) {
-                if (value === true) {
+            },
+            subscribeConfirm(event) {
+                if (event.value === true) {
                     this.$ons.notification.confirm('プッシュ通知を許可しますか？').then(function (response) {
                         if (response) {
                             this.subscribeUser(function () {
