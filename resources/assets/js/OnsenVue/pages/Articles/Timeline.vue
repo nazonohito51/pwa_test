@@ -1,5 +1,5 @@
 <template>
-    <v-ons-page>
+    <v-ons-page @show="init()">
         <v-ons-toolbar>
             <div class="center">タイムライン</div>
         </v-ons-toolbar>
@@ -36,11 +36,10 @@
                 error: null
             }
         },
-        // 初期化時にデータを取得する
-        created: function () {
-            this.fetchData()
-        },
         methods: {
+            init: function () {
+                this.fetchData();
+            },
             fetchData: function () {
                 this.loading = true;
                 // 取得したデータの結果をarticlesに格納する
