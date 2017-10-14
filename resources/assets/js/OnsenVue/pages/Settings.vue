@@ -39,7 +39,7 @@
         },
         computed: {
             isRegistered: function () {
-                return this.subscribeSwitch;
+                return this.$store.state.serviceWorker.isSubscribed;
             }
         },
         methods: {
