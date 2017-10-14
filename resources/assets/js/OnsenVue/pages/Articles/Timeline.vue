@@ -10,7 +10,7 @@
                     <div class="user">
                         <div class="left">
                             <v-ons-icon icon="md-face" class="list-item__icon"></v-ons-icon>
-                            username
+                            {{article.user.nickname}}
                         </div>
                     </div>
                     <div class="title">

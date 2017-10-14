@@ -5,6 +5,7 @@ use App\Http\Response\ApiStatus\StatusInterface;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 
 class ApiResponse implements Responsable
 {
@@ -33,7 +34,8 @@ class ApiResponse implements Responsable
 
         if ($this->data) {
             foreach ($this->data as $key => $value) {
-                if (is_subclass_of($value, Model::class)) {
+                if (is_subclass_of($value, Model::class) ||
+                    is_subclass_of($value, Collection::class)) {
                     $value = $value->toArray();
                 }
                 $ret[$key] = $value;
