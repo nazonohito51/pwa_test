@@ -49,6 +49,7 @@
                 }.bind(this));
             },
             updateUserNickName: function() {
+                const username = this.$store.state.credential.username;
                 this.putRequest("/api/user/" + username, {nickname: this.nickname}, function (response) {
                     this.nickname = response.data.user.nickname;
                     this.originalNickname = response.data.user.nickname;
