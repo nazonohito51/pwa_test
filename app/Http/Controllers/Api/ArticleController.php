@@ -13,7 +13,7 @@ class ArticleController extends Controller
 {
     public function all()
     {
-        $articles = Article::with('user')->get();
+        $articles = Article::with('user')->orderBy('created_at', 'desc')->get();
         return new ApiResponse(new SuccessStatus(), 'getting articles is succeeded.', ['articles' => $articles]);
     }
 
