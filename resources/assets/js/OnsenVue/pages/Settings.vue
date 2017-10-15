@@ -6,7 +6,8 @@
 
         <v-ons-list>
             <v-ons-list-header>アカウント設定</v-ons-list-header>
-            <v-ons-list-item modifier="chevron" tappable @click="pushUserPage()" v-if="isRegistered">ユーザ設定</v-ons-list-item>
+            <v-ons-list-item modifier="chevron" tappable @click="pushUserPage()" v-if="isRegistered">ニックネーム</v-ons-list-item>
+            <v-ons-list-item modifier="chevron" tappable @click="pushAvatorPage()" v-if="isRegistered">アイコン</v-ons-list-item>
             <v-ons-list-header>通知設定</v-ons-list-header>
             <ons-list-item>
                 <label class="center" for="notification_switch">
@@ -28,6 +29,7 @@
 
 <script>
     import User from './Settings/User.vue';
+    import Avator from './Settings/Avator.vue';
     import serviceWorkerMixin from '../mixins/serviceWorker.js';
 
     export default {
@@ -49,6 +51,9 @@
             },
             pushUserPage() {
                 this.$store.commit('navigator/push', User);
+            },
+            pushAvatorPage() {
+                this.$store.commit('navigator/push', Avator);
             },
             checkCredential() {
                 console.log('username: ' + this.$store.state.credential.username);
