@@ -9,10 +9,16 @@
 
         <v-ons-list>
             <v-ons-list-item>
-                <img src="/images/avators/no_image.png" style="display: block; margin: 0 auto; width: 96px; height: 96px; border-radius: 50%;">
+                <label for="icon-upload">
+                    <a class="btn btn-primary">
+                        <i class="fa fa-camera" aria-hidden="true"></i>  アイコン画像をアップロードする
+                    </a>
+                    <input id="icon-upload" type="file" style="display: none;" @change="loadImage"/>
+                </label>
+                <!--<img src="/images/avators/no_image.png" style="display: block; margin: 0 auto; width: 96px; height: 96px; border-radius: 50%;">-->
             </v-ons-list-item>
             <v-ons-list-item>
-                <v-ons-button modifier="large" @click="displayCropper()">アイコン画像をアップロードする</v-ons-button>
+                <v-ons-button modifier="large" @click="initCropper()">アイコン画像をアップロードする</v-ons-button>
             </v-ons-list-item>
         </v-ons-list>
 
@@ -23,7 +29,7 @@
                 </p>
                 <p style="margin: 10px auto; width: 80%;">
                     <v-ons-button modifier="large--cta" style="margin: 6px;">アップロード</v-ons-button>
-                    <v-ons-button modifier="large--quiet" @click="cancelCropper();" style="margin: 6px;">キャンセル</v-ons-button>
+                    <v-ons-button modifier="material--flat" @click="cancelCropper();" style="margin: 6px;">キャンセル</v-ons-button>
                 </p>
             </p>
         </v-ons-modal>
@@ -43,13 +49,13 @@
             }
         },
         methods: {
-            displayCropper: function () {
+            initCropper: function () {
                 this.cropperVisible = true;
 
                 const image = document.getElementById('uploadImage');
                 this.cropper = new Cropper(image, {
                     viewMode: 1,
-                    aspectRatio: 1 / 1,
+                    aspectRatio: 1,
                     crop: function(e) {
                         console.log(e.detail.x);
                         console.log(e.detail.y);
@@ -67,6 +73,25 @@
                     this.cropper.destroy();
                     this.cropper = null;
                 }
+            },
+            loadImage: function (event) {
+                const file = event.target.files[0];
+                const reader = new FileReader();
+
+                if(file.type.indexOf("image") < 0){
+                    return false;
+                }
+
+                reader.onload = (function (file) {
+                    return function (event) {
+                        const image = document.getElementById('uploadImage');
+                        image.src = event.target.result;
+
+                        this.initCropper();
+                    }.bind(this);
+                }.bind(this))(file);
+
+                reader.readAsDataURL(file);
             }
         }
     };
