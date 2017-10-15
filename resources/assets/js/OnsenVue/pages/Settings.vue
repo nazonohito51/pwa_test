@@ -5,8 +5,9 @@
         </v-ons-toolbar>
 
         <v-ons-list>
-            <v-ons-list-header>アカウント</v-ons-list-header>
+            <v-ons-list-header>アカウント設定</v-ons-list-header>
             <v-ons-list-item modifier="chevron" tappable @click="pushUserPage()" v-if="isRegistered">ユーザ設定</v-ons-list-item>
+            <v-ons-list-header>通知設定</v-ons-list-header>
             <ons-list-item>
                 <label class="center" for="notification_switch">
                     プッシュ通知
