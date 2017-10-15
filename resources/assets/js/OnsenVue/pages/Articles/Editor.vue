@@ -49,11 +49,12 @@
 
                 const username = this.$store.state.credential.username;
                 this.postRequest("/api/user/" + username + "/articles", {title: 'title', body: this.tweet}, function (response) {
-                    this.$ons.notification.toast('ツイートを投稿しました。', {timeout: 2000});
                     this.postingVisible = false;
+                    this.$store.commit('tabBar/show', 0);
+                    this.$ons.notification.toast('ツイートを投稿しました。', {timeout: 1000});
                 }.bind(this), function () {
-                    this.$ons.notification.toast('ツイートの投稿に失敗しました。', {timeout: 2000});
                     this.postingVisible = false;
+                    this.$ons.notification.toast('ツイートの投稿に失敗しました。', {timeout: 1000});
                 }.bind(this));
             },
             cancelPostTweet() {
