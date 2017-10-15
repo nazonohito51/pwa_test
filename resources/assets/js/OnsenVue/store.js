@@ -60,5 +60,18 @@ export default {
                 }
             }
         },
+
+        tabBar: {
+            strict: true,
+            namespaced: true,
+            state: {
+                activeIndex: 0
+            },
+            mutations: {
+                show(state, index) {
+                    state.activeIndex = index;
+                }
+            }
+        }
     }
 };
