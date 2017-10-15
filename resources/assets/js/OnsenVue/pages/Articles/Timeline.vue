@@ -1,7 +1,7 @@
 <template>
     <v-ons-page @show="init()">
         <v-ons-toolbar>
-            <div class="center">タイムライン</div>
+            <div class="center">Timeline</div>
         </v-ons-toolbar>
 
         <v-ons-list>
