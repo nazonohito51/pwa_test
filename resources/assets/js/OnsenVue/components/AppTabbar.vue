@@ -18,7 +18,6 @@
     export default {
         data () {
             return {
-                activeIndex: 0,
                 tabs: [
                     {
                         icon: this.md() ? null : 'fa-list',
@@ -37,6 +36,16 @@
                     }
                 ]
             };
+        },
+        computed: {
+            activeIndex: {
+                get: function () {
+                    return this.$store.state.tabBar.activeIndex;
+                },
+                set: function (index) {
+                    this.$store.commit('tabBar/show', index);
+                }
+            }
         },
         methods: {
             md() {
