@@ -18,6 +18,12 @@
                 <v-ons-button modifier="large" @click="postTweet()">投稿</v-ons-button>
             </v-ons-list-item>
         </v-ons-list>
+
+        <v-ons-modal :visible="postingVisible" @click="cancelPostTweet()">
+            <p style="text-align: center">
+                投稿中... <v-ons-icon icon="fa-spinner" spin></v-ons-icon>
+            </p>
+        </v-ons-modal>
     </v-ons-page>
 </template>
 
@@ -28,6 +34,7 @@
         mixins: [apiClientMixin],
         data: function () {
             return {
+                postingVisible: false,
                 tweet: ''
             }
         },
@@ -38,13 +45,19 @@
         },
         methods: {
             postTweet() {
+                this.postingVisible = true;
+
                 const username = this.$store.state.credential.username;
                 this.postRequest("/api/user/" + username + "/articles", {title: 'title', body: this.tweet}, function (response) {
-                    console.log(response);
                     this.$ons.notification.toast('ツイートを投稿しました。', {timeout: 2000});
+                    this.postingVisible = false;
                 }.bind(this), function () {
                     this.$ons.notification.toast('ツイートの投稿に失敗しました。', {timeout: 2000});
+                    this.postingVisible = false;
                 }.bind(this));
+            },
+            cancelPostTweet() {
+                this.postingVisible = false;
             }
         }
     };
