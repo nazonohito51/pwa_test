@@ -9,6 +9,7 @@ require('./bootstrap');
 // Webpack CSS import
 import 'onsenui/css/onsenui.css';
 import 'onsenui/css/onsen-css-components.css';
+import 'cropperjs/dist/cropper.css';
 
 // JS import
 import Vue from 'vue';
