@@ -1,5 +1,5 @@
 <template>
-    <v-ons-page>
+    <v-ons-page @show="init()">
         <v-ons-toolbar>
             <div class="left">
                 <v-ons-back-button>Settings</v-ons-back-button>
@@ -9,17 +9,19 @@
 
         <v-ons-list>
             <v-ons-list-item>
+                <img v-bind:src="avator_url" style="display: block; margin: 20px auto; width: 256px; height: 256px; border-radius: 50%;">
+            </v-ons-list-item>
+            <v-ons-list-item>
                 <label for="icon-upload">
                     <a class="btn btn-primary">
                         <i class="fa fa-camera" aria-hidden="true"></i>  アイコン画像をアップロードする
                     </a>
                     <input id="icon-upload" type="file" style="display: none;" @change="loadImage"/>
                 </label>
-                <!--<img src="/images/avators/no_image.png" style="display: block; margin: 0 auto; width: 96px; height: 96px; border-radius: 50%;">-->
             </v-ons-list-item>
-            <v-ons-list-item>
-                <v-ons-button modifier="large" @click="initCropper()">アイコン画像をアップロードする</v-ons-button>
-            </v-ons-list-item>
+            <!--<v-ons-list-item>-->
+                <!--<v-ons-button modifier="large" @click="initCropper()">アイコン画像をアップロードする</v-ons-button>-->
+            <!--</v-ons-list-item>-->
         </v-ons-list>
 
         <v-ons-modal :visible="cropperVisible">
@@ -44,11 +46,23 @@
         mixins: [apiClientMixin],
         data: function () {
             return {
+                avator_url: null,
                 cropper: null,
                 cropperVisible: false
             }
         },
         methods: {
+            init: function () {
+                this.getAvatorUrl();
+            },
+            getAvatorUrl: function () {
+                const username = this.$store.state.credential.username;
+                this.getRequest("/api/user/" + username, function (response) {
+                    this.avator_url = response.data.user.avator_url;
+                }.bind(this), function () {
+                    this.$ons.notification.toast('ユーザ情報の取得に失敗しました。', {timeout: 2000});
+                }.bind(this));
+            },
             loadImage: function (event) {
                 const file = event.target.files[0];
                 const reader = new FileReader();
@@ -74,16 +88,7 @@
                 const image = document.getElementById('uploadImage');
                 this.cropper = new Cropper(image, {
                     viewMode: 1,
-                    aspectRatio: 1,
-                    crop: function(e) {
-                        console.log(e.detail.x);
-                        console.log(e.detail.y);
-                        console.log(e.detail.width);
-                        console.log(e.detail.height);
-                        console.log(e.detail.rotate);
-                        console.log(e.detail.scaleX);
-                        console.log(e.detail.scaleY);
-                    }
+                    aspectRatio: 1
                 });
             },
             cancelCropper: function () {
@@ -100,6 +105,7 @@
                     const base64 = canvas.toDataURL('image/png').replace(/^.*,/, ''); // remove "data:image/png;base64,"
 
                     this.putRequest("/api/user/" + username + "/avator", {image: base64}, function (response) {
+                        this.getAvatorUrl();
                         this.$ons.notification.toast('アイコン画像をアップロードしました。', {timeout: 1000});
                     }.bind(this), function () {
                         this.$ons.notification.toast('アイコン画像をアップロードに失敗しました。', {timeout: 1000});
