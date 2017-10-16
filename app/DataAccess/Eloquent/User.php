@@ -28,9 +28,24 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected $appends = ['avator_url'];
+
     public function isInterimUser()
     {
         return $this->role == 'interim';
+    }
+
+    public function getAvatorUrlAttribute()
+    {
+        $avator_dir = 'images/avators/';
+
+        if (isset($this->attributes['avator'])) {
+            $avator_path = $avator_dir . $this->attributes['avator'];
+        } else {
+            $avator_path = $avator_dir . 'no_images.png';
+        }
+
+        return asset($avator_path);
     }
 
     public function getRouteKeyName()
