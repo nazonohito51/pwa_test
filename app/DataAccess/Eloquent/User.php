@@ -42,7 +42,7 @@ class User extends Authenticatable
         if (isset($this->attributes['avator'])) {
             $avator_path = $avator_dir . $this->attributes['avator'];
         } else {
-            $avator_path = $avator_dir . 'no_images.png';
+            $avator_path = $avator_dir . 'no_image.png';
         }
 
         return asset($avator_path);
