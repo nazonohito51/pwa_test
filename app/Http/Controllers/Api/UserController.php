@@ -84,7 +84,7 @@ class UserController extends Controller
             $user = $notification->user;
         } else {
             while (1) {
-                $unique_name = str_random(60);
+                $unique_name = str_random(30);
                 if (is_null(User::where(['name' => $unique_name])->first())) {
                     break;
                 }
