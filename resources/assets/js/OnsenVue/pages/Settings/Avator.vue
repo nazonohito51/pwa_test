@@ -23,15 +23,15 @@
         </v-ons-list>
 
         <v-ons-modal :visible="cropperVisible">
-            <p style="width: 80%;">
-                <p style="margin: 20px auto;">
+            <div style="width: 80%; margin: 0 auto;">
+                <div style="margin: 30px auto;">
                     <img id="uploadImage" src="/images/avators/nazonohito51.jpeg" style="max-width: 100%;">
-                </p>
-                <p style="margin: 10px auto; width: 80%;">
+                </div>
+                <div style="margin: 10px auto; width: 80%;">
                     <v-ons-button modifier="large--cta" style="margin: 6px;">アップロード</v-ons-button>
                     <v-ons-button modifier="material--flat" @click="cancelCropper();" style="margin: 6px;">キャンセル</v-ons-button>
-                </p>
-            </p>
+                </div>
+            </div>
         </v-ons-modal>
     </v-ons-page>
 </template>
