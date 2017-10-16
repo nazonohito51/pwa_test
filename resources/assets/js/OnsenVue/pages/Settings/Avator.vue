@@ -106,6 +106,7 @@
 
                     this.putRequest("/api/user/" + username + "/avator", {image: base64}, function (response) {
                         this.getAvatorUrl();
+                        this.$store.commit('navigator/pop');
                         this.$ons.notification.toast('アイコン画像をアップロードしました。', {timeout: 1000});
                     }.bind(this), function () {
                         this.$ons.notification.toast('アイコン画像をアップロードに失敗しました。', {timeout: 1000});

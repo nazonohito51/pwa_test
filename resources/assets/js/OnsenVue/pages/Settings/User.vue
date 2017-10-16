@@ -54,6 +54,7 @@
                 this.putRequest("/api/user/" + username, {nickname: this.nickname}, function (response) {
                     this.nickname = response.data.user.nickname;
                     this.originalNickname = response.data.user.nickname;
+                    this.$store.commit('navigator/pop');
                     this.$ons.notification.toast('ニックネームを更新しました。', {timeout: 2000});
                 }.bind(this), function () {
                     this.$ons.notification.toast('ニックネームの更新に失敗しました。', {timeout: 2000});
