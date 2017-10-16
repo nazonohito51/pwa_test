@@ -6,6 +6,16 @@
 
         <v-ons-list>
             <v-ons-list-header>アカウント設定</v-ons-list-header>
+            <v-ons-list-item v-if="isRegistered">
+                <v-ons-card style="width: 100%;">
+                    <div class="user">
+                        <div class="left">
+                            <img v-bind:src="avator_url" style="width: 48px; height: 48px; border-radius: 50%;">
+                            {{nickname}}
+                        </div>
+                    </div>
+                </v-ons-card>
+            </v-ons-list-item>
             <v-ons-list-item modifier="chevron" tappable @click="pushUserPage()" v-if="isRegistered">ニックネーム</v-ons-list-item>
             <v-ons-list-item modifier="chevron" tappable @click="pushAvatorPage()" v-if="isRegistered">アイコン</v-ons-list-item>
             <v-ons-list-header>通知設定</v-ons-list-header>
@@ -31,11 +41,14 @@
     import User from './Settings/User.vue';
     import Avator from './Settings/Avator.vue';
     import serviceWorkerMixin from '../mixins/serviceWorker.js';
+    import apiClientMixin from '../mixins/apiClient.js';
 
     export default {
-        mixins: [serviceWorkerMixin],
+        mixins: [serviceWorkerMixin, apiClientMixin],
         data: function () {
             return {
+                nickname: null,
+                avator_url: null,
                 subscribeSwitch: false,
                 registrationDialogVisible: false
             }
@@ -48,6 +61,16 @@
         methods: {
             init() {
                 this.subscribeSwitch = this.$store.state.serviceWorker.isSubscribed;
+                this.getUserInfo();
+            },
+            getUserInfo: function () {
+                const username = this.$store.state.credential.username;
+                this.getRequest("/api/user/" + username, function (response) {
+                    this.nickname = response.data.user.nickname;
+                    this.avator_url = response.data.user.avator_url;
+                }.bind(this), function () {
+                    this.$ons.notification.toast('ユーザ情報の取得に失敗しました。', {timeout: 2000});
+                }.bind(this));
             },
             pushUserPage() {
                 this.$store.commit('navigator/push', User);
@@ -66,6 +89,7 @@
                         if (response) {
                             this.subscribeUser(function () {
                                 this.registrationDialogVisible = true;
+                                this.getUserInfo();
                             }.bind(this));
                         } else {
                             this.subscribeSwitch = false;
