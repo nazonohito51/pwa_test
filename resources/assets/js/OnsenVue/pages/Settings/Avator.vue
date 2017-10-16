@@ -28,7 +28,7 @@
                     <img id="uploadImage" src="/images/avators/nazonohito51.jpeg" style="max-width: 100%;">
                 </div>
                 <div style="margin: 10px auto; width: 80%;">
-                    <v-ons-button modifier="large--cta" style="margin: 6px;">アップロード</v-ons-button>
+                    <v-ons-button modifier="large--cta" @click="uploadImage();" style="margin: 6px;">アップロード</v-ons-button>
                     <v-ons-button modifier="material--flat" @click="cancelCropper();" style="margin: 6px;">キャンセル</v-ons-button>
                 </div>
             </div>
@@ -49,6 +49,25 @@
             }
         },
         methods: {
+            loadImage: function (event) {
+                const file = event.target.files[0];
+                const reader = new FileReader();
+
+                if(file.type.indexOf("image") < 0){
+                    return false;
+                }
+
+                reader.onload = (function (file) {
+                    return function (event) {
+                        const image = document.getElementById('uploadImage');
+                        image.src = event.target.result;
+
+                        this.initCropper();
+                    }.bind(this);
+                }.bind(this))(file);
+
+                reader.readAsDataURL(file);
+            },
             initCropper: function () {
                 this.cropperVisible = true;
 
@@ -74,24 +93,22 @@
                     this.cropper = null;
                 }
             },
-            loadImage: function (event) {
-                const file = event.target.files[0];
-                const reader = new FileReader();
+            uploadImage: function () {
+                if (this.cropper) {
+                    const username = this.$store.state.credential.username;
+                    const canvas = this.cropper.getCroppedCanvas();
+                    const base64 = canvas.toDataURL('image/png').replace(/^.*,/, ''); // remove "data:image/png;base64,"
 
-                if(file.type.indexOf("image") < 0){
-                    return false;
+                    this.putRequest("/api/user/" + username + "/avator", {image: base64}, function (response) {
+                        this.$ons.notification.toast('アイコン画像をアップロードしました。', {timeout: 1000});
+                    }.bind(this), function () {
+                        this.$ons.notification.toast('アイコン画像をアップロードに失敗しました。', {timeout: 1000});
+                    }.bind(this));
+                } else {
+                    this.$ons.notification.toast('画像のアップロードに失敗しました。', {timeout: 2000});
                 }
 
-                reader.onload = (function (file) {
-                    return function (event) {
-                        const image = document.getElementById('uploadImage');
-                        image.src = event.target.result;
-
-                        this.initCropper();
-                    }.bind(this);
-                }.bind(this))(file);
-
-                reader.readAsDataURL(file);
+                this.cropperVisible = false;
             }
         }
     };

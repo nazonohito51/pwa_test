@@ -5,6 +5,7 @@ use App\DataAccess\Eloquent\PushNotification;
 use App\DataAccess\Eloquent\User;
 use App\Http\Controllers\Controller;
 use App\Http\Response\ApiResponse;
+use App\Http\Response\ApiStatus\BadRequest;
 use App\Http\Response\ApiStatus\NotFoundStatus;
 use App\Http\Response\ApiStatus\SuccessStatus;
 use Illuminate\Http\Request;
@@ -106,5 +107,21 @@ class UserController extends Controller
         }
 
         return $user;
+    }
+
+    public function updateAvator(Request $request, User $user)
+    {
+        $this->validate($request, [
+            'image' => ['required']
+        ]);
+
+        $image_binary = base64_decode($request->get('image'));
+        $filename = $user->name . '.png';
+        file_put_contents(public_path() . '/images/avators/' . $filename, $image_binary);
+
+        $user->avator = $filename;
+        $user->save();
+
+        return new ApiResponse(new SuccessStatus(), 'uploading avator is succeeded.');
     }
 }
