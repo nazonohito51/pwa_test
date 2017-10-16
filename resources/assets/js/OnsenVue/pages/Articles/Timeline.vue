@@ -6,7 +6,7 @@
 
         <v-ons-list>
             <v-ons-list-item v-for="article in articles" :key="article.id">
-                <v-ons-card>
+                <v-ons-card style="width: 100%;">
                     <div class="user">
                         <div class="left">
                             <!--<v-ons-icon icon="md-face" class="list-item__icon"></v-ons-icon>-->
