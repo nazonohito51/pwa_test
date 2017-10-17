@@ -1,5 +1,5 @@
 <template>
-    <v-ons-page>
+    <v-ons-page @show="init()">
         <v-ons-toolbar>
             <div class="center">Tweet</div>
         </v-ons-toolbar>
@@ -44,6 +44,16 @@
             }
         },
         methods: {
+            init() {
+                if (this.$store.state.serviceWorker.isSubscribed !== true) {
+                    this.alertRegistration();
+                }
+            },
+            alertRegistration() {
+                this.$ons.notification.alert('投稿するにはプッシュ通知を許可する必要があります。').then(function (response) {
+                    this.$store.commit('tabBar/show', 2);
+                }.bind(this));
+            },
             postTweet() {
                 this.postingVisible = true;
 
