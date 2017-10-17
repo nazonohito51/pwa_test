@@ -1,0 +1,14 @@
+{
+  "short_name": "PWA TEST",
+  "name": "PWA TEST(Vue.js/OnsenUI)",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    }
+  ],
+  "start_url": "onsenVue?launcher=true",
+  "background_color": "#FFFFFF",
+  "display": "standalone"
+}
