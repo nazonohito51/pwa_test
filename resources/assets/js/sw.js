@@ -34,13 +34,13 @@ self.addEventListener('fetch', function(event) {
 
 self.addEventListener('push', function(event) {
     console.log('[Service Worker] Push Received.');
-    console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
+    // console.log(`[Service Worker] Push had this data: "${event.data}"`);
 
-    const title = 'Push Codelab';
+    const title = 'PWA TEST';
     const options = {
-        body: event.data.text(),
-        icon: '../images/icon.gif',
-        badge: '../images/icon.gif'
+        body: event.data.json().message,
+        icon: event.data.json().icon,
+        badge: event.data.json().icon
     };
 
     event.waitUntil(self.registration.showNotification(title, options));
