@@ -8,9 +8,9 @@ class SendPushNotificationsService
 {
     private $webPush;
 
-    public function __construct(WebPush $webPush = null)
+    public function __construct()
     {
-        $this->webPush = $webPush ? $webPush : new WebPush([
+        $this->webPush = new WebPush([
             'VAPID' => [
                 'subject' => 'https://github.com/nazonhito51/pwa_test/',
                 'publicKey' => 'BJbwhdyPzgvLnBmxYat8cGJSck_wy0Ph_vRTPHemglPtSrmiLZ1R05yFbnfQJen-MbS97RejCn3xm6Y4v1ZvZ1Q',
@@ -39,6 +39,12 @@ class SendPushNotificationsService
     private function sendPushNotification(User $user, $message)
     {
         foreach ($user->push_notifications as $notification) {
+            \Log::info('notification', [
+                'message' => $message,
+                'endpoint' => $notification->endpoint,
+                'key' => $notification->key,
+                'token' => $notification->token
+            ]);
             $this->webPush->sendNotification(
                 $notification->endpoint,
                 $message,
