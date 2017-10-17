@@ -50,6 +50,7 @@
                 const username = this.$store.state.credential.username;
                 this.postRequest("/api/user/" + username + "/articles", {title: 'title', body: this.tweet}, function (response) {
                     this.postingVisible = false;
+                    this.tweet = '';
                     this.$store.commit('tabBar/show', 0);
                     this.$ons.notification.toast('ツイートを投稿しました。', {timeout: 1000});
                 }.bind(this), function () {
