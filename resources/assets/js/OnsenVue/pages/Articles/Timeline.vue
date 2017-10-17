@@ -10,7 +10,7 @@
                     <div class="user">
                         <div class="left">
                             <!--<v-ons-icon icon="md-face" class="list-item__icon"></v-ons-icon>-->
-                            <img src="/images/avators/nazonohito51.jpeg" style="width: 48px; height: 48px; border-radius: 50%;">
+                            <img v-bind:src="article.user.avator_url" style="width: 48px; height: 48px; border-radius: 50%;">
                             {{article.user.nickname}}
                         </div>
                     </div>
