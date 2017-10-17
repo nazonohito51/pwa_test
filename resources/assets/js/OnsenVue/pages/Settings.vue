@@ -5,7 +5,7 @@
         </v-ons-toolbar>
 
         <v-ons-list>
-            <v-ons-list-header>アカウント設定</v-ons-list-header>
+            <v-ons-list-header  v-if="isRegistered">アカウント設定</v-ons-list-header>
             <v-ons-list-item v-if="isRegistered">
                 <v-ons-card style="width: 100%;">
                     <div class="user">
