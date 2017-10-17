@@ -7,6 +7,7 @@ use App\DataAccess\Eloquent\User;
 use App\Http\Controllers\Controller;
 use App\Http\Response\ApiResponse;
 use App\Http\Response\ApiStatus\SuccessStatus;
+use App\Services\SendPushNotificationsService;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -29,7 +30,7 @@ class ArticleController extends Controller
         ]);
     }
 
-    public function store(Request $request, User $user)
+    public function store(Request $request, SendPushNotificationsService $service, User $user)
     {
         $this->validate($request, [
             'title' => ['required', 'string', 'max:255'],
@@ -41,6 +42,8 @@ class ArticleController extends Controller
             'body' => $request->get('body'),
             'published' => true,
         ]);
+
+        $service->execute(User::all(), $user->nickname . 'さんが投稿しました');
 
         return redirect()->route('articles.index', ['user' => $user->name]);
     }
