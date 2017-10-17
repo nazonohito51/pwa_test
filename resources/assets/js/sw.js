@@ -1,3 +1,21 @@
+const CACHE_NAME = 'my-site-cache-v1';
+const urlsToCache = [
+    '/onsenVue',
+    '/js/onsenVue.js',
+    '/css/app.css',
+    '/images/avators/no_image.png',
+    '/fonts/vendor/onsenui/css/font_awesome/fontawesome-webfont.woff2?af7ae505a9eed503f8b8e6982036873e',
+];
+
+self.addEventListener('install', function(event) {
+    event.waitUntil(
+        caches.open(CACHE_NAME)
+            .then(function(cache) {
+                return cache.addAll(urlsToCache);
+            })
+    );
+});
+
 self.addEventListener('push', function(event) {
     console.log('[Service Worker] Push Received.');
     console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
