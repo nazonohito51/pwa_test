@@ -48,6 +48,15 @@ class User extends Authenticatable
         return asset($avator_path);
     }
 
+    public function haveAvator()
+    {
+        if (isset($this->attributes['avator'])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function getRouteKeyName()
     {
         return 'name';
