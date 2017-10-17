@@ -16,6 +16,23 @@ self.addEventListener('install', function(event) {
     );
 });
 
+self.addEventListener('activate', function(event) {
+    console.log('Finally active. Ready to start serving content!');
+});
+
+self.addEventListener('fetch', function(event) {
+    event.respondWith(
+        caches.match(event.request)
+            .then(function(response) {
+                // キャッシュがあったのでそのレスポンスを返す
+                if (response) {
+                    return response;
+                }
+                return fetch(event.request);
+            })
+    );
+});
+
 self.addEventListener('push', function(event) {
     console.log('[Service Worker] Push Received.');
     console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
