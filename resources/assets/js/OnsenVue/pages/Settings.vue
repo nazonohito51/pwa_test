@@ -65,12 +65,15 @@
             },
             getUserInfo: function () {
                 const username = this.$store.state.credential.username;
-                this.getRequest("/api/user/" + username, function (response) {
-                    this.nickname = response.data.user.nickname;
-                    this.avator_url = response.data.user.avator_url;
-                }.bind(this), function () {
-                    this.$ons.notification.toast('ユーザ情報の取得に失敗しました。', {timeout: 2000});
-                }.bind(this));
+
+                if (username) {
+                    this.getRequest("/api/user/" + username, function (response) {
+                        this.nickname = response.data.user.nickname;
+                        this.avator_url = response.data.user.avator_url;
+                    }.bind(this), function () {
+                        this.$ons.notification.toast('ユーザ情報の取得に失敗しました。', {timeout: 2000});
+                    }.bind(this));
+                }
             },
             pushUserPage() {
                 this.$store.commit('navigator/push', User);
