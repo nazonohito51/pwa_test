@@ -49,8 +49,7 @@ class SendPushNotificationsService
                 $notification->endpoint,
                 $message,
                 $notification->key,
-                $notification->token,
-                true
+                $notification->token
             );
         }
     }
