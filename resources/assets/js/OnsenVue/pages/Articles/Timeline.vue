@@ -46,8 +46,9 @@
         methods: {
             init: function () {
                 const local_storage = window.localStorage;
-                console.log(local_storage.getItem('Timeline:articles'));
-                this.articles = local_storage.getItem('Timeline:articles');
+                if (local_storage.getItem('Timeline:articles')) {
+                    this.articles = JSON.parse(local_storage.getItem('Timeline:articles'));
+                }
 
                 this.fetchData();
             },
@@ -58,7 +59,7 @@
                 this.getRequest("/api/articles", function (response) {
                     this.articles = response.data.articles;
                     const local_storage = window.localStorage;
-                    local_storage.setItem('Timeline:articles', this.articles);
+                    local_storage.setItem('Timeline:articles', JSON.stringify(response.data.articles));
                     this.loading = false;
                 }.bind(this), function () {
                     this.$ons.notification.toast('ツイートの一覧の取得に失敗しました。', {timeout: 2000});
