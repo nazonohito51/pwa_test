@@ -10,7 +10,7 @@
                     <div class="user">
                         <div class="left">
                             <!--<v-ons-icon icon="md-face" class="list-item__icon"></v-ons-icon>-->
-                            <img v-bind:src="article.user.avator_url" style="width: 48px; height: 48px; border-radius: 50%;">
+                            <img v-bind:src="article.user.avator_url" onerror="this.src='/images/avators/no_image.png'" style="width: 48px; height: 48px; border-radius: 50%;">
                             {{article.user.nickname}}
                         </div>
                     </div>
@@ -46,8 +46,7 @@
         methods: {
             init: function () {
                 const local_storage = window.localStorage;
-                console.log(local_storage.getItem('Timeline:articles'));
-                this.articles = local_storage.getItem('Timeline:articles');
+                this.articles = JSON.parse(local_storage.getItem('Timeline:articles'));
 
                 this.fetchData();
             },
@@ -58,7 +57,7 @@
                 this.getRequest("/api/articles", function (response) {
                     this.articles = response.data.articles;
                     const local_storage = window.localStorage;
-                    local_storage.setItem('Timeline:articles', this.articles);
+                    local_storage.setItem('Timeline:articles', JSON.stringify(this.articles));
                     this.loading = false;
                 }.bind(this), function () {
                     this.$ons.notification.toast('ツイートの一覧の取得に失敗しました。', {timeout: 2000});
