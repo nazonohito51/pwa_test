@@ -60,6 +60,12 @@
         },
         methods: {
             init() {
+                const local_storage = window.localStorage;
+                console.log(local_storage.getItem('Settings:nickname'));
+                console.log(local_storage.getItem('Settings:avator_url'));
+                this.nickname = local_storage.getItem('Settings:nickname');
+                this.avator_url = local_storage.getItem('Settings:avator_url');
+
                 this.subscribeSwitch = this.$store.state.serviceWorker.isSubscribed;
                 this.getUserInfo();
             },
@@ -70,8 +76,12 @@
                     this.getRequest("/api/user/" + username, function (response) {
                         this.nickname = response.data.user.nickname;
                         this.avator_url = response.data.user.avator_url;
+
+                        const local_storage = window.localStorage;
+                        local_storage.setItem('Settings:nickname', this.nickname);
+                        local_storage.setItem('Settings:avator_url', this.avator_url);
                     }.bind(this), function () {
-                        this.$ons.notification.toast('ユーザ情報の取得に失敗しました。', {timeout: 2000});
+//                        this.$ons.notification.toast('ユーザ情報の取得に失敗しました。', {timeout: 2000});
                     }.bind(this));
                 }
             },
