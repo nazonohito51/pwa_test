@@ -53,7 +53,9 @@
                 this.fetchData();
             },
             fetchData: function () {
-                this.loading = true;
+                if (this.articles.length === 0) {
+                    this.loading = true;
+                }
 
 //                setTimeout(function () {
                 this.getRequest("/api/articles", function (response) {
