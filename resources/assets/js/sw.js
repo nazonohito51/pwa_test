@@ -3,6 +3,7 @@ const urlsToCache = [
     '/onsenVue',
     '/js/onsenVue.js',
     '/css/app.css',
+    '/images/loading_failure.png',
     '/images/avators/no_image.png',
     '/fonts/vendor/onsenui/css/font_awesome/fontawesome-webfont.woff2?af7ae505a9eed503f8b8e6982036873e',
 ];
