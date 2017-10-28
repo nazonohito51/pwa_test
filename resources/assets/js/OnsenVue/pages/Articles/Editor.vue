@@ -3,25 +3,29 @@
         <v-ons-toolbar>
             <div class="center">Editor</div>
             <div class="right">
-                <v-ons-toolbar-button @click="postArticle()">
+                <v-ons-toolbar-button @click="postArticle()" v-if="articleInput">
                     投稿する
                 </v-ons-toolbar-button>
             </div>
         </v-ons-toolbar>
 
-        <ul class="list">
-            <li class="list-item">
-                <div class="list-item__center">
-                    <input v-model="title" class="text-input" maxlength="25" placeholder="タイトルを入力してください" style="width: 100%; font-size: 25px;">
-                </div>
-            </li>
-        </ul>
+        <div class="article">
+            <ul class="list">
+                <li class="list-item">
+                    <div class="list-item__center">
+                        <input v-model="title" class="text-input" maxlength="25" placeholder="タイトルを入力してください" style="width: 100%; font-size: 25px;">
+                    </div>
+                </li>
+            </ul>
 
-        <quill-editor v-model="body"
-                      ref="myTextEditor"
-                      :options="editorOption"
-                      style="background-color: #FFFFFF;">
-        </quill-editor>
+            <div class="article__body">
+                <quill-editor v-model="body"
+                              ref="myTextEditor"
+                              :options="editorOption"
+                              style="background-color: #FFFFFF;">
+                </quill-editor>
+            </div>
+        </div>
 
         <!--<v-ons-list>-->
             <!--<v-ons-list-header>ツイート</v-ons-list-header>-->
@@ -74,8 +78,8 @@
             }
         },
         computed: {
-            tweetInput(event) {
-                return this.tweet !== '';
+            articleInput(event) {
+                return (this.title !== '') && (this.body !== '');
             },
             editor() {
                 return this.$refs.myTextEditor.quill
