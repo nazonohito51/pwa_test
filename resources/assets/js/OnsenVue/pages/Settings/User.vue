@@ -4,7 +4,7 @@
             <div class="left">
                 <v-ons-back-button>Settings</v-ons-back-button>
             </div>
-            <div class="center">ユーザ設定</div>
+            <div class="center">UserProfile</div>
         </v-ons-toolbar>
 
         <v-ons-list>
