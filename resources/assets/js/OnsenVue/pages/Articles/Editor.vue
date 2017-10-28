@@ -1,7 +1,7 @@
 <template>
     <v-ons-page @show="init()">
         <v-ons-toolbar>
-            <div class="center">Tweet</div>
+            <div class="center">Editor</div>
             <div class="right">
                 <v-ons-toolbar-button @click="postArticle()">
                     投稿する

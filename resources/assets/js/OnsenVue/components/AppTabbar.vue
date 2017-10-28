@@ -26,7 +26,7 @@
                     },
                     {
                         icon: this.md() ? null : 'fa-magic',
-                        label: 'Tweet',
+                        label: 'Editor',
                         page: Editor
                     },
                     {
