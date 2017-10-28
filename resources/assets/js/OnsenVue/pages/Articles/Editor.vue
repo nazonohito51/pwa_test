@@ -4,50 +4,75 @@
             <div class="center">Tweet</div>
         </v-ons-toolbar>
 
-        <v-ons-list>
-            <v-ons-list-header>ツイート</v-ons-list-header>
-            <v-ons-list-item :modifier="$ons.platform.isAndroid() ? 'nodivider' : ''">
-                <div class="left">
-                    <v-ons-icon icon="fa-magic" class="list-item__icon"></v-ons-icon>
-                </div>
-                <label class="center">
-                    <v-ons-input float maxlength="255" placeholder="Tweet" v-model="tweet"></v-ons-input>
-                </label>
-            </v-ons-list-item>
-            <v-ons-list-item v-if="tweetInput">
-                <v-ons-button modifier="large" @click="postTweet()">投稿</v-ons-button>
-            </v-ons-list-item>
-        </v-ons-list>
+        <quill-editor v-model="content"
+                      ref="myTextEditor"
+                      :options="editorOption">
+        </quill-editor>
 
-        <v-ons-modal :visible="postingVisible" @click="cancelPostTweet()">
-            <p style="text-align: center">
-                投稿中... <v-ons-icon icon="fa-spinner" spin></v-ons-icon>
-            </p>
-        </v-ons-modal>
+        <!--<v-ons-list>-->
+            <!--<v-ons-list-header>ツイート</v-ons-list-header>-->
+            <!--<v-ons-list-item :modifier="$ons.platform.isAndroid() ? 'nodivider' : ''">-->
+                <!--<div class="left">-->
+                    <!--<v-ons-icon icon="fa-magic" class="list-item__icon"></v-ons-icon>-->
+                <!--</div>-->
+                <!--<label class="center">-->
+                    <!--<v-ons-input float maxlength="255" placeholder="Tweet" v-model="tweet"></v-ons-input>-->
+                <!--</label>-->
+            <!--</v-ons-list-item>-->
+            <!--<v-ons-list-item v-if="tweetInput">-->
+                <!--<v-ons-button modifier="large" @click="postTweet()">投稿</v-ons-button>-->
+            <!--</v-ons-list-item>-->
+        <!--</v-ons-list>-->
+
+        <!--<v-ons-modal :visible="postingVisible" @click="cancelPostTweet()">-->
+            <!--<p style="text-align: center">-->
+                <!--投稿中... <v-ons-icon icon="fa-spinner" spin></v-ons-icon>-->
+            <!--</p>-->
+        <!--</v-ons-modal>-->
     </v-ons-page>
 </template>
 
 <script>
     import apiClientMixin from '../../mixins/apiClient.js';
+    import Quill from 'quill';
+    import { ImageImport } from '../../../Quill/ImageImport.js'
+    Quill.register('modules/imageImport', ImageImport);
 
     export default {
         mixins: [apiClientMixin],
         data: function () {
             return {
                 postingVisible: false,
-                tweet: ''
+                tweet: '',
+                content: '<h2>I am Example</h2>',
+                editorOption: {
+                    debug: 'info',
+                    placeholder: '本文を入力してください',
+                    modules: {
+                        toolbar: [
+                            ['bold', 'italic'],
+                            [{header: 1}, {header: 2}],
+                            [{align: 'center'}, {align: 'right'}],
+                            ['image']
+                        ],
+                        imageImport: true
+                    }
+                }
             }
         },
         computed: {
             tweetInput(event) {
                 return this.tweet !== '';
+            },
+            editor() {
+                return this.$refs.myTextEditor.quill
             }
         },
         methods: {
             init() {
-                if (this.$store.state.serviceWorker.isSubscribed !== true) {
-                    this.alertRegistration();
-                }
+//                if (this.$store.state.serviceWorker.isSubscribed !== true) {
+//                    this.alertRegistration();
+//                }
             },
             alertRegistration() {
                 this.$ons.notification.alert('投稿するにはプッシュ通知を許可する必要があります。').then(function (response) {

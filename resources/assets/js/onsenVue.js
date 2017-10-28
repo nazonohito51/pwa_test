@@ -15,6 +15,7 @@ import 'cropperjs/dist/cropper.css';
 import Vue from 'vue';
 import Vuex from 'vuex';
 import VueOnsen from 'vue-onsenui'; // This already imports 'onsenui'
+import VueQuillEditor from 'vue-quill-editor';
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -24,6 +25,7 @@ import VueOnsen from 'vue-onsenui'; // This already imports 'onsenui'
 
 Vue.use(Vuex);
 Vue.use(VueOnsen);
+Vue.use(VueQuillEditor);
 Vue.config.debug = true;
 
 import AppNavigator from './OnsenVue/components/AppNavigator.vue';
