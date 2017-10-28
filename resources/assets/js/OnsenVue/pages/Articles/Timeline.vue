@@ -4,25 +4,38 @@
             <div class="center">Timeline</div>
         </v-ons-toolbar>
 
-        <v-ons-list>
-            <v-ons-list-item v-for="article in articles" :key="article.id">
-                <v-ons-card style="width: 100%;">
-                    <div class="user">
-                        <div class="left">
-                            <!--<v-ons-icon icon="md-face" class="list-item__icon"></v-ons-icon>-->
-                            <img v-bind:src="article.user.avator_url" onerror="this.src='/images/avators/no_image.png'" style="width: 48px; height: 48px; border-radius: 50%;">
-                            {{article.user.nickname}}
-                        </div>
-                    </div>
-                    <!--<div class="title">-->
-                        <!--{{article.title}}-->
+        <ul class="list list--material">
+            <li class="list-item list-item--material" v-for="article in articles" :key="article.id">
+                <div class="list-item__left list-item--material__left">
+                    <img class="list-item__thumbnail list-item--material__thumbnail" v-bind:src="article.user.avator_url" onerror="this.src='/images/avators/no_image.png'">
+                </div>
+
+                <div class="list-item__center list-item--material__center" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    <div class="list-item__title list-item--material__title">{{article.title}}</div>
+                    <div class="list-item__subtitle list-item--material__subtitle">{{article.description}}</div>
+                </div>
+            </li>
+        </ul>
+
+        <!--<v-ons-list>-->
+            <!--<v-ons-list-item v-for="article in articles" :key="article.id">-->
+                <!--<v-ons-card style="width: 100%;">-->
+                    <!--<div class="user">-->
+                        <!--<div class="left">-->
+                            <!--&lt;!&ndash;<v-ons-icon icon="md-face" class="list-item__icon"></v-ons-icon>&ndash;&gt;-->
+                            <!--<img v-bind:src="article.user.avator_url" onerror="this.src='/images/avators/no_image.png'" style="width: 48px; height: 48px; border-radius: 50%;">-->
+                            <!--{{article.user.nickname}}-->
+                        <!--</div>-->
                     <!--</div>-->
-                    <div class="content">
-                        {{article.body}}
-                    </div>
-                </v-ons-card>
-            </v-ons-list-item>
-        </v-ons-list>
+                    <!--&lt;!&ndash;<div class="title">&ndash;&gt;-->
+                        <!--&lt;!&ndash;{{article.title}}&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--<div class="content">-->
+                        <!--{{article.body}}-->
+                    <!--</div>-->
+                <!--</v-ons-card>-->
+            <!--</v-ons-list-item>-->
+        <!--</v-ons-list>-->
 
         <v-ons-modal :visible="loading" @click="loading=false">
             <p style="text-align: center">

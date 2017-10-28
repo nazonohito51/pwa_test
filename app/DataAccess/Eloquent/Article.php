@@ -10,8 +10,15 @@ class Article extends Model
         'user_id', 'title', 'body', 'published'
     ];
 
+    protected $appends = ['description'];
+
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getDescriptionAttribute()
+    {
+        return explode("\n", strip_tags($this->body), 2)[0];
     }
 }
