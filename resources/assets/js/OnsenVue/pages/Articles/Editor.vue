@@ -2,11 +2,25 @@
     <v-ons-page @show="init()">
         <v-ons-toolbar>
             <div class="center">Tweet</div>
+            <div class="right">
+                <v-ons-toolbar-button @click="postArticle()">
+                    投稿する
+                </v-ons-toolbar-button>
+            </div>
         </v-ons-toolbar>
 
-        <quill-editor v-model="content"
+        <ul class="list">
+            <li class="list-item">
+                <div class="list-item__center">
+                    <input v-model="title" class="text-input" maxlength="25" placeholder="タイトルを入力してください" style="width: 100%; font-size: 25px;">
+                </div>
+            </li>
+        </ul>
+
+        <quill-editor v-model="body"
                       ref="myTextEditor"
-                      :options="editorOption">
+                      :options="editorOption"
+                      style="background-color: #FFFFFF;">
         </quill-editor>
 
         <!--<v-ons-list>-->
@@ -24,11 +38,11 @@
             <!--</v-ons-list-item>-->
         <!--</v-ons-list>-->
 
-        <!--<v-ons-modal :visible="postingVisible" @click="cancelPostTweet()">-->
-            <!--<p style="text-align: center">-->
-                <!--投稿中... <v-ons-icon icon="fa-spinner" spin></v-ons-icon>-->
-            <!--</p>-->
-        <!--</v-ons-modal>-->
+        <v-ons-modal :visible="postingVisible" @click="cancelPostArticle()">
+            <p style="text-align: center">
+                投稿中... <v-ons-icon icon="fa-spinner" spin></v-ons-icon>
+            </p>
+        </v-ons-modal>
     </v-ons-page>
 </template>
 
@@ -43,10 +57,9 @@
         data: function () {
             return {
                 postingVisible: false,
-                tweet: '',
-                content: '<h2>I am Example</h2>',
+                title: '',
+                body: '',
                 editorOption: {
-                    debug: 'info',
                     placeholder: '本文を入力してください',
                     modules: {
                         toolbar: [
@@ -70,30 +83,31 @@
         },
         methods: {
             init() {
-//                if (this.$store.state.serviceWorker.isSubscribed !== true) {
-//                    this.alertRegistration();
-//                }
+                if (this.$store.state.serviceWorker.isSubscribed !== true) {
+                    this.alertRegistration();
+                }
             },
             alertRegistration() {
                 this.$ons.notification.alert('投稿するにはプッシュ通知を許可する必要があります。').then(function (response) {
                     this.$store.commit('tabBar/show', 2);
                 }.bind(this));
             },
-            postTweet() {
+            postArticle() {
                 this.postingVisible = true;
 
                 const username = this.$store.state.credential.username;
-                this.postRequest("/api/user/" + username + "/articles", {title: 'title', body: this.tweet}, function (response) {
+                this.postRequest("/api/user/" + username + "/articles", {title: this.title, body: this.body}, function (response) {
                     this.postingVisible = false;
-                    this.tweet = '';
+                    this.title = '';
+                    this.body = '';
                     this.$store.commit('tabBar/show', 0);
-                    this.$ons.notification.toast('ツイートを投稿しました。', {timeout: 1000});
+                    this.$ons.notification.toast('記事を投稿しました。', {timeout: 1000});
                 }.bind(this), function () {
                     this.postingVisible = false;
-                    this.$ons.notification.toast('ツイートの投稿に失敗しました。', {timeout: 1000});
+                    this.$ons.notification.toast('記事の投稿に失敗しました。', {timeout: 1000});
                 }.bind(this));
             },
-            cancelPostTweet() {
+            cancelPostArticle() {
                 this.postingVisible = false;
             }
         }
