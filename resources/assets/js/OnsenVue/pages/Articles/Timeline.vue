@@ -5,7 +5,7 @@
         </v-ons-toolbar>
 
         <ul class="list list--material">
-            <li class="list-item list-item--material" v-for="article in articles" :key="article.id">
+            <li class="list-item list-item--material" v-for="article in articles" :key="article.id" @click="pushDetailPage(article)">
                 <div class="list-item__left list-item--material__left">
                     <img class="list-item__thumbnail list-item--material__thumbnail" v-bind:src="article.user.avator_url" onerror="this.src='/images/avators/no_image.png'">
                 </div>
@@ -13,6 +13,11 @@
                 <div class="list-item__center list-item--material__center" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                     <div class="list-item__title list-item--material__title">{{article.title}}</div>
                     <div class="list-item__subtitle list-item--material__subtitle">{{article.description}}</div>
+                </div>
+
+                <div class="list-item__right list-item--material__right">
+                    <!--<i class="angle-right"></i>-->
+                    <v-ons-icon icon="angle-right"></v-ons-icon>
                 </div>
             </li>
         </ul>
@@ -47,6 +52,7 @@
 
 <script>
     import apiClientMixin from '../../mixins/apiClient.js';
+    import Detail from './Detail.vue';
 
     export default {
         mixins: [apiClientMixin],
@@ -81,6 +87,16 @@
                     this.loading = false;
                 }.bind(this));
 //                }.bind(this), 5000);
+            },
+            pushDetailPage: function (article) {
+                this.$store.commit('navigator/push', {
+                    extends: Detail,
+                    data() {
+                        return {
+                            article: article
+                        };
+                    }
+                });
             }
         }
     }
