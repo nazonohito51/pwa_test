@@ -50,8 +50,8 @@ export default {
                 stack: []
             },
             mutations: {
-                push(state, page) {
-                    state.stack.push(page);
+                push(state, payload) {
+                    state.stack.push(payload);
                 },
                 pop(state) {
                     if (state.stack.length > 1) {
