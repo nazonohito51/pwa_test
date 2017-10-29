@@ -87,4 +87,14 @@ class ArticleController extends Controller
 
         return redirect()->back()->with('summary', 'deleting record is failed.');
     }
+
+    public function like(Article $article, Request $request)
+    {
+        $user = User::where('api_token', '=', $request->get('api_token'))->first();
+        $article->likes()->firstOrCreate([
+            'user_id' => $user->id
+        ]);
+
+        return new ApiResponse(new SuccessStatus(), 'posting like is succeeded.');
+    }
 }
