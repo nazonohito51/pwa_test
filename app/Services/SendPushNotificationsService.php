@@ -22,40 +22,52 @@ class SendPushNotificationsService
     /**
      * @param User|User[] $users
      * @param string $message
+     * @param string $type
      */
-    public function execute($users, $message)
+    public function execute($users, $message, $type = null)
     {
         if ($users instanceof User) {
             $users = [$users];
         }
 
         foreach ($users as $user) {
-            $this->sendPushNotification($user, $message);
+            $this->sendPushNotification($user, $message, $type);
         }
 
         $this->webPush->flush();
     }
 
-    private function sendPushNotification(User $user, $message)
+    private function sendPushNotification(User $user, $message, $type)
     {
-        foreach ($user->push_notifications as $notification) {
-            $message_and_icon = json_encode([
-                'message' => $message,
-                'icon' => $this->getIconUrl($user)
-            ]);
-            \Log::info('notification', [
-                'message' => $message_and_icon,
-                'endpoint' => $notification->endpoint,
-                'key' => $notification->key,
-                'token' => $notification->token
-            ]);
-            $this->webPush->sendNotification(
-                $notification->endpoint,
-                $message_and_icon,
-                $notification->key,
-                $notification->token
-            );
+        if ($this->shouldSendUser($user, $type)) {
+            foreach ($user->push_notifications as $notification) {
+                $message_and_icon = json_encode([
+                    'message' => $message,
+                    'icon' => $this->getIconUrl($user)
+                ]);
+                \Log::info('notification', [
+                    'message' => $message_and_icon,
+                    'endpoint' => $notification->endpoint,
+                    'key' => $notification->key,
+                    'token' => $notification->token
+                ]);
+                $this->webPush->sendNotification(
+                    $notification->endpoint,
+                    $message_and_icon,
+                    $notification->key,
+                    $notification->token
+                );
+            }
         }
+    }
+
+    private function shouldSendUser(User $user, $type)
+    {
+        if (is_string($type)) {
+            return $user->user_setting->getAttributeValue($type);
+        }
+
+        return false;
     }
 
     private function getIconUrl(User $user)

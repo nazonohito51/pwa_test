@@ -43,7 +43,7 @@ class ArticleController extends Controller
             'published' => true,
         ]);
 
-        $service->execute(User::all(), $user->nickname . 'さんが投稿しました');
+        $service->execute(User::all(), $user->nickname . 'さんが投稿しました', 'post_article_notification');
 
         return redirect()->route('articles.index', ['user' => $user->name]);
     }
@@ -92,7 +92,7 @@ class ArticleController extends Controller
             'user_id' => $user->id
         ]);
 
-        $service->execute($article->user, $user->nickname . 'さんが記事にいいね！をしました');
+        $service->execute($article->user, $user->nickname . 'さんが記事にいいね！をしました', 'like_article_notification');
 
         return new ApiResponse(new SuccessStatus(), 'posting like is succeeded.');
     }
