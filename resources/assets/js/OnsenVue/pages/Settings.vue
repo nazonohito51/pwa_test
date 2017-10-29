@@ -4,9 +4,11 @@
             <div class="center">Settings</div>
         </v-ons-toolbar>
 
-        <v-ons-list>
-            <v-ons-list-header  v-if="isRegistered">アカウント設定</v-ons-list-header>
-            <v-ons-list-item v-if="isRegistered">
+        <ul class="list">
+            <li class="list-header" v-if="isRegistered">
+                アカウント設定
+            </li>
+            <li class="list-item" v-if="isRegistered">
                 <v-ons-card style="width: 100%;">
                     <div class="user">
                         <div class="left">
@@ -15,21 +17,58 @@
                         </div>
                     </div>
                 </v-ons-card>
-            </v-ons-list-item>
-            <v-ons-list-item modifier="chevron" tappable @click="pushUserPage()" v-if="isRegistered">ニックネーム</v-ons-list-item>
-            <v-ons-list-item modifier="chevron" tappable @click="pushAvatorPage()" v-if="isRegistered">アイコン</v-ons-list-item>
-            <v-ons-list-header>通知設定</v-ons-list-header>
-            <ons-list-item>
-                <label class="center" for="notification_switch">
+            </li>
+            <li class="list-item list-item--tappable list-item--chevron" @click="pushUserPage()" v-if="isRegistered">
+                <div class="list-item__center">ニックネーム</div>
+            </li>
+            <li class="list-item list-item--tappable list-item--chevron" @click="pushAvatorPage()" v-if="isRegistered">
+                <div class="list-item__center">アイコン</div>
+            </li>
+
+            <li class="list-header">
+                通知設定
+            </li>
+            <li class="list-item">
+                <div class="list-item__center">
                     プッシュ通知
-                </label>
-                <div class="right">
-                    <v-ons-switch input-id="notification_switch" v-model="subscribeSwitch" :disabled="subscribeSwitch" @change="subscribeConfirm">
-                    </v-ons-switch>
                 </div>
-            </ons-list-item>
-            <!--<v-ons-list-item tappable @click="checkCredential()">認証情報確認</v-ons-list-item>-->
-        </v-ons-list>
+                <div class="list-item__right">
+                    <label class="switch">
+                        <input type="checkbox" class="switch__input" v-model="subscribeSwitch" :disabled="subscribeSwitch" @change="subscribeConfirm">
+                        <div class="switch__toggle">
+                            <div class="switch__handle"></div>
+                        </div>
+                    </label>
+                </div>
+            </li>
+        </ul>
+
+        <!--<v-ons-list>-->
+            <!--<v-ons-list-header v-if="isRegistered">アカウント設定</v-ons-list-header>-->
+            <!--<v-ons-list-item v-if="isRegistered">-->
+                <!--<v-ons-card style="width: 100%;">-->
+                    <!--<div class="user">-->
+                        <!--<div class="left">-->
+                            <!--<img v-bind:src="avator_url" style="width: 48px; height: 48px; border-radius: 50%;">-->
+                            <!--{{nickname}}-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</v-ons-card>-->
+            <!--</v-ons-list-item>-->
+            <!--<v-ons-list-item modifier="chevron" tappable @click="pushUserPage()" v-if="isRegistered">ニックネーム</v-ons-list-item>-->
+            <!--<v-ons-list-item modifier="chevron" tappable @click="pushAvatorPage()" v-if="isRegistered">アイコン</v-ons-list-item>-->
+            <!--<v-ons-list-header>通知設定</v-ons-list-header>-->
+            <!--<ons-list-item>-->
+                <!--<label class="center" for="notification_switch">-->
+                    <!--プッシュ通知-->
+                <!--</label>-->
+                <!--<div class="right">-->
+                    <!--<v-ons-switch input-id="notification_switch" v-model="subscribeSwitch" :disabled="subscribeSwitch" @change="subscribeConfirm">-->
+                    <!--</v-ons-switch>-->
+                <!--</div>-->
+            <!--</ons-list-item>-->
+            <!--&lt;!&ndash;<v-ons-list-item tappable @click="checkCredential()">認証情報確認</v-ons-list-item>&ndash;&gt;-->
+        <!--</v-ons-list>-->
 
         <v-ons-dialog cancelable :visible.sync="registrationDialogVisible">
             <p style="text-align: center">アプリが利用可能になりました！</p>
