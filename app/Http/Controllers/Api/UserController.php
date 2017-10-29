@@ -14,6 +14,7 @@ class UserController extends Controller
 {
     public function show(Request $request, User $user)
     {
+        $user->load('user_setting');
         return new ApiResponse(new SuccessStatus(), 'getting user is succeeded', ['user' => $user]);
     }
 
