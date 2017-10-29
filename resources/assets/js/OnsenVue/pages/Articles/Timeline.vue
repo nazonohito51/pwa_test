@@ -93,7 +93,7 @@
                     extends: Detail,
                     data() {
                         return {
-                            article: article
+                            article_id: article.id
                         };
                     }
                 });
