@@ -15,10 +15,13 @@
                 </div>
             </div>
             <hr style="margin-top: 50px; margin-bottom: 15px; border-top: 1px dashed #8c8b8b;">
-            <div style="width: 25%; margin-left: auto;">
+            <div style="width: 20%; margin-left: auto;">
                 <!--<v-ons-icon icon="fa-thumbs-o-up"></v-ons-icon> : 321-->
                 <button class="button button--material--flat" style="min-height: 1.5em; line-height: 1.5em;">
-                    <v-ons-icon icon="fa-thumbs-o-up" style="line-height: 1.2em;"></v-ons-icon> : 321
+                    <strong v-bind:style="likeStyle">
+                        <!--<v-ons-icon icon="fa-thumbs-o-up" style="line-height: 1.2em;"></v-ons-icon> : 321-->
+                        <v-ons-icon v-bind:icon="likeIcon" style="line-height: 1.5em;"></v-ons-icon> : {{likeCount}}
+                    </strong>
                 </button>
             </div>
         </div>
@@ -49,6 +52,35 @@
         methods: {
             postLike: function () {
                 this.likeOpacity = 1.0;
+            }
+        },
+        computed: {
+            likeCount: function () {
+                return this.article.like_users.length;
+            },
+            isLiked: function () {
+                const username = this.$store.state.credential.username;
+
+                for (let user of this.article.like_users) {
+                    if (user.name === username) {
+                        return true;
+                    }
+                }
+                return false;
+            },
+            likeStyle: function () {
+                if (this.isLiked) {
+                    return {'font-weight': 'bold'};
+                }
+
+                return {'font-weight': 'normal'};
+            },
+            likeIcon: function () {
+                if (this.isLiked) {
+                    return 'fa-thumbs-up';
+                }
+
+                return 'fa-thumbs-o-up';
             }
         }
     };

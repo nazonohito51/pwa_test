@@ -14,7 +14,7 @@ class ArticleController extends Controller
 {
     public function all()
     {
-        $articles = Article::with(['user', 'likes'])->orderBy('created_at', 'desc')->limit(100)->get();
+        $articles = Article::with(['user', 'likeUsers'])->orderBy('created_at', 'desc')->limit(100)->get();
         return new ApiResponse(new SuccessStatus(), 'getting articles is succeeded.', ['articles' => $articles]);
     }
 
