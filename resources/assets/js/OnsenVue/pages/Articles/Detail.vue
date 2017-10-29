@@ -7,12 +7,18 @@
             <div class="center">Article</div>
         </v-ons-toolbar>
 
-        <div class="article">
-            <div v-html="article.title" class="article__title">
-            </div>
-            <div v-html="article.body" class="article__body">
+        <div class="card">
+            <div class="article">
+                <div v-html="article.title" class="article__title">
+                </div>
+                <div v-html="article.body" class="article__body">
+                </div>
             </div>
         </div>
+
+        <v-ons-fab position='bottom right' ripple v-bind:style="{ opacity: likeOpacity }" @click="postLike()">
+            <v-ons-icon icon="fa-thumbs-o-up"></v-ons-icon>
+        </v-ons-fab>
 
         <v-ons-card style="width: 100%;">
             <div class="user">
@@ -29,7 +35,13 @@
     export default {
         data: function () {
             return {
-                article: null
+                article: null,
+                likeOpacity: 0.3
+            }
+        },
+        methods: {
+            postLike: function () {
+                this.likeOpacity = 1.0;
             }
         }
     };
