@@ -41,6 +41,32 @@
                     </label>
                 </div>
             </li>
+            <li class="list-item">
+                <div class="list-item__center">
+                    他のユーザの記事投稿時に通知する
+                </div>
+                <div class="list-item__right">
+                    <label class="switch">
+                        <input type="checkbox" class="switch__input" v-model="postArticleNotification" @change="false">
+                        <div class="switch__toggle">
+                            <div class="switch__handle"></div>
+                        </div>
+                    </label>
+                </div>
+            </li>
+            <li class="list-item">
+                <div class="list-item__center">
+                    自分の記事がいいね！されたら通知する
+                </div>
+                <div class="list-item__right">
+                    <label class="switch">
+                        <input type="checkbox" class="switch__input" v-model="likeArticleNotification" @change="false">
+                        <div class="switch__toggle">
+                            <div class="switch__handle"></div>
+                        </div>
+                    </label>
+                </div>
+            </li>
         </ul>
 
         <!--<v-ons-list>-->
@@ -89,6 +115,8 @@
                 nickname: null,
                 avator_url: null,
                 subscribeSwitch: false,
+                postArticleNotification: false,
+                likeArticleNotification: false,
                 registrationDialogVisible: false
             }
         },
@@ -115,6 +143,8 @@
                     this.getRequest("/api/user/" + username, function (response) {
                         this.nickname = response.data.user.nickname;
                         this.avator_url = response.data.user.avator_url;
+                        this.postArticleNotification = response.data.user.user_setting.post_article_notification;
+                        this.likeArticleNotification = response.data.user.user_setting.like_article_notification;
 
                         const local_storage = window.localStorage;
                         local_storage.setItem('Settings:nickname', this.nickname);
