@@ -10,14 +10,14 @@
                     <img class="list-item__thumbnail list-item--material__thumbnail" v-bind:src="article.user.avator_url" onerror="this.src='/images/avators/no_image.png'">
                 </div>
 
-                <div class="list-item__center list-item--material__center" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                <div class="list-item__center list-item--material__center" style="width: 70%;">
                     <div class="list-item__title list-item--material__title">{{article.title}}</div>
-                    <div class="list-item__subtitle list-item--material__subtitle">{{article.description}}</div>
+                    <div class="list-item__subtitle list-item--material__subtitle" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{article.description}}</div>
                 </div>
 
                 <div class="list-item__right list-item--material__right">
                     <!--<i class="angle-right"></i>-->
-                    <v-ons-icon icon="angle-right"></v-ons-icon>
+                    <v-ons-icon icon="md-chevron-right"></v-ons-icon>
                 </div>
             </li>
         </ul>
