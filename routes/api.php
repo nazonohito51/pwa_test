@@ -26,6 +26,7 @@ Route::group([], function () {
     Route::put('/user/{user}/avator', 'Api\UserController@updateAvator');
 
     Route::get('/articles', 'Api\ArticleController@all');
+    Route::get('/articles/{article}', 'Api\ArticleController@show');
     Route::post('/articles/{article}/like', 'Api\ArticleController@like');
     Route::resource('/user/{user}/articles', 'Api\ArticleController');
 });

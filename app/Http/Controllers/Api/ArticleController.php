@@ -48,13 +48,10 @@ class ArticleController extends Controller
         return redirect()->route('articles.index', ['user' => $user->name]);
     }
 
-    public function show(User $user, Article $article)
+    public function show(Article $article)
     {
-        var_dump($user->name);
-        var_dump($article->title);
-        var_dump($article->body);
-        var_dump($article->created_at);
-        var_dump($article->updated_at);
+        $article->load('user', 'likeUsers');
+        return new ApiResponse(new SuccessStatus(), 'getting article is succeeded.', ['article' => $article]);
     }
 
     public function edit(User $user, Article $article)
