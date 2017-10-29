@@ -104,6 +104,7 @@ class UserController extends Controller
                 'token' => $request->get('token'),
                 'content_encoding' => $request->get('contentEncoding')
             ]);
+            $user->user_setting()->create();
         }
 
         return $user;
