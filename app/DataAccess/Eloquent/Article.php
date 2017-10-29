@@ -17,6 +17,11 @@ class Article extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function likeUsers()
+    {
+        return $this->belongsToMany(User::class, 'likes');
+    }
+
     public function getDescriptionAttribute()
     {
         return explode("\n", strip_tags($this->body), 2)[0];

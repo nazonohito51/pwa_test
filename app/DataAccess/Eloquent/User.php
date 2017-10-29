@@ -67,6 +67,11 @@ class User extends Authenticatable
         return $this->hasMany(Article::class);
     }
 
+    public function likeArticles()
+    {
+        return $this->belongsToMany(Article::class, 'likes');
+    }
+
     public function push_notifications()
     {
         return $this->hasMany(PushNotification::class);
