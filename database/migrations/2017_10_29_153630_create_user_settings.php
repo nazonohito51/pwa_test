@@ -16,8 +16,8 @@ class CreateUserSettings extends Migration
         Schema::create('user_settings', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unique();
-            $table->boolean('post_article_notification')->default(false);
-            $table->boolean('like_article_notification')->default(false);
+            $table->boolean('post_article_notification')->default(true);
+            $table->boolean('like_article_notification')->default(true);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
