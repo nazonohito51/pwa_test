@@ -20,7 +20,7 @@
                     <img v-for="user in article.like_users" v-bind:src="user.avator_url" style="width: 24px; height: 24px; border-radius: 50%;">
                 </div>
                 <div style="width: 20%; margin-left: auto;">
-                    <button class="button button--material--flat" style="min-height: 1.5em; line-height: 1.5em;" @click="postLike()">
+                    <button class="button button--material--flat" style="min-height: 1.5em; line-height: 1.5em;" :disabled="isLiked" @click="postLike()">
                         <strong v-bind:style="likeStyle">
                             <v-ons-icon v-bind:icon="likeIcon" style="line-height: 1.5em;"></v-ons-icon> : {{likeCount}}
                         </strong>
@@ -90,13 +90,15 @@
                 }.bind(this))
             },
             postLike: function () {
+                if (this.isLiked !== true) {
 //                this.likeOpacity = 1.0;
-                this.postRequest("/api/articles/" + this.article.id + "/like", {}, function (response) {
-                    this.$ons.notification.toast('いいね！を送信しました。', {timeout: 1000});
-                    this.getArticle();
-                }.bind(this), function () {
-                    this.$ons.notification.toast('いいね！の送信に失敗しました。', {timeout: 1000});
-                }.bind(this));
+                    this.postRequest("/api/articles/" + this.article.id + "/like", {}, function (response) {
+                        this.$ons.notification.toast('いいね！を送信しました。', {timeout: 1000});
+                        this.getArticle();
+                    }.bind(this), function () {
+                        this.$ons.notification.toast('いいね！の送信に失敗しました。', {timeout: 1000});
+                    }.bind(this));
+                }
             }
         },
         computed: {
