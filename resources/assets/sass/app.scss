@@ -26,14 +26,12 @@
 
 .article .article__body h1 {
   padding-bottom: 0.3em;
-  font-size: 2em;
+  font-size: 1.5em;
   border-bottom: 1px solid #eaecef;
 }
 
 .article .article__body h2 {
-  padding-bottom: 0.3em;
-  font-size: 1.5em;
-  border-bottom: 1px solid #eaecef;
+  font-size: 1.25em;
 }
 
 .article .article__body h3 {
@@ -45,4 +43,9 @@
   height: auto;
   margin: 10px auto;
   display: block;
+}
+
+.article .favorite {
+  width: 50px;
+  margin: 50px 0 0 auto;
 }
