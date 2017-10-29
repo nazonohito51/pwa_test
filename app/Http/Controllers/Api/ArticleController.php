@@ -34,7 +34,7 @@ class ArticleController extends Controller
     {
         $this->validate($request, [
             'title' => ['required', 'string', 'max:255'],
-            'body' => ['required', 'string', 'max:65535'],
+            'body' => ['required', 'string', 'max:16777215'],
         ]);
 
         $user->articles()->create([
