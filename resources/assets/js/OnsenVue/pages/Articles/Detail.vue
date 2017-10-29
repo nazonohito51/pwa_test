@@ -16,11 +16,12 @@
                     </div>
                 </div>
                 <hr style="margin-top: 50px; margin-bottom: 15px; border-top: 1px dashed #8c8b8b;">
+                <div>
+                    <img v-for="user in article.like_users" v-bind:src="user.avator_url" style="width: 24px; height: 24px; border-radius: 50%;">
+                </div>
                 <div style="width: 20%; margin-left: auto;">
-                    <!--<v-ons-icon icon="fa-thumbs-o-up"></v-ons-icon> : 321-->
                     <button class="button button--material--flat" style="min-height: 1.5em; line-height: 1.5em;" @click="postLike()">
                         <strong v-bind:style="likeStyle">
-                            <!--<v-ons-icon icon="fa-thumbs-o-up" style="line-height: 1.2em;"></v-ons-icon> : 321-->
                             <v-ons-icon v-bind:icon="likeIcon" style="line-height: 1.5em;"></v-ons-icon> : {{likeCount}}
                         </strong>
                     </button>
@@ -31,7 +32,7 @@
                 <!--<v-ons-icon icon="fa-thumbs-o-up"></v-ons-icon>-->
             <!--</v-ons-fab>-->
 
-        <v-ons-card style="width: 100%;">
+            <v-ons-card style="width: 100%;">
                 <div class="user">
                     <div class="left">
                         <img v-bind:src="article.user.avator_url" style="width: 48px; height: 48px; border-radius: 50%;">
@@ -74,6 +75,14 @@
                 this.getRequest("/api/articles/" + this.article_id, function (response) {
 //                    this.$ons.notification.toast('いいね！を送信しました。', {timeout: 1000});
                     this.article = response.data.article;
+
+//                    for (let i = 0; i < 50; i++) {
+//                        this.article.like_users.push({
+//                            name: 'hoge',
+//                            avator_url: 'http://localhost:8000/images/avators/EryNomAoNaVZbWp4S1BEmn0pAW8vnX.png'
+//                        });
+//                    }
+
                     this.loading = false;
                 }.bind(this), function () {
                     this.$ons.notification.toast('記事の取得に失敗しました。', {timeout: 1000});
@@ -92,8 +101,6 @@
         },
         computed: {
             isLoaded: function () {
-                console.log('hoge');
-                console.log(this.article && this.article_id === this.article.id);
                 return (this.article && this.article_id === this.article.id);
             },
             likeCount: function () {
