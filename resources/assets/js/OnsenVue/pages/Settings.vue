@@ -47,7 +47,7 @@
                 </div>
                 <div class="list-item__right">
                     <label class="switch">
-                        <input type="checkbox" class="switch__input" v-model="postArticleNotification" @change="false">
+                        <input type="checkbox" class="switch__input" v-model="postArticleNotification" @change="updateUserSettings">
                         <div class="switch__toggle">
                             <div class="switch__handle"></div>
                         </div>
@@ -60,7 +60,7 @@
                 </div>
                 <div class="list-item__right">
                     <label class="switch">
-                        <input type="checkbox" class="switch__input" v-model="likeArticleNotification" @change="false">
+                        <input type="checkbox" class="switch__input" v-model="likeArticleNotification" @change="updateUserSettings">
                         <div class="switch__toggle">
                             <div class="switch__handle"></div>
                         </div>
@@ -180,6 +180,17 @@
                 } else {
 //                    this.$ons.notification.alert('現在プッシュ通知の解除は対応しておりません。');
                 }
+            },
+            updateUserSettings() {
+                const username = this.$store.state.credential.username;
+                this.putRequest("/api/user/" + username + '/setting', {
+                    post_article_notification: this.postArticleNotification,
+                    like_article_notification: this.likeArticleNotification,
+                }, function (response) {
+                    this.$ons.notification.toast('通知設定を更新しました。', {timeout: 2000});
+                }.bind(this), function () {
+                    this.$ons.notification.toast('通知設定を更新に失敗しました。', {timeout: 2000});
+                }.bind(this));
             }
         }
     };
