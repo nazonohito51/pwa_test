@@ -17,7 +17,7 @@
             <hr style="margin-top: 50px; margin-bottom: 15px; border-top: 1px dashed #8c8b8b;">
             <div style="width: 20%; margin-left: auto;">
                 <!--<v-ons-icon icon="fa-thumbs-o-up"></v-ons-icon> : 321-->
-                <button class="button button--material--flat" style="min-height: 1.5em; line-height: 1.5em;">
+                <button class="button button--material--flat" style="min-height: 1.5em; line-height: 1.5em;" @click="postLike()">
                     <strong v-bind:style="likeStyle">
                         <!--<v-ons-icon icon="fa-thumbs-o-up" style="line-height: 1.2em;"></v-ons-icon> : 321-->
                         <v-ons-icon v-bind:icon="likeIcon" style="line-height: 1.5em;"></v-ons-icon> : {{likeCount}}
@@ -42,7 +42,10 @@
 </template>
 
 <script>
+    import apiClientMixin from '../../mixins/apiClient.js';
+
     export default {
+        mixins: [apiClientMixin],
         data: function () {
             return {
                 article: null,
@@ -51,7 +54,12 @@
         },
         methods: {
             postLike: function () {
-                this.likeOpacity = 1.0;
+//                this.likeOpacity = 1.0;
+                this.postRequest("/api/articles/" + this.article.id + "/like", {}, function (response) {
+                    this.$ons.notification.toast('いいね！を送信しました。', {timeout: 1000});
+                }.bind(this), function () {
+                    this.$ons.notification.toast('いいね！の送信に失敗しました。', {timeout: 1000});
+                }.bind(this));
             }
         },
         computed: {
@@ -70,7 +78,7 @@
             },
             likeStyle: function () {
                 if (this.isLiked) {
-                    return {'font-weight': 'bold'};
+                    return {'font-weight': 'bold', 'color': '#ff6977'};
                 }
 
                 return {'font-weight': 'normal'};
