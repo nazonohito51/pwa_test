@@ -14,11 +14,18 @@
                 <div v-html="article.body" class="article__body">
                 </div>
             </div>
+            <hr style="margin-top: 50px; margin-bottom: 15px; border-top: 1px dashed #8c8b8b;">
+            <div style="width: 25%; margin-left: auto;">
+                <!--<v-ons-icon icon="fa-thumbs-o-up"></v-ons-icon> : 321-->
+                <button class="button button--material--flat" style="min-height: 1.5em; line-height: 1.5em;">
+                    <v-ons-icon icon="fa-thumbs-o-up" style="line-height: 1.2em;"></v-ons-icon> : 321
+                </button>
+            </div>
         </div>
 
-        <v-ons-fab position='bottom right' ripple v-bind:style="{ opacity: likeOpacity }" @click="postLike()">
-            <v-ons-icon icon="fa-thumbs-o-up"></v-ons-icon>
-        </v-ons-fab>
+        <!--<v-ons-fab position='bottom right' ripple v-bind:style="{ opacity: likeOpacity }" @click="postLike()">-->
+            <!--<v-ons-icon icon="fa-thumbs-o-up"></v-ons-icon>-->
+        <!--</v-ons-fab>-->
 
         <v-ons-card style="width: 100%;">
             <div class="user">
