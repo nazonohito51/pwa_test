@@ -128,10 +128,10 @@
         methods: {
             init() {
                 const local_storage = window.localStorage;
-                console.log(local_storage.getItem('Settings:nickname'));
-                console.log(local_storage.getItem('Settings:avator_url'));
                 this.nickname = local_storage.getItem('Settings:nickname');
                 this.avator_url = local_storage.getItem('Settings:avator_url');
+                this.postArticleNotification = local_storage.getItem('Settings:postArticleNotification');
+                this.likeArticleNotification = local_storage.getItem('Settings:likeArticleNotification');
 
                 this.subscribeSwitch = this.$store.state.serviceWorker.isSubscribed;
                 this.getUserInfo();
@@ -149,6 +149,8 @@
                         const local_storage = window.localStorage;
                         local_storage.setItem('Settings:nickname', this.nickname);
                         local_storage.setItem('Settings:avator_url', this.avator_url);
+                        local_storage.setItem('Settings:postArticleNotification', this.postArticleNotification);
+                        local_storage.setItem('Settings:likeArticleNotification', this.likeArticleNotification);
                     }.bind(this), function () {
 //                        this.$ons.notification.toast('ユーザ情報の取得に失敗しました。', {timeout: 2000});
                     }.bind(this));
