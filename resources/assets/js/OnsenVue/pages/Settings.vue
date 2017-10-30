@@ -41,7 +41,7 @@
                     </label>
                 </div>
             </li>
-            <li class="list-item">
+            <li class="list-item" v-if="isRegistered">
                 <div class="list-item__center">
                     他のユーザの記事投稿時に通知する
                 </div>
@@ -54,7 +54,7 @@
                     </label>
                 </div>
             </li>
-            <li class="list-item">
+            <li class="list-item" v-if="isRegistered">
                 <div class="list-item__center">
                     自分の記事がいいね！されたら通知する
                 </div>
