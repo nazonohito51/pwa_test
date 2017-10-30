@@ -168,7 +168,7 @@
                 console.log('api_token: ' + this.$store.state.credential.api_token);
             },
             subscribeConfirm(event) {
-                if (event.value === true) {
+                if (this.subscribeSwitch === true) {
                     this.$ons.notification.confirm('プッシュ通知を許可しますか？').then(function (response) {
                         if (response) {
                             this.subscribeUser(function () {
