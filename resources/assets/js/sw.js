@@ -1,6 +1,6 @@
 const CACHE_NAME = 'my-site-cache-v1';
 const urlsToCache = [
-    '/onsenVue',
+    '/app',
     '/js/onsenVue.js',
     '/css/app.css',
     '/images/avators/no_image.png',
