@@ -18,6 +18,8 @@
     "laravel-mix": "^1.0",
     "lodash": "^4.17.4",
     "onsenui": "^2.5.3",
+    "sw-precache": "^5.2.0",
+    "sw-toolbox": "^3.6.0",
     "vue": "^2.1.10",
     "vue-onsenui": "^2.1.1",
     "vue-quill-editor": "^2.3.3",
