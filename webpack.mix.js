@@ -6,8 +6,8 @@ mix.webpackConfig({
     plugins: [
         new workboxPlugin({
             globDirectory: dist,
+            swSrc: path.join(dist, '../resources/assets/js/ServiceWorker/sw.js'),
             swDest: path.join(dist, 'sw.js'),
-            cacheId: 'pwa-test',
             globPatterns: [
                 'manifest.json',
                 'css/**.css',
@@ -19,35 +19,8 @@ mix.webpackConfig({
             templatedUrls: {
                 '/app': ['../resources/views/layouts/onsen.blade.php', '../resources/views/front/onsenVue.blade.php']
             },
-            runtimeCaching: [
-                {
-                    urlPattern: /images\/avators\/[^\.\/]+\.png$/,
-                    handler: 'staleWhileRevalidate',
-                    options: {
-                        cacheName: 'image-avators',
-                        cacheExpiration: {
-                            maxEntries: 10,
-                            maxAgeSeconds: 24 * 60 * 60
-                        },
-                    },
-                },
-                {
-                    urlPattern: /api\/articles\/\d+$/,
-                    handler: 'cacheFirst',
-                    options: {
-                        cacheName: 'article-details',
-                        cacheExpiration: {
-                            maxEntries: 10,
-                            maxAgeSeconds: 10 * 60
-                        },
-                    },
-                }
-            ],
             // onsenVue.js is over 2MB(default miximumFileSize).
-            maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
-            ignoreUrlParametersMatching: [/./],
-            clientsClaim: true,
-            skipWaiting: false,
+            maximumFileSizeToCacheInBytes: 6 * 1024 * 1024
         })
     ]
 });
