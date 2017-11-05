@@ -169,7 +169,7 @@
             },
             subscribeConfirm(event) {
                 if (this.subscribeSwitch === true) {
-                    this.$ons.notification.confirm('プッシュ通知を許可しますか？').then(function (response) {
+                    this.$ons.notification.confirm('アプリを利用するにはプッシュ通知を許可していただく必要があります。プッシュ通知を許可しますか？').then(function (response) {
                         if (response) {
                             this.subscribeUser(function () {
                                 this.registrationDialogVisible = true;
