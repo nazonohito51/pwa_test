@@ -1,4 +1,5 @@
 importScripts('workbox-sw.prod.v2.1.1.js');
+importScripts('workbox-background-sync.prod.v2.0.3.js');
 
 const workboxSW = new WorkboxSW({
     cacheId: "pwa-test",
@@ -46,3 +47,34 @@ self.addEventListener('notificationclick', function(event) {
         clients.openWindow('https://developers.google.com/web/')
     );
 });
+
+self.addEventListener('sync', function (event) {
+    console.log('hoge----');
+    console.log('sync', event);
+});
+
+// let bgQueue = new workbox.backgroundSync.QueuePlugin({
+//     callbacks: {
+//         replayDidSucceed: async(hash, res) => {
+//             self.registration.showNotification('Background sync demo', {
+//                 body: 'Product has been purchased.',
+//                 icon: '/images/icon.png',
+//             });
+//         },
+//         replayDidFail: (hash) => {},
+//         requestWillEnqueue: (reqData) => {},
+//         requestWillDequeue: (reqData) => {},
+//     },
+// });
+//
+// const requestWrapper = new workbox.runtimeCaching.RequestWrapper({
+//     plugins: [bgQueue],
+// });
+//
+// const route = new workbox.routing.RegExpRoute({
+//     regExp: new RegExp('api/.*$'),
+//     handler: new workbox.runtimeCaching.NetworkOnly({requestWrapper}),
+// });
+//
+// const router = new workbox.routing.Router();
+// router.registerRoute({route});
