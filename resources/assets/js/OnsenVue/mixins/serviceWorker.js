@@ -19,6 +19,7 @@ export default {
                     console.log('Service Worker is registered', registration);
 
                     this.$store.commit('serviceWorker/setRegistration', registration);
+                    this.checkServiceWorkerUpdate();
                     this.checkSubscription();
                 }.bind(this)).catch(function (error) {
                     console.error('Service Worker Error', error);
@@ -120,6 +121,34 @@ export default {
                 nickname_dom.content = nickname;
                 api_token_dom.content = api_token;
             }
+        },
+        checkServiceWorkerUpdate: function () {
+            if (this.swRegistration) {
+                if (this.swRegistration.waiting) {
+                    this.displayUpdateDialog();
+                } else {
+                    this.swRegistration.onupdatefound = function () {
+                        const installingWorker = this.swRegistration.installing;
+                        installingWorker.onstatechange = function () {
+                            switch (installingWorker.state) {
+                                case 'installed':
+                                    if (navigator.serviceWorker.controller) {
+                                        this.displayUpdateDialog();
+                                    } else {
+                                        console.log('Content is now available offline!!');
+                                    }
+                                    break;
+                                case 'redundant':
+                                    console.error('The installing service worker became redundant.');
+                                    break;
+                            }
+                        }.bind(this);
+                    }.bind(this);
+                }
+            }
+        },
+        displayUpdateDialog: function () {
+            this.$ons.notification.alert('アプリの新しいバージョンがダウンロードされました。再起動すると自動更新されます。アプリを同時に複数起動している場合、自動更新されない場合があります。');
         }
     }
 };
