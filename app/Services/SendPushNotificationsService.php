@@ -22,29 +22,30 @@ class SendPushNotificationsService
     /**
      * @param User|User[] $users
      * @param string $message
+     * @param array $options
      * @param string $type
      */
-    public function execute($users, $message, $type = null)
+    public function execute($users, $message, $options = [], $type = null)
     {
         if ($users instanceof User) {
             $users = [$users];
         }
 
         foreach ($users as $user) {
-            $this->sendPushNotification($user, $message, $type);
+            $this->sendPushNotification($user, $message, $options, $type);
         }
 
         $this->webPush->flush();
     }
 
-    private function sendPushNotification(User $user, $message, $type)
+    private function sendPushNotification(User $user, $message, $options = [], $type)
     {
         if ($this->shouldSendUser($user, $type)) {
             foreach ($user->push_notifications as $notification) {
-                $message_and_icon = json_encode([
+                $message_and_icon = json_encode(array_merge([
                     'message' => $message,
                     'icon' => $this->getIconUrl($user)
-                ]);
+                ], $options));
                 \Log::info('notification', [
                     'message' => $message_and_icon,
                     'endpoint' => $notification->endpoint,
