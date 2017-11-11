@@ -14,7 +14,7 @@ class ArticleController extends Controller
 {
     public function all()
     {
-        $articles = Article::with(['user', 'likeUsers'])->orderBy('created_at', 'desc')->limit(100)->get();
+        $articles = Article::with(['user'])->orderBy('created_at', 'desc')->limit(100)->get();
         return new ApiResponse(new SuccessStatus(), 'getting articles is succeeded.', ['articles' => $articles->makeHidden('body')]);
     }
 
@@ -50,7 +50,7 @@ class ArticleController extends Controller
 
     public function show(Article $article)
     {
-        $article->load('user', 'likeUsers');
+        $article->load('user');
         return new ApiResponse(new SuccessStatus(), 'getting article is succeeded.', ['article' => $article]);
     }
 
