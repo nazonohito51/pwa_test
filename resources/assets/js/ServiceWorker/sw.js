@@ -5,7 +5,10 @@ const workboxSW = new WorkboxSW({
     cacheId: "pwa-test",
     clientsClaim: true,
     skipWaiting: false,
-    ignoreUrlParametersMatching: []
+    ignoreUrlParametersMatching: [
+        /^utm_/,
+        /^api_token/
+    ]
 });
 workboxSW.precache([]);
 
