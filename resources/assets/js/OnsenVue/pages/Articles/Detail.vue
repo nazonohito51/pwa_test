@@ -32,14 +32,14 @@
                 <!--<v-ons-icon icon="fa-thumbs-o-up"></v-ons-icon>-->
             <!--</v-ons-fab>-->
 
-            <v-ons-card style="width: 100%;">
+            <div class="card">
                 <div class="user">
                     <div class="left">
                         <img v-bind:src="article.user.avator_url" style="width: 48px; height: 48px; border-radius: 50%;">
                         {{article.user.nickname}}
                     </div>
                 </div>
-            </v-ons-card>
+            </div>
         </div>
         <div v-else>
             記事データを読み込み中...
