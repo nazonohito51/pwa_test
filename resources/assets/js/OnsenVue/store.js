@@ -6,18 +6,32 @@ export default {
             state: {
                 username: null,
                 nickname: null,
+                avator_url: null,
                 api_token: null
             },
             mutations: {
                 update(state, payload) {
-                    state.username = payload.username;
-                    state.nickname = payload.nickname;
-                    state.api_token = payload.api_token;
-
                     const local_storage = window.localStorage;
-                    local_storage.setItem('credential:username', payload.username);
-                    local_storage.setItem('credential:nickname', payload.nickname);
-                    local_storage.setItem('credential:api_token', payload.api_token);
+
+                    if (payload.username) {
+                        state.username = payload.username;
+                        local_storage.setItem('credential:username', payload.username);
+                    }
+
+                    if (payload.nickname) {
+                        state.nickname = payload.nickname;
+                        local_storage.setItem('credential:nickname', payload.nickname);
+                    }
+
+                    if (payload.avator_url) {
+                        state.avator_url = payload.avator_url;
+                        local_storage.setItem('credential:avator_url', payload.avator_url);
+                    }
+
+                    if (payload.api_token) {
+                        state.api_token = payload.api_token;
+                        local_storage.setItem('credential:api_token', payload.api_token);
+                    }
                 }
             }
         },
