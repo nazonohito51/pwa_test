@@ -49,9 +49,35 @@ self.addEventListener('notificationclick', function(event) {
 });
 
 self.addEventListener('sync', function (event) {
-    console.log('hoge----');
-    console.log('sync', event);
+    if (event.tag.match(/^(GET|POST|PUT|DELETE):/)) {
+        const matches = event.tag.match(/^(GET|POST|PUT|DELETE):(.*)/);
+        const method = matches[1];
+        const uri = matches[2];
+        event.waitUntil(fetchWithApiToken(new Request(uri, {method: method})));
+    }
 });
+
+function fetchWithApiToken(request) {
+    const idbRequest = indexedDB.open("pwa_test", 1);
+
+    idbRequest.onsuccess = function (event) {
+        const idb = event.target.result;
+        const trans = idb.transaction('credential', 'readonly');
+        const store = trans.objectStore('credential');
+        const getRequest = store.get('1');
+
+        getRequest.onsuccess = function(event){
+            const formData = new FormData();
+            formData.append('api_token', event.target.result.api_token);
+            fetch(request, {body: formData}).then(function(response) {
+                console.log('response in fetchWithApiToken.', response);
+            });
+        }
+    };
+    idbRequest.onerror = function (event) {
+        console.log('error in fetchWithApiToken.', event);
+    }
+}
 
 // let bgQueue = new workbox.backgroundSync.QueuePlugin({
 //     callbacks: {
