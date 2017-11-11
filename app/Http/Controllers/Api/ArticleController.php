@@ -37,13 +37,15 @@ class ArticleController extends Controller
             'body' => ['required', 'string', 'max:16777215'],
         ]);
 
-        $user->articles()->create([
+        $article = $user->articles()->create([
             'title' => $request->get('title'),
             'body' => $request->get('body'),
             'published' => true,
         ]);
 
-        $service->execute(User::all(), $user->nickname . 'さんが投稿しました', 'post_article_notification');
+        $service->execute(User::all(), $user->nickname . 'さんが投稿しました', [
+            'fetch_uri' => route('api.articles.show', ['article' => $article->id])
+        ], 'post_article_notification');
 
         return redirect()->route('articles.index', ['user' => $user->name]);
     }
@@ -98,7 +100,7 @@ class ArticleController extends Controller
             'user_id' => $user->id
         ]);
 
-        $service->execute($article->user, $user->nickname . 'さんが記事にいいね！をしました', 'like_article_notification');
+        $service->execute($article->user, $user->nickname . 'さんが記事にいいね！をしました', [], 'like_article_notification');
 
         return new ApiResponse(new SuccessStatus(), 'posting like is succeeded.');
     }
