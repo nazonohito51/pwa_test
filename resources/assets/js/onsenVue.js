@@ -50,10 +50,11 @@ const app = new Vue({
             const local_storage = window.localStorage;
             const username = local_storage.getItem('credential:username');
             const nickname = local_storage.getItem('credential:nickname');
+            const avator_url = local_storage.getItem('credential:avator_url');
             const api_token = local_storage.getItem('credential:api_token');
 
-            if (username && nickname && api_token) {
-                this.updateCredential(username, nickname, api_token);
+            if (username && nickname && avator_url && api_token) {
+                this.updateCredential(username, nickname, avator_url, api_token);
             }
         },
     }
