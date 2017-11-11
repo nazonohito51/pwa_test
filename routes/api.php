@@ -27,7 +27,7 @@ Route::group([], function () {
     Route::put('/user/{user}/setting', 'Api\UserController@updateSetting');
 
     Route::get('/articles', 'Api\ArticleController@all');
-    Route::get('/articles/{article}', 'Api\ArticleController@show');
+    Route::get('/articles/{article}', 'Api\ArticleController@show')->name('api.articles.show');
     Route::get('/articles/{article}/like', 'Api\ArticleController@like');
     Route::post('/articles/{article}/like', 'Api\ArticleController@storeLike');
     Route::resource('/user/{user}/articles', 'Api\ArticleController');
