@@ -67,6 +67,9 @@
                     </label>
                 </div>
             </li>
+            <!--<li>-->
+                <!--<v-ons-list-item tappable @click="checkCredential()">認証情報確認</v-ons-list-item>-->
+            <!--</li>-->
         </ul>
 
         <!--<v-ons-list>-->
@@ -112,8 +115,6 @@
         mixins: [serviceWorkerMixin, apiClientMixin],
         data: function () {
             return {
-                nickname: null,
-                avator_url: null,
                 subscribeSwitch: false,
                 postArticleNotification: false,
                 likeArticleNotification: false,
@@ -121,6 +122,16 @@
             }
         },
         computed: {
+            nickname: function () {
+                return this.$store.state.credential.nickname;
+            },
+            avator_url: function () {
+                if (this.$store.state.credential.avator_url) {
+                    return this.$store.state.credential.avator_url + '?sw-ignore=true&hash=' + Math.random().toString(36).slice(-8);
+                } else {
+                    return '/images/avators/no_image.png';
+                }
+            },
             isRegistered: function () {
                 return this.$store.state.serviceWorker.isSubscribed;
             }
@@ -128,8 +139,6 @@
         methods: {
             init() {
                 const local_storage = window.localStorage;
-                this.nickname = local_storage.getItem('Settings:nickname');
-                this.avator_url = local_storage.getItem('Settings:avator_url');
                 this.postArticleNotification = local_storage.getItem('Settings:postArticleNotification');
                 this.likeArticleNotification = local_storage.getItem('Settings:likeArticleNotification');
 
@@ -141,14 +150,15 @@
 
                 if (username) {
                     this.getRequest("/api/user/" + username, function (response) {
-                        this.nickname = response.data.user.nickname;
-                        this.avator_url = response.data.user.avator_url;
+                        this.$store.commit('credential/update', {
+                            'nickname': response.data.user.nickname,
+                            'avator_url': response.data.user.avator_url
+                        });
+
                         this.postArticleNotification = response.data.user.user_setting.post_article_notification;
                         this.likeArticleNotification = response.data.user.user_setting.like_article_notification;
 
                         const local_storage = window.localStorage;
-                        local_storage.setItem('Settings:nickname', this.nickname);
-                        local_storage.setItem('Settings:avator_url', this.avator_url);
                         local_storage.setItem('Settings:postArticleNotification', this.postArticleNotification);
                         local_storage.setItem('Settings:likeArticleNotification', this.likeArticleNotification);
                     }.bind(this), function () {
@@ -163,8 +173,12 @@
                 this.$store.commit('navigator/push', Avator);
             },
             checkCredential() {
+                console.log('nickname: ' + this.nickname);
+                console.log('avator_url: ' + this.avator_url);
+
                 console.log('username: ' + this.$store.state.credential.username);
                 console.log('nickname: ' + this.$store.state.credential.nickname);
+                console.log('avator_url: ' + this.$store.state.credential.avator_url);
                 console.log('api_token: ' + this.$store.state.credential.api_token);
             },
             subscribeConfirm(event) {
@@ -173,7 +187,6 @@
                         if (response) {
                             this.subscribeUser(function () {
                                 this.registrationDialogVisible = true;
-                                this.getUserInfo();
                             }.bind(this));
                         } else {
                             this.subscribeSwitch = false;

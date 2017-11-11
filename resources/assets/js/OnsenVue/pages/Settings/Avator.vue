@@ -46,22 +46,18 @@
         mixins: [apiClientMixin],
         data: function () {
             return {
-                avator_url: null,
                 cropper: null,
                 cropperVisible: false
             }
         },
+        computed: {
+            avator_url: function () {
+                return this.$store.state.credential.avator_url + '?sw-ignore=true&hash=' + Math.random().toString(36).slice(-8);
+            }
+        },
         methods: {
             init: function () {
-                this.getAvatorUrl();
-            },
-            getAvatorUrl: function () {
-                const username = this.$store.state.credential.username;
-                this.getRequest("/api/user/" + username, function (response) {
-                    this.avator_url = response.data.user.avator_url;
-                }.bind(this), function () {
-                    this.$ons.notification.toast('ユーザ情報の取得に失敗しました。', {timeout: 2000});
-                }.bind(this));
+//                this.getAvatorUrl();
             },
             loadImage: function (event) {
                 const file = event.target.files[0];
@@ -105,7 +101,6 @@
                     const base64 = canvas.toDataURL('image/png').replace(/^.*,/, ''); // remove "data:image/png;base64,"
 
                     this.putRequest("/api/user/" + username + "/avator", {image: base64}, function (response) {
-                        this.getAvatorUrl();
                         this.$store.commit('navigator/pop');
                         this.$ons.notification.toast('アイコン画像をアップロードしました。', {timeout: 1000});
                     }.bind(this), function () {
@@ -117,6 +112,15 @@
 
                 this.cropperVisible = false;
             }
+//            updateAvatorUrl: function() {
+//                const api_token = this.$store.state.credential.api_token;
+//
+//                this.putRequest("/api/user/" + api_token, {}, function (response) {
+//                    console.log(response);
+//                    this.$store.commit('credential/update', {'avator_url': response.data.user.avator_url,});
+//                }.bind(this), function () {
+//                });
+//            }
         }
     };
 </script>
