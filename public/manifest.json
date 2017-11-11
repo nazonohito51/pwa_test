@@ -5,20 +5,21 @@
     {
       "src": "/images/launcher-icon-1x.png",
       "type": "image/png",
-      "sizes": "48x48"
+      "sizes": "128x128"
     },
     {
       "src": "/images/launcher-icon-2x.png",
       "type": "image/png",
-      "sizes": "96x96"
+      "sizes": "256x256"
     },
     {
       "src": "/images/launcher-icon-4x.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "512x512"
     }
   ],
-  "start_url": "/app?launcher=true",
+  "start_url": "/app",
   "background_color": "#FFFFFF",
+  "theme_color": "#FFFFFF",
   "display": "standalone"
 }

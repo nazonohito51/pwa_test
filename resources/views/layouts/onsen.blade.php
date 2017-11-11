@@ -7,6 +7,7 @@
 
     <link rel="icon" type="image/png" href="/favicon.png" sizes="48x48">
     <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#FFFFFF">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
