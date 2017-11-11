@@ -18,7 +18,7 @@
       "sizes": "192x192"
     }
   ],
-  "start_url": "onsenVue?launcher=true",
+  "start_url": "/app?launcher=true",
   "background_color": "#FFFFFF",
   "display": "standalone"
 }
