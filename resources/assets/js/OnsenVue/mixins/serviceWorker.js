@@ -79,7 +79,7 @@ export default {
                     if (response.error) {
                         console.log('updating subscription on server is failed.');
                     } else {
-                        this.updateCredential(response.data.name, response.data.nickname, response.data.api_token);
+                        this.updateCredential(response.data.name, response.data.nickname, response.data.avator_url, response.data.api_token);
                         console.log('updating subscription on server is succeeded.');
                     }
                 }.bind(this)).catch(function (err) {
@@ -106,10 +106,11 @@ export default {
             }
             return outputArray;
         },
-        updateCredential: function (username, nickname, api_token) {
+        updateCredential: function (username, nickname, avator_url, api_token) {
             this.$store.commit('credential/update', {
                 'username': username,
                 'nickname': nickname,
+                'avator_url': avator_url,
                 'api_token': api_token
             });
 
