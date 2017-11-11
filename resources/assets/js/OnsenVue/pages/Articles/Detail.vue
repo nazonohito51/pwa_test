@@ -91,13 +91,22 @@
             },
             postLike: function () {
                 if (this.isLiked !== true) {
-//                this.likeOpacity = 1.0;
-                    this.postRequest("/api/articles/" + this.article.id + "/like", {}, function (response) {
-                        this.$ons.notification.toast('いいね！を送信しました。', {timeout: 1000});
-                        this.getArticle();
-                    }.bind(this), function () {
-                        this.$ons.notification.toast('いいね！の送信に失敗しました。', {timeout: 1000});
-                    }.bind(this));
+                    this.postSync('/api/articles/' + this.article.id + '/like', {}, function () {}, function () {});
+
+//                    const local_storage = window.localStorage;
+//                    this.nickname = local_storage.getItem('Settings:nickname');
+//                    this.avator_url = local_storage.getItem('Settings:avator_url');
+//                    this.article.like_users.push({
+//                        name: nickname,
+//                        avator_url: avator_url
+//                    });
+
+//                    this.postRequest("/api/articles/" + this.article.id + "/like", {}, function (response) {
+//                        this.$ons.notification.toast('いいね！を送信しました。', {timeout: 1000});
+//                        this.getArticle();
+//                    }.bind(this), function () {
+//                        this.$ons.notification.toast('いいね！の送信に失敗しました。', {timeout: 1000});
+//                    }.bind(this));
                 }
             }
         },
