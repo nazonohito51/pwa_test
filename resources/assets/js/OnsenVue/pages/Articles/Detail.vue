@@ -15,11 +15,11 @@
                     <div v-html="article.body" class="article__body">
                     </div>
                 </div>
-                <hr style="margin-top: 50px; margin-bottom: 15px; border-top: 1px dashed #8c8b8b;">
+                <hr v-if="displayLikeDiv" style="margin-top: 50px; margin-bottom: 15px; border-top: 1px dashed #8c8b8b;">
                 <div>
                     <img v-for="user in like_users" v-bind:src="user.avator_url" style="width: 24px; height: 24px; border-radius: 50%;">
                 </div>
-                <div style="width: 20%; margin-left: auto;">
+                <div v-if="isRegistered" style="width: 20%; margin-left: auto;">
                     <button class="button button--material--flat" style="min-height: 1.5em; line-height: 1.5em;" :disabled="isLiked" @click="postLike()">
                         <strong v-bind:style="likeStyle">
                             <v-ons-icon v-bind:icon="likeIcon" style="line-height: 1.5em;"></v-ons-icon> : {{likeCount}}
@@ -92,7 +92,7 @@
                 })
             },
             postLike: function () {
-                if (this.isLiked !== true) {
+                if (this.isRegistered && this.isLiked !== true) {
                     this.postSync('/api/articles/' + this.article.id + '/like', {}, function () {}, function () {});
 
                     const username = this.$store.state.credential.username;
@@ -120,6 +120,12 @@
             }
         },
         computed: {
+            isRegistered: function () {
+                return this.$store.state.serviceWorker.isSubscribed;
+            },
+            displayLikeDiv: function () {
+                return (this.isRegistered || (this.likeCount > 0));
+            },
             isLoaded: function () {
                 return (this.article && this.article_id === this.article.id);
             },
