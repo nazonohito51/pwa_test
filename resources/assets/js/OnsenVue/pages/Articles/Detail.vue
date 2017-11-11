@@ -93,6 +93,13 @@
                 if (this.isLiked !== true) {
                     this.postSync('/api/articles/' + this.article.id + '/like', {}, function () {}, function () {});
 
+                    const username = this.$store.state.credential.username;
+                    const avator_url = this.$store.state.credential.avator_url;
+                    this.article.like_users.push({
+                        name: username,
+                        avator_url: avator_url
+                    });
+
 //                    const local_storage = window.localStorage;
 //                    this.nickname = local_storage.getItem('Settings:nickname');
 //                    this.avator_url = local_storage.getItem('Settings:avator_url');
