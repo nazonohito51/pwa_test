@@ -28,6 +28,7 @@ Route::group([], function () {
 
     Route::get('/articles', 'Api\ArticleController@all');
     Route::get('/articles/{article}', 'Api\ArticleController@show');
-    Route::post('/articles/{article}/like', 'Api\ArticleController@like');
+    Route::get('/articles/{article}/like', 'Api\ArticleController@like');
+    Route::post('/articles/{article}/like', 'Api\ArticleController@storeLike');
     Route::resource('/user/{user}/articles', 'Api\ArticleController');
 });

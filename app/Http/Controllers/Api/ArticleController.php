@@ -85,7 +85,13 @@ class ArticleController extends Controller
         return redirect()->back()->with('summary', 'deleting record is failed.');
     }
 
-    public function like(Article $article, SendPushNotificationsService $service, Request $request)
+    public function like(Article $article)
+    {
+        $users = $article->likeUsers;
+        return new ApiResponse(new SuccessStatus(), 'getting like users is succeeded.', ['users' => $users]);
+    }
+
+    public function storeLike(Article $article, SendPushNotificationsService $service, Request $request)
     {
         $user = User::where('api_token', '=', $request->get('api_token'))->first();
         $article->likes()->firstOrCreate([
