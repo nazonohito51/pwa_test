@@ -17,7 +17,7 @@
                 </div>
                 <hr style="margin-top: 50px; margin-bottom: 15px; border-top: 1px dashed #8c8b8b;">
                 <div>
-                    <img v-for="user in article.like_users" v-bind:src="user.avator_url" style="width: 24px; height: 24px; border-radius: 50%;">
+                    <img v-for="user in like_users" v-bind:src="user.avator_url" style="width: 24px; height: 24px; border-radius: 50%;">
                 </div>
                 <div style="width: 20%; margin-left: auto;">
                     <button class="button button--material--flat" style="min-height: 1.5em; line-height: 1.5em;" :disabled="isLiked" @click="postLike()">
@@ -62,32 +62,34 @@
             return {
                 article_id: null,
                 article: null,
+                like_users: [],
                 loading: false
             }
         },
         methods: {
             init: function () {
+                this.like_users = [];
+
                 this.getArticle();
             },
             getArticle: function () {
                 this.loading = true;
 
                 this.getRequest("/api/articles/" + this.article_id, function (response) {
-//                    this.$ons.notification.toast('いいね！を送信しました。', {timeout: 1000});
                     this.article = response.data.article;
-
-//                    for (let i = 0; i < 50; i++) {
-//                        this.article.like_users.push({
-//                            name: 'hoge',
-//                            avator_url: 'http://localhost:8000/images/avators/EryNomAoNaVZbWp4S1BEmn0pAW8vnX.png'
-//                        });
-//                    }
-
                     this.loading = false;
+                    this.getLikeUsers();
                 }.bind(this), function () {
                     this.$ons.notification.toast('記事の取得に失敗しました。', {timeout: 1000});
                     this.loading = false;
+                    this.$store.commit('navigator/pop');
                 }.bind(this))
+            },
+            getLikeUsers: function () {
+                this.getRequest("/api/articles/" + this.article_id + "/like", function (response) {
+                    this.like_users = response.data.users;
+                }.bind(this), function () {
+                })
             },
             postLike: function () {
                 if (this.isLiked !== true) {
@@ -95,7 +97,7 @@
 
                     const username = this.$store.state.credential.username;
                     const avator_url = this.$store.state.credential.avator_url;
-                    this.article.like_users.push({
+                    this.like_users.push({
                         name: username,
                         avator_url: avator_url
                     });
@@ -122,12 +124,12 @@
                 return (this.article && this.article_id === this.article.id);
             },
             likeCount: function () {
-                return this.article.like_users.length;
+                return this.like_users.length;
             },
             isLiked: function () {
                 const username = this.$store.state.credential.username;
 
-                for (let user of this.article.like_users) {
+                for (let user of this.like_users) {
                     if (user.name === username) {
                         return true;
                     }
