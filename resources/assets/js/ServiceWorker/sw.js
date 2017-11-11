@@ -5,7 +5,7 @@ const workboxSW = new WorkboxSW({
     cacheId: "pwa-test",
     clientsClaim: true,
     skipWaiting: false,
-    ignoreUrlParametersMatching: [/./]
+    ignoreUrlParametersMatching: []
 });
 workboxSW.precache([]);
 
