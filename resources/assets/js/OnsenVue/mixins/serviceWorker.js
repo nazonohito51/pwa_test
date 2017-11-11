@@ -113,6 +113,20 @@ export default {
                 'api_token': api_token
             });
 
+            let idbRequest = indexedDB.open("pwa_test", 1);
+            idbRequest.onupgradeneeded = function (event) {
+                let idb = event.target.result;
+                let credentialStore = idb.createObjectStore("credential", { keyPath: "id" });
+
+                //データの追加
+                credentialStore.add({
+                    id: "1",
+                    username: username,
+                    nickname: nickname,
+                    api_token: api_token
+                })
+            };
+
             const username_dom = document.head.querySelector('meta[name="app-username"]');
             const nickname_dom = document.head.querySelector('meta[name="app-nickname"]');
             const api_token_dom = document.head.querySelector('meta[name="api-token"]');
