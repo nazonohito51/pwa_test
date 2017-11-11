@@ -63,16 +63,21 @@ function fetchWithApiToken(request) {
     idbRequest.onsuccess = function (event) {
         const idb = event.target.result;
         const trans = idb.transaction('credential', 'readonly');
-        const store = trans.objectStore('credential');
-        const getRequest = store.get('1');
+        trans.oncomplete = function (event) {
+            const store = trans.objectStore('credential');
+            const getRequest = store.get('1');
 
-        getRequest.onsuccess = function(event){
-            const formData = new FormData();
-            formData.append('api_token', event.target.result.api_token);
-            fetch(request, {body: formData}).then(function(response) {
-                console.log('response in fetchWithApiToken.', response);
-            });
-        }
+            getRequest.onsuccess = function(event){
+                const formData = new FormData();
+                formData.append('api_token', event.target.result.api_token);
+                fetch(request, {body: formData}).then(function(response) {
+                    console.log('response in fetchWithApiToken.', response);
+                });
+            }
+        };
+        trans.onerror = function (event) {
+            console.log('transaction error in fetchWithApiToken', event);
+        };
     };
     idbRequest.onerror = function (event) {
         console.log('error in fetchWithApiToken.', event);
