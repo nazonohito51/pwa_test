@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\DataAccess\Eloquent\User;
+use App\Services\SendPushNotificationsService;
 use Illuminate\Console\Command;
 use Minishlink\WebPush\WebPush;
 
@@ -13,7 +14,7 @@ class SendPushNotifications extends Command
      *
      * @var string
      */
-    protected $signature = 'send:push_notification';
+    protected $signature = 'send:push_notification {user_id?}';
 
     /**
      * The console command description.
@@ -23,13 +24,21 @@ class SendPushNotifications extends Command
     protected $description = 'Command description';
 
     /**
+     * @var SendPushNotificationsService
+     */
+    private $service;
+
+    /**
      * Create a new command instance.
      *
+     * @param SendPushNotificationsService $service
      * @return void
      */
-    public function __construct()
+    public function __construct(SendPushNotificationsService $service)
     {
         parent::__construct();
+
+        $this->service = $service;
     }
 
     /**
@@ -39,23 +48,12 @@ class SendPushNotifications extends Command
      */
     public function handle()
     {
-        $webPush = new WebPush([
-            'VAPID' => [
-                'subject' => 'https://github.com/nazonhito51/pwa_test/',
-                'publicKey' => 'BJbwhdyPzgvLnBmxYat8cGJSck_wy0Ph_vRTPHemglPtSrmiLZ1R05yFbnfQJen-MbS97RejCn3xm6Y4v1ZvZ1Q',
-                'privateKey' => 'bOHQ5fmaaNfZiwsc2xhFFH8_iJVCsYbnfScaMPTuQQw',
-            ],
-        ]);
-        $users = User::all();
-
-        foreach ($users as $user) {
-            $this->info($user->name);
-
-            foreach ($user->push_notifications as $notification) {
-                $this->info($notification->endpoint);
-                $webPush->sendNotification($notification->endpoint, 'hello!', $notification->key, $notification->token, true);
-            }
+        if ($user_id = $this->argument('user_id')) {
+            $user = User::find($user_id);
+        } else {
+            $user = User::all();
         }
-        $webPush->flush();
+
+        $this->service->execute($user, 'プッシュ通知だよー');
     }
 }
