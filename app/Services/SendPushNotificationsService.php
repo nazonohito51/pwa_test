@@ -64,7 +64,9 @@ class SendPushNotificationsService
 
     private function shouldSendUser(User $user, $type)
     {
-        if (is_string($type)) {
+        if (is_null($type)) {
+            return true;
+        } elseif (is_string($type)) {
             return $user->user_setting->getAttributeValue($type);
         }
 
