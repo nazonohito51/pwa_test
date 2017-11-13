@@ -1,6 +1,7 @@
 {
   "short_name": "PWA TEST",
   "name": "PWA TEST(Vue.js/OnsenUI)",
+  "description": "My first PWA.",
   "icons": [
     {
       "src": "/images/launcher-icon-1x.png",
@@ -21,5 +22,6 @@
   "start_url": "/app",
   "background_color": "#FFFFFF",
   "theme_color": "#FFFFFF",
+  "orientation": "portrait",
   "display": "standalone"
 }
