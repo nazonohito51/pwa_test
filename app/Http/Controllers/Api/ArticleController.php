@@ -7,6 +7,7 @@ use App\DataAccess\Eloquent\User;
 use App\Http\Controllers\Controller;
 use App\Http\Response\ApiResponse;
 use App\Http\Response\ApiStatus\SuccessStatus;
+use App\Jobs\SendPushNotificationJob;
 use App\Services\SendPushNotificationsService;
 use Illuminate\Http\Request;
 
@@ -30,7 +31,7 @@ class ArticleController extends Controller
         ]);
     }
 
-    public function store(Request $request, SendPushNotificationsService $service, User $user)
+    public function store(Request $request, User $user)
     {
         $this->validate($request, [
             'title' => ['required', 'string', 'max:255'],
@@ -43,9 +44,12 @@ class ArticleController extends Controller
             'published' => true,
         ]);
 
-        $service->execute(User::all(), $user->nickname . 'さんが投稿しました', [
-            'fetch_uri' => route('api.articles.show', ['article' => $article->id])
-        ], 'post_article_notification');
+        SendPushNotificationJob::dispatch(
+            User::all(),
+            $user->nickname . 'が投稿しました',
+            ['fetch_uri' => route('api.articles.show', ['article' => $article->id])],
+            'post_article_notification'
+        );
 
         return redirect()->route('articles.index', ['user' => $user->name]);
     }
@@ -93,14 +97,19 @@ class ArticleController extends Controller
         return new ApiResponse(new SuccessStatus(), 'getting like users is succeeded.', ['users' => $users]);
     }
 
-    public function storeLike(Article $article, SendPushNotificationsService $service, Request $request)
+    public function storeLike(Article $article, Request $request)
     {
         $user = User::where('api_token', '=', $request->get('api_token'))->first();
         $article->likes()->firstOrCreate([
             'user_id' => $user->id
         ]);
 
-        $service->execute($article->user, $user->nickname . 'さんが記事にいいね！をしました', [], 'like_article_notification');
+        SendPushNotificationJob::dispatch(
+            $article->user,
+            $user->nickname . 'が記事にいいね！をしました',
+            [],
+            'like_article_notification'
+        );
 
         return new ApiResponse(new SuccessStatus(), 'posting like is succeeded.');
     }
