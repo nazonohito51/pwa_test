@@ -15,21 +15,20 @@ workboxSW.precache([]);
 workboxSW.router.registerRoute(/images\/avators\/[^\.\/]+\.png$/, workboxSW.strategies.staleWhileRevalidate({
     "cacheName": "image-avators",
     "cacheExpiration": {
-        "maxEntries": 10,
         "maxAgeSeconds": 86400
     }
 }), 'GET');
-workboxSW.router.registerRoute(/api\/articles\/\d+$/, workboxSW.strategies.cacheFirst({
+
+let article_handler = workboxSW.strategies.cacheFirst({
     "cacheName": "article-details",
     "cacheExpiration": {
-        "maxEntries": 10,
         "maxAgeSeconds": 600
     }
-}), 'GET');
+});
+workboxSW.router.registerRoute(/api\/articles\/\d+$/, article_handler, 'GET');
 
 self.addEventListener('push', function(event) {
-    console.log('[Service Worker] Push Received.');
-    // console.log(`[Service Worker] Push had this data: "${event.data}"`);
+    console.log('[Service Worker] Push Received.', event);
 
     const title = 'PWA TEST';
     const options = {
@@ -38,11 +37,22 @@ self.addEventListener('push', function(event) {
         badge: event.data.json().icon
     };
 
+    const uri = event.data.json().fetch_uri;
+    if (uri) {
+        // https://developer.mozilla.org/ja/docs/Web/API/FetchEvent/FetchEvent
+        const myFetchEvent = new FetchEvent('fetch', {request: new Request(uri)});
+        const url = new URL(uri, location.host);
+        const responsePromise = article_handler.handle({
+            url: url,
+            event: myFetchEvent
+        });
+    }
+
     event.waitUntil(self.registration.showNotification(title, options));
 });
 
 self.addEventListener('notificationclick', function(event) {
-    console.log('[Service Worker] Notification click Received.');
+    console.log('[Service Worker] Notification click Received.', event);
 
     event.notification.close();
 
@@ -86,7 +96,7 @@ function fetchWithApiToken(request) {
     };
     idbRequest.onerror = function (event) {
         console.log('error in fetchWithApiToken.', event);
-    }
+    };
 }
 
 // let bgQueue = new workbox.backgroundSync.QueuePlugin({

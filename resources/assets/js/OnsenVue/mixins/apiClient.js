@@ -50,6 +50,15 @@ export default {
                 reject_callback();
             });
         },
+        getSync: function (uri, params, resolve_callback, reject_callback) {
+            const registration = this.$store.state.serviceWorker.registration;
+            if (registration.active && window.SyncManager) {
+                registration.sync.register('GET:' + uri);
+            } else {
+                console.log('sync not supported.');
+                this.postRequest(uri, params, resolve_callback, reject_callback);
+            }
+        },
         postSync: function (uri, params, resolve_callback, reject_callback) {
             const registration = this.$store.state.serviceWorker.registration;
             if (registration.active && window.SyncManager) {

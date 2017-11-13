@@ -68,7 +68,7 @@
                 </div>
             </li>
             <!--<li>-->
-                <!--<v-ons-list-item tappable @click="checkCredential()">認証情報確認</v-ons-list-item>-->
+                <!--<v-ons-list-item tappable @click="test()">認証情報確認</v-ons-list-item>-->
             <!--</li>-->
         </ul>
 
@@ -118,7 +118,8 @@
                 subscribeSwitch: false,
                 postArticleNotification: false,
                 likeArticleNotification: false,
-                registrationDialogVisible: false
+                registrationDialogVisible: false,
+                counter: 10
             }
         },
         computed: {
@@ -206,6 +207,11 @@
                 }.bind(this), function () {
                     this.$ons.notification.toast('通知設定を更新に失敗しました。', {timeout: 2000});
                 }.bind(this));
+            },
+            test() {
+                const article_id = this.counter;
+                this.counter += 1;
+                this.getSync('/api/articles/' + article_id, {}, function () {}, function () {});
             }
         }
     };
