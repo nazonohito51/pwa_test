@@ -98,7 +98,14 @@
                 if (this.cropper) {
                     const username = this.$store.state.credential.username;
                     const canvas = this.cropper.getCroppedCanvas();
-                    const base64 = canvas.toDataURL('image/png').replace(/^.*,/, ''); // remove "data:image/png;base64,"
+
+                    let resize_canvas = document.createElement('canvas');
+                    let resize_canvas_context = resize_canvas.getContext('2d');
+                    resize_canvas.width = 128;
+                    resize_canvas.height = 128;
+                    resize_canvas_context.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, 128, 128);
+
+                    const base64 = resize_canvas.toDataURL('image/png').replace(/^.*,/, ''); // remove "data:image/png;base64,"
 
                     this.putRequest("/api/user/" + username + "/avator", {image: base64}, function (response) {
                         this.$store.commit('navigator/pop');
