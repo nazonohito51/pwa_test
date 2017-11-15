@@ -83,7 +83,7 @@
                     local_storage.setItem('Timeline:articles', JSON.stringify(this.articles));
                     this.loading = false;
                 }.bind(this), function () {
-                    this.$ons.notification.toast('ツイートの一覧の取得に失敗しました。', {timeout: 2000});
+                    this.$ons.notification.toast('記事の一覧の取得に失敗しました。', {timeout: 2000});
                     this.loading = false;
                 }.bind(this));
 //                }.bind(this), 5000);
