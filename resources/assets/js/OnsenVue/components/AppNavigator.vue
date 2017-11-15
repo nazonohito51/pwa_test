@@ -2,6 +2,9 @@
     <v-ons-navigator swipeable
                      :page-stack="pageStack"
                      :pop-page="storePop"
+                     :options="{
+                       animation: 'none'
+                     }"
     ></v-ons-navigator>
 </template>
 
