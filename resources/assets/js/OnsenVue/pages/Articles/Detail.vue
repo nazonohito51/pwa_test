@@ -1,5 +1,5 @@
 <template>
-    <v-ons-page @show="init()">
+    <v-ons-page @init="init()">
         <v-ons-toolbar>
             <div class="left">
                 <v-ons-back-button>Timeline</v-ons-back-button>
@@ -42,7 +42,13 @@
             </div>
         </div>
         <div v-else>
-            記事データを読み込み中...
+            <div style="height: 100%; display: flex; align-items: center; justify-content: center;">
+                <svg class="progress-circular progress-circular--indeterminate">
+                    <circle class="progress-circular__background"/>
+                    <circle class="progress-circular__primary progress-circular--indeterminate__primary"/>
+                    <circle class="progress-circular__secondary progress-circular--indeterminate__secondary"/>
+                </svg>
+            </div>
         </div>
 
         <v-ons-modal :visible="loading" @click="loading=false">
@@ -73,7 +79,7 @@
                 this.getArticle();
             },
             getArticle: function () {
-                this.loading = true;
+//                this.loading = true;
 
                 this.getRequest("/api/articles/" + this.article_id, function (response) {
                     this.article = response.data.article;
