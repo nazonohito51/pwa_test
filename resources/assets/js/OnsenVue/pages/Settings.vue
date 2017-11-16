@@ -34,70 +34,43 @@
                 </div>
                 <div class="list-item__right">
                     <label class="switch">
-                        <input type="checkbox" class="switch__input" v-model="subscribeSwitch" :disabled="subscribeSwitch" @change="subscribeConfirm">
+                        <input type="checkbox" class="switch__input" v-model="notificationSetting" @change="subscribeConfirm">
                         <div class="switch__toggle">
                             <div class="switch__handle"></div>
                         </div>
                     </label>
                 </div>
             </li>
-            <li class="list-item" v-if="isRegistered">
-                <div class="list-item__center">
-                    他のユーザの記事投稿時に通知する
-                </div>
-                <div class="list-item__right">
-                    <label class="switch">
-                        <input type="checkbox" class="switch__input" v-model="postArticleNotification" @change="updateUserSettings">
-                        <div class="switch__toggle">
-                            <div class="switch__handle"></div>
-                        </div>
-                    </label>
-                </div>
-            </li>
-            <li class="list-item" v-if="isRegistered">
-                <div class="list-item__center">
-                    自分の記事がいいね！されたら通知する
-                </div>
-                <div class="list-item__right">
-                    <label class="switch">
-                        <input type="checkbox" class="switch__input" v-model="likeArticleNotification" @change="updateUserSettings">
-                        <div class="switch__toggle">
-                            <div class="switch__handle"></div>
-                        </div>
-                    </label>
-                </div>
-            </li>
+            <!--<li class="list-item" v-if="isRegistered">-->
+                <!--<div class="list-item__center">-->
+                    <!--他のユーザの記事投稿時に通知する-->
+                <!--</div>-->
+                <!--<div class="list-item__right">-->
+                    <!--<label class="switch">-->
+                        <!--<input type="checkbox" class="switch__input" v-model="postArticleNotification" :disabled="!notificationSetting" @change="updateUserSettings">-->
+                        <!--<div class="switch__toggle">-->
+                            <!--<div class="switch__handle"></div>-->
+                        <!--</div>-->
+                    <!--</label>-->
+                <!--</div>-->
+            <!--</li>-->
+            <!--<li class="list-item" v-if="isRegistered">-->
+                <!--<div class="list-item__center">-->
+                    <!--自分の記事がいいね！されたら通知する-->
+                <!--</div>-->
+                <!--<div class="list-item__right">-->
+                    <!--<label class="switch">-->
+                        <!--<input type="checkbox" class="switch__input" v-model="likeArticleNotification" :disabled="!notificationSetting" @change="updateUserSettings">-->
+                        <!--<div class="switch__toggle">-->
+                            <!--<div class="switch__handle"></div>-->
+                        <!--</div>-->
+                    <!--</label>-->
+                <!--</div>-->
+            <!--</li>-->
             <!--<li>-->
                 <!--<v-ons-list-item tappable @click="test()">認証情報確認</v-ons-list-item>-->
             <!--</li>-->
         </ul>
-
-        <!--<v-ons-list>-->
-            <!--<v-ons-list-header v-if="isRegistered">アカウント設定</v-ons-list-header>-->
-            <!--<v-ons-list-item v-if="isRegistered">-->
-                <!--<v-ons-card style="width: 100%;">-->
-                    <!--<div class="user">-->
-                        <!--<div class="left">-->
-                            <!--<img v-bind:src="avator_url" style="width: 48px; height: 48px; border-radius: 50%;">-->
-                            <!--{{nickname}}-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</v-ons-card>-->
-            <!--</v-ons-list-item>-->
-            <!--<v-ons-list-item modifier="chevron" tappable @click="pushUserPage()" v-if="isRegistered">ニックネーム</v-ons-list-item>-->
-            <!--<v-ons-list-item modifier="chevron" tappable @click="pushAvatorPage()" v-if="isRegistered">アイコン</v-ons-list-item>-->
-            <!--<v-ons-list-header>通知設定</v-ons-list-header>-->
-            <!--<ons-list-item>-->
-                <!--<label class="center" for="notification_switch">-->
-                    <!--プッシュ通知-->
-                <!--</label>-->
-                <!--<div class="right">-->
-                    <!--<v-ons-switch input-id="notification_switch" v-model="subscribeSwitch" :disabled="subscribeSwitch" @change="subscribeConfirm">-->
-                    <!--</v-ons-switch>-->
-                <!--</div>-->
-            <!--</ons-list-item>-->
-            <!--&lt;!&ndash;<v-ons-list-item tappable @click="checkCredential()">認証情報確認</v-ons-list-item>&ndash;&gt;-->
-        <!--</v-ons-list>-->
 
         <v-ons-dialog cancelable :visible.sync="registrationDialogVisible">
             <p style="text-align: center">アプリが利用可能になりました！</p>
@@ -115,9 +88,9 @@
         mixins: [serviceWorkerMixin, apiClientMixin],
         data: function () {
             return {
-                subscribeSwitch: false,
-                postArticleNotification: false,
-                likeArticleNotification: false,
+                notificationSetting: false,
+//                postArticleNotification: false,
+//                likeArticleNotification: false,
                 registrationDialogVisible: false,
                 counter: 10
             }
@@ -128,7 +101,7 @@
             },
             avator_url: function () {
                 if (this.$store.state.credential.avator_url) {
-                    return this.$store.state.credential.avator_url + '?sw-ignore=true&hash=' + Math.random().toString(36).slice(-8);
+                    return this.$store.state.credential.avator_url + '?skip_sw=true';
                 } else {
                     return '/images/avators/no_image.png';
                 }
@@ -139,12 +112,25 @@
         },
         methods: {
             init() {
-                const local_storage = window.localStorage;
-                this.postArticleNotification = local_storage.getItem('Settings:postArticleNotification');
-                this.likeArticleNotification = local_storage.getItem('Settings:likeArticleNotification');
-
-                this.subscribeSwitch = this.$store.state.serviceWorker.isSubscribed;
+//                const local_storage = window.localStorage;
+//                this.notificationSetting = local_storage.getItem('Settings:notificationSetting');
+//                this.postArticleNotification = local_storage.getItem('Settings:postArticleNotification');
+//                this.likeArticleNotification = local_storage.getItem('Settings:likeArticleNotification');
+                this.notificationSetting = this.getNotificationSettingFromLocal();
                 this.getUserInfo();
+            },
+            getNotificationSettingFromLocal: function () {
+                const local_storage = window.localStorage;
+                console.log('getNotificationSettingFromLocal', local_storage.getItem('Settings:notificationSetting'));
+                return local_storage.getItem('Settings:notificationSetting');
+            },
+            setNotificationSettingToLocal: function (notification) {
+                const bool = (notification === true || notification === "1" || notification === 1);
+                this.notificationSetting = bool;
+                const local_storage = window.localStorage;
+                local_storage.setItem('Settings:notificationSetting', bool);
+//                local_storage.setItem('Settings:postArticleNotification', this.postArticleNotification);
+//                local_storage.setItem('Settings:likeArticleNotification', this.likeArticleNotification);
             },
             getUserInfo: function () {
                 const username = this.$store.state.credential.username;
@@ -156,12 +142,7 @@
                             'avator_url': response.data.user.avator_url
                         });
 
-                        this.postArticleNotification = response.data.user.user_setting.post_article_notification;
-                        this.likeArticleNotification = response.data.user.user_setting.like_article_notification;
-
-                        const local_storage = window.localStorage;
-                        local_storage.setItem('Settings:postArticleNotification', this.postArticleNotification);
-                        local_storage.setItem('Settings:likeArticleNotification', this.likeArticleNotification);
+                        this.setNotificationSettingToLocal(response.data.user.user_setting.notification);
                     }.bind(this), function () {
 //                        this.$ons.notification.toast('ユーザ情報の取得に失敗しました。', {timeout: 2000});
                     }.bind(this));
@@ -183,26 +164,33 @@
                 console.log('api_token: ' + this.$store.state.credential.api_token);
             },
             subscribeConfirm(event) {
-                if (this.subscribeSwitch === true) {
-                    this.$ons.notification.confirm('アプリを利用するにはプッシュ通知を許可していただく必要があります。プッシュ通知を許可しますか？').then(function (response) {
-                        if (response) {
-                            this.subscribeUser(function () {
-                                this.registrationDialogVisible = true;
-                            }.bind(this));
-                        } else {
-                            this.subscribeSwitch = false;
-                        }
-                    }.bind(this));
+                if (this.notificationSetting === true) {
+                    if (!this.isRegistered) {
+                        // display subscribe modal when only is not subscribed
+                        this.$ons.notification.confirm('記事を投稿するにはプッシュ通知を許可していただく必要があります。プッシュ通知を許可しますか？').then(function (response) {
+                            if (response) {
+                                this.subscribeUser(function () {
+                                    this.registrationDialogVisible = true;
+                                }.bind(this));
+                            } else {
+                                this.notificationSetting = false;
+                            }
+                        }.bind(this));
+                    } else {
+                        this.updateUserSettings();
+                    }
                 } else {
-//                    this.$ons.notification.alert('現在プッシュ通知の解除は対応しておりません。');
+                    this.updateUserSettings();
                 }
             },
             updateUserSettings() {
                 const username = this.$store.state.credential.username;
                 this.putRequest("/api/user/" + username + '/setting', {
-                    post_article_notification: this.postArticleNotification,
-                    like_article_notification: this.likeArticleNotification,
+                    notification: this.notificationSetting,
+//                    post_article_notification: this.postArticleNotification,
+//                    like_article_notification: this.likeArticleNotification,
                 }, function (response) {
+                    this.setNotificationSettingToLocal(this.notificationSetting);
                     this.$ons.notification.toast('通知設定を更新しました。', {timeout: 2000});
                 }.bind(this), function () {
                     this.$ons.notification.toast('通知設定を更新に失敗しました。', {timeout: 2000});

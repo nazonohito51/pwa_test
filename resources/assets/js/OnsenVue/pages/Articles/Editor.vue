@@ -92,7 +92,7 @@
                 }
             },
             alertRegistration() {
-                this.$ons.notification.alert('投稿するにはプッシュ通知を許可する必要があります。').then(function (response) {
+                this.$ons.notification.alert('記事を投稿するにはプッシュ通知を許可する必要があります。').then(function (response) {
                     this.$store.commit('tabBar/show', 2);
                 }.bind(this));
             },
