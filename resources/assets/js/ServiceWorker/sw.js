@@ -12,19 +12,32 @@ const workboxSW = new WorkboxSW({
 });
 workboxSW.precache([]);
 
-workboxSW.router.registerRoute(/images\/avators\/[^\.\/]+\.png$/, workboxSW.strategies.staleWhileRevalidate({
+let avators_handler = workboxSW.strategies.staleWhileRevalidate({
     "cacheName": "image-avators",
     "cacheExpiration": {
         "maxAgeSeconds": 86400
     }
-}), 'GET');
-
+});
 let article_handler = workboxSW.strategies.cacheFirst({
     "cacheName": "article-details",
     "cacheExpiration": {
         "maxAgeSeconds": 600
     }
 });
+
+workboxSW.router.registerRoute(/api\/articles\/\d+$/, avators_handler, 'GET');
+// workboxSW.router.registerRoute(/images\/avators\/[^\.\/]+\.png$/, function (args) {
+//     // console.log('args:', args);
+//     // {url: URL, event: FetchEvent, params: undefined}
+//     return avators_handler.handle(args).then(function (response) {
+//         if (!response) {
+//             return caches.match('images/error.png');
+//         } else if (response.status === 404) {
+//             return caches.match('images/avators/no_image.png');
+//         }
+//         return response;
+//     });
+// }, 'GET');
 workboxSW.router.registerRoute(/api\/articles\/\d+$/, article_handler, 'GET');
 
 self.addEventListener('push', function(event) {
