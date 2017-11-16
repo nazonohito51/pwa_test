@@ -70,13 +70,15 @@ class UserController extends Controller
     public function updateSetting(Request $request, User $user)
     {
         $this->validate($request, [
-            'post_article_notification' => ['boolean'],
-            'like_article_notification' => ['boolean'],
+            'notification' => ['boolean'],
+//            'post_article_notification' => ['boolean'],
+//            'like_article_notification' => ['boolean'],
         ]);
 
         $user->user_setting()->update([
-            'post_article_notification' => $request->get('post_article_notification'),
-            'like_article_notification' => $request->get('like_article_notification'),
+            'notification' => $request->get('notification'),
+//            'post_article_notification' => $request->get('post_article_notification'),
+//            'like_article_notification' => $request->get('like_article_notification'),
         ]);
 
         return new ApiResponse(new SuccessStatus(), 'updating user settings is succeeded');
