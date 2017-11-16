@@ -64,13 +64,13 @@ class SendPushNotificationsService
 
     private function shouldSendUser(User $user, $type)
     {
-        if (is_null($type)) {
-            return true;
-        } elseif (is_string($type)) {
-            return $user->user_setting->getAttributeValue($type);
-        }
+        return $user->user_setting->notification ? true : false;
 
-        return false;
+//        if (is_null($type)) {
+//            return true;
+//        } elseif (is_string($type)) {
+//            return $user->user_setting->getAttributeValue($type);
+//        }
     }
 
     private function getIconUrl(User $user)
