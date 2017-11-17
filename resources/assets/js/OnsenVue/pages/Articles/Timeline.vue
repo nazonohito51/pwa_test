@@ -100,6 +100,10 @@
             },
             visibilityChanged: function (isVisible, entry, url) {
                 console.log(isVisible, entry, url);
+                if (isVisible) {
+                    // TODO: fetch entry
+                    entry.target._vue_intersectionObserver.unobserve(entry.target);
+                }
             }
         }
     }
