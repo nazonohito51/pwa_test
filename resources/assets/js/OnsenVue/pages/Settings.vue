@@ -196,6 +196,14 @@
                     this.$ons.notification.toast('通知設定を更新に失敗しました。', {timeout: 2000});
                 }.bind(this));
             },
+            getAvatorUrlOnError(test1, test2) {
+                console.log('test', test1, test2);
+                if (this.$store.state.credential.avator_url) {
+                    return this.$store.state.credential.avator_url;
+                } else {
+                    return '/images/avators/no_image.png';
+                }
+            },
             test() {
                 const article_id = this.counter;
                 this.counter += 1;

@@ -26,19 +26,19 @@ let article_handler = workboxSW.strategies.cacheFirst({
     }
 });
 
-workboxSW.router.registerRoute(/images\/avators\/[^\.\/]+\.png$/, avators_handler, 'GET');
-// workboxSW.router.registerRoute(/images\/avators\/[^\.\/]+\.png$/, function (args) {
-//     // console.log('args:', args);
-//     // {url: URL, event: FetchEvent, params: undefined}
-//     return avators_handler.handle(args).then(function (response) {
-//         if (!response) {
-//             return caches.match('images/error.png');
-//         } else if (response.status === 404) {
-//             return caches.match('images/avators/no_image.png');
-//         }
-//         return response;
-//     });
-// }, 'GET');
+// workboxSW.router.registerRoute(/images\/avators\/[^\.\/]+\.png$/, avators_handler, 'GET');
+workboxSW.router.registerRoute(/images\/avators\/[^\.\/]+\.png$/, function (args) {
+    // console.log('args:', args);
+    // {url: URL, event: FetchEvent, params: undefined}
+    return avators_handler.handle(args).then(function (response) {
+        if (!response || response.type === 'error') {
+            return caches.match('images/error.png');
+        } else if (response.status === 404) {
+            return caches.match('images/avators/no_image.png');
+        }
+        return response;
+    });
+}, 'GET');
 workboxSW.router.registerRoute(/api\/articles\/\d+$/, article_handler, 'GET');
 
 self.addEventListener('push', function(event) {
