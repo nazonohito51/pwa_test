@@ -16,6 +16,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import VueOnsen from 'vue-onsenui'; // This already imports 'onsenui'
 import VueQuillEditor from 'vue-quill-editor';
+import VueObserveVisibility from 'vue-observe-visibility'
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -26,6 +27,7 @@ import VueQuillEditor from 'vue-quill-editor';
 Vue.use(Vuex);
 Vue.use(VueOnsen);
 Vue.use(VueQuillEditor);
+Vue.use(VueObserveVisibility);
 Vue.config.debug = true;
 
 import AppNavigator from './OnsenVue/components/AppNavigator.vue';
