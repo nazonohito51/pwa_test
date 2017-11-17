@@ -10,7 +10,7 @@ class Article extends Model
         'user_id', 'title', 'body', 'published'
     ];
 
-    protected $appends = ['description'];
+    protected $appends = ['description', 'url'];
 
     public function user()
     {
@@ -30,5 +30,10 @@ class Article extends Model
     public function getDescriptionAttribute()
     {
         return explode("\n", strip_tags($this->body), 2)[0];
+    }
+
+    public function getUrlAttribute()
+    {
+        return route('api.articles.show', ['article' => $this->id]);
     }
 }
