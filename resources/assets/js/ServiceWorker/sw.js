@@ -26,7 +26,7 @@ let article_handler = workboxSW.strategies.cacheFirst({
     }
 });
 
-workboxSW.router.registerRoute(/api\/articles\/\d+$/, avators_handler, 'GET');
+workboxSW.router.registerRoute(/images\/avators\/[^\.\/]+\.png$/, avators_handler, 'GET');
 // workboxSW.router.registerRoute(/images\/avators\/[^\.\/]+\.png$/, function (args) {
 //     // console.log('args:', args);
 //     // {url: URL, event: FetchEvent, params: undefined}
