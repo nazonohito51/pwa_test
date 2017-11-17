@@ -4,6 +4,7 @@
                       :tabs="tabs"
                       :visible="true"
                       :index.sync="activeIndex"
+                      swipeable
         >
         </v-ons-tabbar>
     </v-ons-page>
