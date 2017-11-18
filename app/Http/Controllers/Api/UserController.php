@@ -136,7 +136,7 @@ class UserController extends Controller
 
         $image_binary = base64_decode($request->get('image'));
         $filename = $user->name . '.png';
-        file_put_contents(public_path() . '/images/avators/' . $filename, $image_binary);
+        file_put_contents(public_path() . '/images/avatars/' . $filename, $image_binary);
 
         $user->avator = $filename;
         $user->save();

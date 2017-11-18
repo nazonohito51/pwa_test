@@ -37,7 +37,7 @@ class User extends Authenticatable
 
     public function getAvatorUrlAttribute()
     {
-        $avator_dir = 'images/avators/';
+        $avator_dir = 'images/avatars/';
 
         if (isset($this->attributes['avator'])) {
             $avator_path = $avator_dir . $this->attributes['avator'];

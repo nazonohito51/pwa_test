@@ -5,7 +5,7 @@ module.exports = {
         'public/manifest.json',
         'public/css/**.css',
         'public/images/error.png',
-        'public/images/avators/no_image.png',
+        'public/images/avatars/no_image.png',
         'public/js/**.js',
         'public/fonts/**/**.*',
     ],

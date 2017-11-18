@@ -27,7 +27,7 @@
         <v-ons-modal :visible="cropperVisible">
             <div style="width: 80%; margin: 0 auto;">
                 <div style="margin: 30px auto;">
-                    <img id="uploadImage" src="/images/avators/nazonohito51.jpeg" style="max-width: 100%;">
+                    <img id="uploadImage" src="/images/avatars/nazonohito51.jpeg" style="max-width: 100%;">
                 </div>
                 <div style="margin: 10px auto; width: 80%;">
                     <v-ons-button modifier="large--cta" @click="uploadImage();" style="margin: 6px;">アップロード</v-ons-button>

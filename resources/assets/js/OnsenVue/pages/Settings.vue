@@ -103,7 +103,7 @@
                 if (this.$store.state.credential.avator_url) {
                     return this.$store.state.credential.avator_url + '?skip_sw=true';
                 } else {
-                    return '/images/avators/no_image.png';
+                    return '/images/avatars/no_image.png';
                 }
             },
             isRegistered: function () {
@@ -201,7 +201,7 @@
                 if (this.$store.state.credential.avator_url) {
                     return this.$store.state.credential.avator_url;
                 } else {
-                    return '/images/avators/no_image.png';
+                    return '/images/avatars/no_image.png';
                 }
             },
             test() {

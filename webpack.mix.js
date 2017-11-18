@@ -13,7 +13,7 @@ mix.webpackConfig({
                 'css/**.css',
                 'images/icon.png',
                 'images/error.png',
-                'images/avators/no_image.png',
+                'images/avatars/no_image.png',
                 'js/**.js',
                 'fonts/**/**.*',
             ],
