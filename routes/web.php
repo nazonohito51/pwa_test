@@ -27,6 +27,6 @@ Route::get('/user/{user}', function (User $user) {
 });
 
 Route::resource('/user/{user}/articles', 'ArticleController');
-Route::get('/app', 'FrontController@onsenVue');
+Route::get('/app', 'FrontController@onsenVue')->name('app');
 Route::get('/vue', 'FrontController@vue');
 Route::get('/onsen', 'FrontController@onsen');

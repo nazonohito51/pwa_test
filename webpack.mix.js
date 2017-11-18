@@ -40,6 +40,7 @@ mix.webpackConfig({
 mix.js('resources/assets/js/app.js', 'public/js')
     .sass('resources/assets/sass/app.scss', 'public/css')
     .js('resources/assets/js/onsenVue.js', 'public/js')
-    .js('resources/assets/js/main.js', 'public/js');
+    .js('resources/assets/js/main.js', 'public/js')
+    .js('resources/assets/js/ServiceWorker/preinstall.js', 'public/js');
     // .js('resources/assets/js/ServiceWorker/pushNotification.js', 'public/js')
     // .js('resources/assets/js/sw.js', 'public');
