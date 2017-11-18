@@ -8350,3 +8350,45 @@ button.close {
   }
 }
 
+.article .article_title,
+.article .article__body h1,
+.article .article__body h2,
+.article .article__body h3 {
+  margin-top: 24px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.article .article__title {
+  padding-bottom: 0.3em;
+  font-size: 2em;
+  border-bottom: 1px solid #eaecef;
+}
+
+.article .article__body h1 {
+  padding-bottom: 0.3em;
+  font-size: 1.5em;
+  border-bottom: 1px solid #eaecef;
+}
+
+.article .article__body h2 {
+  font-size: 1.25em;
+}
+
+.article .article__body h3 {
+  font-size: 1.25em;
+}
+
+.article .article__body img {
+  max-width: 90%;
+  height: auto;
+  margin: 30px auto;
+  display: block;
+}
+
+.article .favorite {
+  width: 50px;
+  margin: 50px 0 0 auto;
+}
+

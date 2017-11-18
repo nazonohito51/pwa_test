@@ -1,5 +1,7 @@
 {
+    "/js/onsenVue.js": "/js/onsenVue.js",
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
-    "/js/onsenVue.js": "/js/onsenVue.js"
+    "/js/main.js": "/js/main.js",
+    "/js/preinstall.js": "/js/preinstall.js"
 }
