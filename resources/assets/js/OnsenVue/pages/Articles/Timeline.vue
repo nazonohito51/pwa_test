@@ -99,9 +99,8 @@
                 });
             },
             visibilityChanged: function (isVisible, entry, url) {
-                console.log(isVisible, entry, url);
                 if (isVisible) {
-                    // TODO: fetch entry
+                    this.prefetch(url);
                     entry.target._vue_intersectionObserver.unobserve(entry.target);
                 }
             }

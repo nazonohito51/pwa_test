@@ -11,42 +11,47 @@ export default {
         }
     },
     methods: {
+        prefetch: function (uri) {
+            this.apiClient.get(uri).then(function (response) {
+                // this.loggingReponse(response);
+            }.bind(this));
+        },
         getRequest: function (uri, resolve_callback, reject_callback) {
             this.apiClient.get(uri).then(function (response) {
-                console.log(response);
+                this.loggingReponse(response);
 
                 if (response.error) {
                     reject_callback();
                 } else {
                     resolve_callback(response);
                 }
-            }).catch(function (error) {
+            }.bind(this)).catch(function (error) {
                 reject_callback();
             });
         },
         postRequest: function (uri, params, resolve_callback, reject_callback) {
             this.apiClient.post(uri, params).then(function (response) {
-                console.log(response);
+                this.loggingReponse(response);
 
                 if (response.error) {
                     reject_callback();
                 } else {
                     resolve_callback(response);
                 }
-            }).catch(function (error) {
+            }.bind(this)).catch(function (error) {
                 reject_callback();
             });
         },
         putRequest: function (uri, params, resolve_callback, reject_callback) {
             this.apiClient.put(uri, params).then(function (response) {
-                console.log(response);
+                this.loggingReponse(response);
 
                 if (response.error) {
                     reject_callback();
                 } else {
                     resolve_callback(response);
                 }
-            }).catch(function (error) {
+            }.bind(this)).catch(function (error) {
                 reject_callback();
             });
         },
@@ -67,6 +72,9 @@ export default {
                 console.log('sync not supported.');
                 this.postRequest(uri, params, resolve_callback, reject_callback);
             }
+        },
+        loggingReponse: function (response) {
+            console.log(response);
         }
     }
 };
