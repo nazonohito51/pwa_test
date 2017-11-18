@@ -22,7 +22,7 @@
                 <div class="list-item__center">ニックネーム</div>
             </li>
             <li class="list-item list-item--tappable list-item--chevron" @click="pushAvatorPage()" v-if="isRegistered">
-                <div class="list-item__center">アイコン</div>
+                <div class="list-item__center">アバター</div>
             </li>
 
             <li class="list-header">
