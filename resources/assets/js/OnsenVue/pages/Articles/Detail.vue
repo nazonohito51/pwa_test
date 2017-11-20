@@ -86,9 +86,11 @@
                     this.loading = false;
                     this.getLikeUsers();
                 }.bind(this), function () {
-                    this.$ons.notification.toast('記事の取得に失敗しました。', {timeout: 1000});
-                    this.loading = false;
-                    this.$store.commit('navigator/pop');
+                    if (!this.article) {
+                        this.$ons.notification.toast('記事の取得に失敗しました。', {timeout: 1000});
+                        this.loading = false;
+                        this.$store.commit('navigator/pop');
+                    }
                 }.bind(this))
             },
             getLikeUsers: function () {
