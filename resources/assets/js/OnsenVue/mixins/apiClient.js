@@ -11,10 +11,18 @@ export default {
         }
     },
     methods: {
-        prefetch: function (uri) {
+        prefetch: function (uri, resolve_callback, reject_callback) {
             this.apiClient.get(uri).then(function (response) {
                 // this.loggingReponse(response);
-            }.bind(this));
+
+                if (response.error) {
+                    reject_callback();
+                } else {
+                    resolve_callback(response);
+                }
+            }.bind(this)).catch(function (error) {
+                reject_callback();
+            });
         },
         getRequest: function (uri, resolve_callback, reject_callback) {
             this.apiClient.get(uri).then(function (response) {
