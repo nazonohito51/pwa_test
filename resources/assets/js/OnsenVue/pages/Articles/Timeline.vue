@@ -5,7 +5,7 @@
         </v-ons-toolbar>
 
         <ul class="list list--material">
-            <li class="list-item list-item--material" v-for="article in articles" :key="article.id" @click="pushDetailPage(article)" v-observe-visibility="(isVisible, entry) => visibilityChanged(isVisible, entry, article.url)">
+            <li class="list-item list-item--material" v-for="article in articles" :key="article.id" @click="pushDetailPage(article)" v-observe-visibility="(isVisible, entry) => visibilityChanged(isVisible, entry, article)">
                 <div class="list-item__left list-item--material__left">
                     <img class="list-item__thumbnail list-item--material__thumbnail" v-bind:src="article.user.avator_url">
                 </div>
@@ -59,7 +59,8 @@
         data: function () {
             return {
                 loading: false,
-                articles: function () { return [] }
+                articles: function () { return [] },
+                article_details: {}
             }
         },
         methods: {
@@ -79,6 +80,7 @@
 //                setTimeout(function () {
                 this.getRequest("/api/articles", function (response) {
                     this.articles = response.data.articles;
+                    this.resetArticleDetails();
                     const local_storage = window.localStorage;
                     local_storage.setItem('Timeline:articles', JSON.stringify(this.articles));
                     this.loading = false;
@@ -88,20 +90,37 @@
                 }.bind(this));
 //                }.bind(this), 5000);
             },
+            resetArticleDetails: function () {
+                const detail_ids = Object.keys(this.article_details);
+                const article_ids = this.articles.map(function (article) {
+                    return article.id.toString();
+                });
+
+                detail_ids.forEach(function (element, index, array) {
+                    if (article_ids.indexOf(element) < 0) {
+                        delete this.article_details[element];
+                    }
+                }.bind(this));
+            },
             pushDetailPage: function (article) {
+                const article_detail = this.article_details[article.id] ? this.article_details[article.id] : null;
                 this.$store.commit('navigator/push', {
                     extends: Detail,
-                    data() {
+                    data: function () {
                         return {
-                            article_id: article.id
+                            article_id: article.id,
+                            article: article_detail
                         };
                     }
                 });
             },
-            visibilityChanged: function (isVisible, entry, url) {
+            visibilityChanged: function (isVisible, entry, article) {
                 if (isVisible) {
-                    this.prefetch(url);
-                    entry.target._vue_intersectionObserver.unobserve(entry.target);
+                    this.prefetch(article.url, function (response) {
+                        this.article_details[article.id] = response.data.article;
+                    }.bind(this), function () {
+                    });
+//                    entry.target._vue_intersectionObserver.unobserve(entry.target);
                 }
             }
         }
