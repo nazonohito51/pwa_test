@@ -19,7 +19,8 @@
             </ul>
 
             <div class="article__body">
-                <quill-editor v-model="body"
+                <quill-editor id="quill-editor"
+                              v-model="body"
                               ref="myTextEditor"
                               :options="editorOption"
                               style="background-color: #FFFFFF;">
@@ -27,24 +28,10 @@
             </div>
         </div>
 
-        <!--<v-ons-list>-->
-            <!--<v-ons-list-header>ツイート</v-ons-list-header>-->
-            <!--<v-ons-list-item :modifier="$ons.platform.isAndroid() ? 'nodivider' : ''">-->
-                <!--<div class="left">-->
-                    <!--<v-ons-icon icon="fa-magic" class="list-item__icon"></v-ons-icon>-->
-                <!--</div>-->
-                <!--<label class="center">-->
-                    <!--<v-ons-input float maxlength="255" placeholder="Tweet" v-model="tweet"></v-ons-input>-->
-                <!--</label>-->
-            <!--</v-ons-list-item>-->
-            <!--<v-ons-list-item v-if="tweetInput">-->
-                <!--<v-ons-button modifier="large" @click="postTweet()">投稿</v-ons-button>-->
-            <!--</v-ons-list-item>-->
-        <!--</v-ons-list>-->
-
         <v-ons-modal :visible="postingVisible" @click="cancelPostArticle()">
             <p style="text-align: center">
-                投稿中... <v-ons-icon icon="fa-spinner" spin></v-ons-icon>
+                投稿中...
+                <v-ons-icon icon="fa-spinner" spin></v-ons-icon>
             </p>
         </v-ons-modal>
     </v-ons-page>
@@ -53,8 +40,6 @@
 <script>
     import apiClientMixin from '../../mixins/apiClient.js';
     import Quill from 'quill';
-    import { ImageImport } from '../../../Quill/ImageImport.js'
-    Quill.register('modules/imageImport', ImageImport);
 
     export default {
         mixins: [apiClientMixin],
@@ -63,16 +48,15 @@
                 postingVisible: false,
                 title: '',
                 body: '',
+                maxImageSize: 512,
                 editorOption: {
                     placeholder: '本文を入力してください',
                     modules: {
                         toolbar: [
-                            ['bold', 'italic'],
                             [{header: 1}, {header: 2}],
                             [{align: 'center'}, {align: 'right'}],
                             ['image']
                         ],
-                        imageImport: true
                     }
                 }
             }
@@ -99,8 +83,13 @@
             postArticle() {
                 this.postingVisible = true;
 
+                this.resizeImages();
+
                 const username = this.$store.state.credential.username;
-                this.postRequest("/api/user/" + username + "/articles", {title: this.title, body: this.body}, function (response) {
+                this.postRequest("/api/user/" + username + "/articles", {
+                    title: this.title,
+                    body: this.body
+                }, function (response) {
                     this.postingVisible = false;
                     this.title = '';
                     this.body = '';
@@ -110,6 +99,50 @@
                     this.postingVisible = false;
                     this.$ons.notification.toast('記事の投稿に失敗しました。', {timeout: 1000});
                 }.bind(this));
+            },
+            resizeImages: function () {
+                const images = document.getElementById('quill-editor').getElementsByTagName('img');
+
+                for (let i = 0; i < images.length; i += 1) {
+                    this.resizeImage(images.item(i));
+                }
+            },
+            resizeImage: function (imgElem) {
+                if (imgElem.width > this.maxImageSize || imgElem.height > this.maxImageSize) {
+                    let ratio, destWidth, destHeight;
+                    if (imgElem.width > imgElem.height) {
+                        ratio = imgElem.width / this.maxImageSize;
+                        destWidth = this.maxImageSize;
+                        destHeight = imgElem.height / ratio;
+                    } else {
+                        ratio = imgElem.height / this.maxImageSize;
+                        destWidth = imgElem.width / ratio;
+                        destHeight = this.maxImageSize;
+                    }
+
+                    this.resizeDataUrl(imgElem.src, destWidth, destHeight, function (dataUrl) {
+                        console.log(dataUrl, imgElem);
+                        imgElem.src = dataUrl;
+                    });
+                }
+            },
+            resizeDataUrl: function (src, width, height, callback) {
+                const imgType = src.substring(5, src.indexOf(";"));
+
+                const img = new Image();
+                img.onload = function() {
+                    let canvas = document.createElement('canvas');
+                    canvas.width = width;
+                    canvas.height = height;
+
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    const dest = canvas.toDataURL(imgType);
+
+                    callback(dest);
+                };
+                img.src = src;
             },
             cancelPostArticle() {
                 this.postingVisible = false;
