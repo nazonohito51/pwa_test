@@ -2,7 +2,7 @@ export default {
     computed: {
         apiClient: function () {
             return axios.create({
-                timeout: 10000,
+                timeout: 60000,
                 params: {
                     api_token: this.$store.state.credential.api_token
                 },
