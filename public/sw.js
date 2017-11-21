@@ -41,14 +41,6 @@ workboxSW.precache([
     "revision": "7ecf3595ed81d26685d8fe6bad0dff64"
   },
   {
-    "url": "js/onsenVue_anim.js",
-    "revision": "76ee0c855dbac43f5f3a15dbf0df292e"
-  },
-  {
-    "url": "js/onsenVue_noanim.js",
-    "revision": "515128e0c6bce6a9a24034f513cc4895"
-  },
-  {
     "url": "js/onsenVue.js",
     "revision": "515128e0c6bce6a9a24034f513cc4895"
   },
