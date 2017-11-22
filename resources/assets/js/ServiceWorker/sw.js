@@ -19,6 +19,12 @@ let avators_handler = workboxSW.strategies.staleWhileRevalidate({
         "maxAgeSeconds": 86400
     }
 });
+let avator_network_first_handler = workboxSW.strategies.networkFirst({
+    "cacheName": "image-self-avatar",
+    "cacheExpiration": {
+        "maxAgeSeconds": 86400
+    }
+});
 let article_handler = workboxSW.strategies.cacheFirst({
     "cacheName": "article-details",
     "cacheExpiration": {
@@ -31,6 +37,16 @@ workboxSW.router.registerRoute(/images\/avatars\/[^\.\/]+\.png$/, function (args
     // console.log('args:', args);
     // {url: URL, event: FetchEvent, params: undefined}
     return avators_handler.handle(args).then(function (response) {
+        if (!response || response.type === 'error') {
+            return caches.match('images/error.png');
+        } else if (response.status === 404) {
+            return caches.match('images/avatars/no_image.png');
+        }
+        return response;
+    });
+}, 'GET');
+workboxSW.router.registerRoute(/images\/avatars\/[^\.\/]+\.png\?self$/, function (args) {
+    return avator_network_first_handler.handle(args).then(function (response) {
         if (!response || response.type === 'error') {
             return caches.match('images/error.png');
         } else if (response.status === 404) {

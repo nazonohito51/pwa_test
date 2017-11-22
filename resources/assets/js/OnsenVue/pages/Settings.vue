@@ -101,7 +101,7 @@
             },
             avator_url: function () {
                 if (this.$store.state.credential.avator_url) {
-                    return this.$store.state.credential.avator_url + '?skip_sw=true';
+                    return this.$store.state.credential.avator_url + '?self';
                 } else {
                     return '/images/avatars/no_image.png';
                 }
