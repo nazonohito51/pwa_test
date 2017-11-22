@@ -83,48 +83,60 @@
             postArticle() {
                 this.postingVisible = true;
 
-                this.resizeImages();
+                const promises = this.resizeImages();
 
-                const username = this.$store.state.credential.username;
-                this.postRequest("/api/user/" + username + "/articles", {
-                    title: this.title,
-                    body: this.body
-                }, function (response) {
-                    this.postingVisible = false;
-                    this.title = '';
-                    this.body = '';
-                    this.$store.commit('tabBar/show', 0);
-                    this.$ons.notification.toast('記事を投稿しました。', {timeout: 1000});
-                }.bind(this), function () {
-                    this.postingVisible = false;
-                    this.$ons.notification.toast('記事の投稿に失敗しました。', {timeout: 1000});
+                Promise.all(promises).then(function () {
+                    const username = this.$store.state.credential.username;
+                    this.postRequest("/api/user/" + username + "/articles", {
+                        title: this.title,
+                        body: this.body
+                    }, function (response) {
+                        this.postingVisible = false;
+                        this.title = '';
+                        this.body = '';
+                        this.$store.commit('tabBar/show', 0);
+                        this.$ons.notification.toast('記事を投稿しました。', {timeout: 1000});
+                    }.bind(this), function () {
+                        this.postingVisible = false;
+                        this.$ons.notification.toast('記事の投稿に失敗しました。', {timeout: 1000});
+                    }.bind(this));
                 }.bind(this));
             },
             resizeImages: function () {
                 const images = document.getElementById('quill-editor').getElementsByTagName('img');
+                let promises = [];
 
                 for (let i = 0; i < images.length; i += 1) {
-                    this.resizeImage(images.item(i));
+                    promises.push(this.resizeImage(images.item(i)));
                 }
+
+                return promises;
             },
             resizeImage: function (imgElem) {
-                if (imgElem.width > this.maxImageSize || imgElem.height > this.maxImageSize) {
-                    let ratio, destWidth, destHeight;
-                    if (imgElem.width > imgElem.height) {
-                        ratio = imgElem.width / this.maxImageSize;
-                        destWidth = this.maxImageSize;
-                        destHeight = imgElem.height / ratio;
-                    } else {
-                        ratio = imgElem.height / this.maxImageSize;
-                        destWidth = imgElem.width / ratio;
-                        destHeight = this.maxImageSize;
-                    }
+                return new Promise(function (resolve) {
+                    const srcWidth = (imgElem.naturalWidth !== 'undefined') ? imgElem.naturalWidth : imgElem.width;
+                    const srcHeight = (imgElem.naturalHeight !== 'undefined') ? imgElem.naturalHeight : imgElem.height;
 
-                    this.resizeDataUrl(imgElem.src, destWidth, destHeight, function (dataUrl) {
-                        console.log(dataUrl, imgElem);
-                        imgElem.src = dataUrl;
-                    });
-                }
+                    if (srcWidth > this.maxImageSize || srcHeight > this.maxImageSize) {
+                        let ratio, destWidth, destHeight;
+                        if (srcWidth > srcHeight) {
+                            ratio = srcWidth / this.maxImageSize;
+                            destWidth = this.maxImageSize;
+                            destHeight = srcHeight / ratio;
+                        } else {
+                            ratio = srcHeight / this.maxImageSize;
+                            destWidth = srcWidth / ratio;
+                            destHeight = this.maxImageSize;
+                        }
+
+                        this.resizeDataUrl(imgElem.src, destWidth, destHeight, function (dataUrl) {
+                            imgElem.src = dataUrl;
+                            resolve();
+                        });
+                    } else {
+                        resolve();
+                    }
+                }.bind(this));
             },
             resizeDataUrl: function (src, width, height, callback) {
                 const imgType = src.substring(5, src.indexOf(";"));
