@@ -14,6 +14,7 @@ class SendPushNotificationJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    private $actor;
     private $users;
     private $message;
     private $options;
@@ -22,17 +23,19 @@ class SendPushNotificationJob implements ShouldQueue
     /**
      * Create a new job instance.
      *
+     * @param User $actor
      * @param User[] $users
      * @param string $message
      * @param array $options
      * @param string $type
      */
-    public function __construct($users, $message, $options = [], $type = null)
+    public function __construct(User $actor, $users, $message, $options = [], $type = null)
     {
         if ($users instanceof User) {
             $users = [$users];
         }
 
+        $this->actor = $actor;
         $this->users = $users;
         $this->message = $message;
         $this->options = $options;
@@ -47,6 +50,7 @@ class SendPushNotificationJob implements ShouldQueue
      */
     public function handle(SendPushNotificationsService $service)
     {
+        $service->setActor($this->actor);
         $service->execute($this->users, $this->message, $this->options, $this->type);
     }
 }

@@ -45,6 +45,7 @@ class ArticleController extends Controller
         ]);
 
         SendPushNotificationJob::dispatch(
+            $user,
             User::where('id', '!=', $user->id)->get(),
             $user->nickname . 'が投稿しました',
             ['fetch_uri' => route('api.articles.show', ['article' => $article->id])],
@@ -105,6 +106,7 @@ class ArticleController extends Controller
         ]);
 
         SendPushNotificationJob::dispatch(
+            $user,
             $article->user,
             $user->nickname . 'が記事にいいね！をしました',
             [],

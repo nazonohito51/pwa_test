@@ -8,6 +8,11 @@ class SendPushNotificationsService
 {
     private $webPush;
 
+    /**
+     * @var User
+     */
+    private $actor;
+
     public function __construct()
     {
         $this->webPush = new WebPush([
@@ -17,6 +22,11 @@ class SendPushNotificationsService
                 'privateKey' => 'bOHQ5fmaaNfZiwsc2xhFFH8_iJVCsYbnfScaMPTuQQw',
             ],
         ]);
+    }
+
+    public function setActor(User $actor)
+    {
+        $this->actor = $actor;
     }
 
     /**
@@ -44,7 +54,7 @@ class SendPushNotificationsService
             foreach ($user->push_notifications as $notification) {
                 $message_and_icon = json_encode(array_merge([
                     'message' => $message,
-                    'icon' => $this->getIconUrl($user)
+                    'icon' => $this->getIconUrl()
                 ], $options));
                 \Log::info('notification', [
                     'message' => $message_and_icon,
@@ -73,10 +83,10 @@ class SendPushNotificationsService
 //        }
     }
 
-    private function getIconUrl(User $user)
+    private function getIconUrl()
     {
-        if ($user->haveAvator()) {
-            return $user->avator_url;
+        if ($this->actor && $this->actor->haveAvator()) {
+            return $this->actor->avator_url;
         } else {
             return asset('images/icon.png');
         }
