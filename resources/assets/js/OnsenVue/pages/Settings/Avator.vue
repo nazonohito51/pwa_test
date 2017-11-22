@@ -52,7 +52,7 @@
         },
         computed: {
             avator_url: function () {
-                return this.$store.state.credential.avator_url + '?sw-ignore=true&hash=' + Math.random().toString(36).slice(-8);
+                return this.$store.state.credential.avator_url + '?self';
             }
         },
         methods: {
