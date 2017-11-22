@@ -47,6 +47,7 @@
                     this.originalNickname = response.data.user.nickname;
                 }.bind(this), function () {
                     this.$ons.notification.toast('ユーザ情報の取得に失敗しました。', {timeout: 2000});
+                    this.$store.commit('navigator/pop');
                 }.bind(this));
             },
             updateUserNickName: function() {
