@@ -103,7 +103,7 @@
                 }.bind(this));
             },
             pushDetailPage: function (article) {
-                history.pushState({page: 'Detail', article_id: article.id}, 'article detail page', 'article/' + article.id);
+                history.pushState({page: 'Detail', article_id: article.id}, 'article detail page', '/app/article/' + article.id);
                 const article_detail = this.article_details[article.id] ? this.article_details[article.id] : null;
                 this.$store.commit('navigator/push', {
                     extends: Detail,

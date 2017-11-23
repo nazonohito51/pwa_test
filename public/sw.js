@@ -42,7 +42,7 @@ workboxSW.precache([
   },
   {
     "url": "js/onsenVue.js",
-    "revision": "5fc126179055fd9ce7f9304b662d96b6"
+    "revision": "518fef120d6560c71d50fb1494b55657"
   },
   {
     "url": "js/preinstall.js",
