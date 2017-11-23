@@ -41,7 +41,7 @@ class CheckJobs extends Command
      */
     public function handle()
     {
-        $headers = ['id', 'queue', 'payload', 'attempt', 'reserved_at', 'available_at', 'created_at'];
+        $headers = ['id', 'queue', 'payload', 'attempts', 'reserved_at', 'available_at', 'created_at'];
         $jobs = Job::all($headers)->toArray();
         $this->table($headers, $jobs);
     }
