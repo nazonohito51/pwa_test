@@ -149,9 +149,13 @@
                 }
             },
             pushUserPage() {
+                const username = this.$store.state.credential.username;
+                history.pushState({page: 'User'}, 'user page', '/app/user/' + username);
                 this.$store.commit('navigator/push', User);
             },
             pushAvatorPage() {
+                const username = this.$store.state.credential.username;
+                history.pushState({page: 'Avatar'}, 'avatar page', '/app/user/' + username + '/avatar');
                 this.$store.commit('navigator/push', Avator);
             },
             checkCredential() {
