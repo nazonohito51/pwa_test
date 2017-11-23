@@ -48,7 +48,7 @@ class ArticleController extends Controller
             $user,
             User::where('id', '!=', $user->id)->get(),
             $user->nickname . 'が投稿しました',
-            ['fetch_uri' => route('api.articles.show', ['article' => $article->id])],
+            [],
             'post_article_notification'
         );
 
