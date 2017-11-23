@@ -55,6 +55,8 @@ class SendPushNotificationsService
             \Log::error('sending push_notification is failed', [
                 'notification message' => $message
             ]);
+        } elseif ($ret === true) {
+            \Log::error('sending push_notification is succeeded');
         }
     }
 
