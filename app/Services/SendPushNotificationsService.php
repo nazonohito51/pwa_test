@@ -41,6 +41,8 @@ class SendPushNotificationsService
             $users = [$users];
         }
 
+        $this->loggingParams($users, $message, $options, $type);
+
         foreach ($users as $user) {
             $this->sendPushNotification($user, $message, $options, $type);
         }
@@ -56,7 +58,7 @@ class SendPushNotificationsService
                 'notification message' => $message
             ]);
         } elseif ($ret === true) {
-            \Log::error('sending push_notification is succeeded');
+            \Log::info('sending push_notification is succeeded');
         }
     }
 
@@ -103,5 +105,16 @@ class SendPushNotificationsService
         } else {
             return asset('images/icon.png');
         }
+    }
+
+    private function loggingParams($users, $message, $options, $type)
+    {
+        \Log::info('loggingParams', [
+            'actor' => $this->actor,
+            'users' => $users,
+            'message' => $message,
+            'options' => $options,
+            'type' => $type
+        ]);
     }
 }
