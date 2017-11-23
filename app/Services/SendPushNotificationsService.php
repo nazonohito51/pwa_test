@@ -45,7 +45,17 @@ class SendPushNotificationsService
             $this->sendPushNotification($user, $message, $options, $type);
         }
 
-        $this->webPush->flush();
+        $ret = $this->webPush->flush();
+
+        if (is_array($ret)) {
+            \Log::info('send push_notification result', [
+                'ret' => var_export($ret, true)
+            ]);
+        } elseif ($ret === false) {
+            \Log::error('sending push_notification is failed', [
+                'notification message' => $message
+            ]);
+        }
     }
 
     private function sendPushNotification(User $user, $message, $options = [], $type)
