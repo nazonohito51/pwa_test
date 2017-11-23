@@ -101,9 +101,9 @@
 
                     let resize_canvas = document.createElement('canvas');
                     let resize_canvas_context = resize_canvas.getContext('2d');
-                    resize_canvas.width = 128;
-                    resize_canvas.height = 128;
-                    resize_canvas_context.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, 128, 128);
+                    resize_canvas.width = 96;
+                    resize_canvas.height = 96;
+                    resize_canvas_context.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, 96, 96);
 
                     const base64 = resize_canvas.toDataURL('image/png').replace(/^.*,/, ''); // remove "data:image/png;base64,"
 
