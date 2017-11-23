@@ -54,7 +54,8 @@ class SendPushNotificationsService
             foreach ($user->push_notifications as $notification) {
                 $message_and_icon = json_encode(array_merge([
                     'message' => $message,
-                    'icon' => $this->getIconUrl()
+                    'icon' => $this->getIconUrl(),
+                    'badge' => asset('images/badge.png')
                 ], $options));
                 \Log::info('notification', [
                     'message' => $message_and_icon,
