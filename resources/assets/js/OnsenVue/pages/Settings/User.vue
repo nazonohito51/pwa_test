@@ -2,7 +2,7 @@
     <v-ons-page>
         <v-ons-toolbar>
             <div class="left">
-                <v-ons-back-button>Settings</v-ons-back-button>
+                <v-ons-back-button @click="popHistory">Settings</v-ons-back-button>
             </div>
             <div class="center">UserProfile</div>
         </v-ons-toolbar>
@@ -60,6 +60,9 @@
                 }.bind(this), function () {
                     this.$ons.notification.toast('ニックネームの更新に失敗しました。', {timeout: 2000});
                 }.bind(this));
+            },
+            popHistory: function (event) {
+                history.back();
             }
         },
         computed: {

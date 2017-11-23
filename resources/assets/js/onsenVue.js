@@ -42,6 +42,11 @@ const app = new Vue({
     created: function () {
         this.getCredential();
         this.registerServiceWorker();
+
+        window.onpopstate = function(event) {
+            console.log('onpopstate', event);
+            this.$store.commit('navigator/pop');
+        }.bind(this);
     },
     methods: {
         getCredential: function () {

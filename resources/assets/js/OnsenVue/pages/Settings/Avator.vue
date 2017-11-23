@@ -2,7 +2,7 @@
     <v-ons-page @show="init()">
         <v-ons-toolbar>
             <div class="left">
-                <v-ons-back-button>Settings</v-ons-back-button>
+                <v-ons-back-button @click="popHistory">Settings</v-ons-back-button>
             </div>
             <div class="center">アイコン</div>
         </v-ons-toolbar>
@@ -118,6 +118,9 @@
                 }
 
                 this.cropperVisible = false;
+            },
+            popHistory: function (event) {
+                history.back();
             }
 //            updateAvatorUrl: function() {
 //                const api_token = this.$store.state.credential.api_token;

@@ -42,7 +42,7 @@ workboxSW.precache([
   },
   {
     "url": "js/onsenVue.js",
-    "revision": "5a39fc0c5faa0066124feb92acc9ad74"
+    "revision": "5fc126179055fd9ce7f9304b662d96b6"
   },
   {
     "url": "js/preinstall.js",
@@ -335,9 +335,9 @@ self.addEventListener('notificationclick', function(event) {
 
     event.notification.close();
 
-    event.waitUntil(
-        clients.openWindow('https://developers.google.com/web/')
-    );
+    // event.waitUntil(
+    //     clients.openWindow('https://developers.google.com/web/')
+    // );
 });
 
 self.addEventListener('sync', function (event) {

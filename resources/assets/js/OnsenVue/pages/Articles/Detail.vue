@@ -2,7 +2,7 @@
     <v-ons-page @init="init()">
         <v-ons-toolbar>
             <div class="left">
-                <v-ons-back-button>Timeline</v-ons-back-button>
+                <v-ons-back-button @click="popHistory">Timeline</v-ons-back-button>
             </div>
             <div class="center">Article</div>
         </v-ons-toolbar>
@@ -125,6 +125,9 @@
 //                        this.$ons.notification.toast('いいね！の送信に失敗しました。', {timeout: 1000});
 //                    }.bind(this));
                 }
+            },
+            popHistory: function (event) {
+                history.back();
             }
         },
         computed: {
