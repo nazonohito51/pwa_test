@@ -313,7 +313,7 @@ self.addEventListener('push', function(event) {
     const options = {
         body: event.data.json().message,
         icon: event.data.json().icon,
-        badge: event.data.json().icon
+        badge: event.data.json().badge
     };
 
     const uri = event.data.json().fetch_uri;
