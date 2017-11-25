@@ -8,7 +8,8 @@ const workboxSW = new WorkboxSW({
     ignoreUrlParametersMatching: [
         /^utm_/,
         /^api_token/,
-        /^[a-z0-9]{32}/  // web font hash of onsen ui
+        /^[a-z0-9]{32}/,  // web font hash of onsen ui
+        /^rand/
     ]
 });
 workboxSW.precache([]);
