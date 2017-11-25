@@ -47,17 +47,29 @@
         data: function () {
             return {
                 cropper: null,
-                cropperVisible: false
+                cropperVisible: false,
+                rand: null
             }
         },
         computed: {
             avator_url: function () {
-                return this.$store.state.credential.avator_url + '?self';
+                return this.$store.state.credential.avator_url + '?self&rand=' + this.rand;
             }
         },
         methods: {
             init: function () {
+                this.regenerateRand();
 //                this.getAvatorUrl();
+            },
+            regenerateRand: function () {
+                const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+                const chars_length = chars.length;
+                let ret = "";
+                for (let i = 0; i < 16; i++) {
+                    ret += chars[Math.floor(Math.random() * chars_length)];
+                }
+                this.rand = ret;
             },
             loadImage: function (event) {
                 const file = event.target.files[0];

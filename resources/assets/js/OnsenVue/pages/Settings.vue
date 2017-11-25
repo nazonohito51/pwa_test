@@ -92,7 +92,7 @@
 //                postArticleNotification: false,
 //                likeArticleNotification: false,
                 registrationDialogVisible: false,
-                counter: 10
+                rand: null
             }
         },
         computed: {
@@ -101,7 +101,7 @@
             },
             avator_url: function () {
                 if (this.$store.state.credential.avator_url) {
-                    return this.$store.state.credential.avator_url + '?self';
+                    return this.$store.state.credential.avator_url + '?self&rand=' + this.rand;
                 } else {
                     return '/images/avatars/no_image.png';
                 }
@@ -112,9 +112,20 @@
         },
         methods: {
             init() {
+                this.regenerateRand();
                 this.getSettingsFromLocal().then(() => {
                     this.getSettingsFromServer();
                 });
+            },
+            regenerateRand: function () {
+                const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+                const chars_length = chars.length;
+                let ret = "";
+                for (let i = 0; i < 16; i++) {
+                    ret += chars[Math.floor(Math.random() * chars_length)];
+                }
+                this.rand = ret;
             },
             getSettingsFromLocal: function () {
                 return new Promise((resolve, reject) => {
