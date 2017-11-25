@@ -14,13 +14,13 @@ const workboxSW = new WorkboxSW({
 });
 workboxSW.precache([]);
 
-let avators_handler = workboxSW.strategies.staleWhileRevalidate({
+let avatars_handler = workboxSW.strategies.staleWhileRevalidate({
     "cacheName": "image-avatars",
     "cacheExpiration": {
         "maxAgeSeconds": 86400
     }
 });
-let avator_network_first_handler = workboxSW.strategies.networkFirst({
+let avatar_network_first_handler = workboxSW.strategies.networkFirst({
     "cacheName": "image-self-avatar",
     "cacheExpiration": {
         "maxAgeSeconds": 86400
@@ -33,11 +33,12 @@ let article_handler = workboxSW.strategies.cacheFirst({
     }
 });
 
-// workboxSW.router.registerRoute(/images\/avatars\/[^\.\/]+\.png$/, avators_handler, 'GET');
+// workboxSW.router.registerRoute(/images\/avatars\/[^\.\/]+\.png$/, avatars_handler, 'GET');
 workboxSW.router.registerRoute(/images\/avatars\/[^\.\/]+\.png$/, function (args) {
     // console.log('args:', args);
     // {url: URL, event: FetchEvent, params: undefined}
-    return avators_handler.handle(args).then(function (response) {
+    return avatars_handler.handle(args).then(function (response) {
+        console.log('avatars_handler response', response);
         if (!response || response.type === 'error') {
             return caches.match('images/error.png');
         } else if (response.status === 404) {
@@ -47,7 +48,8 @@ workboxSW.router.registerRoute(/images\/avatars\/[^\.\/]+\.png$/, function (args
     });
 }, 'GET');
 workboxSW.router.registerRoute(/images\/avatars\/[^\.\/]+\.png\?self$/, function (args) {
-    return avator_network_first_handler.handle(args).then(function (response) {
+    return avatar_network_first_handler.handle(args).then(function (response) {
+        console.log('avatar_network_first_handler response', response);
         if (!response || response.type === 'error') {
             return caches.match('images/error.png');
         } else if (response.status === 404) {
