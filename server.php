@@ -15,7 +15,14 @@ $uri = urldecode(
 // built-in PHP web server. This provides a convenient way to test a Laravel
 // application without having installed a "real" web server software here.
 if ($uri !== '/' && file_exists(__DIR__.'/public'.$uri)) {
-    return false;
+    if (preg_match('#^/images/avatars/.*$#', $uri) && pathinfo(__DIR__ . '/public' . $uri)['extension'] == 'png') {
+        header('Content-Type: image/png');
+        header('Cache-Control: no-store');
+        readfile(__DIR__ . '/public' . $uri);
+        exit();
+    } else {
+        return false;
+    }
 }
 
 require_once __DIR__.'/public/index.php';
