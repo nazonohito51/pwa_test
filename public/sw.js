@@ -1,5 +1,5 @@
-importScripts('workbox-sw.prod.v2.1.1.js');
-importScripts('workbox-background-sync.prod.v2.0.3.js');
+importScripts('workbox-sw.dev.v2.1.1.js');
+importScripts('workbox-background-sync.dev.v2.0.3.js');
 
 const workboxSW = new WorkboxSW({
     cacheId: "pwa-test",
@@ -8,7 +8,8 @@ const workboxSW = new WorkboxSW({
     ignoreUrlParametersMatching: [
         /^utm_/,
         /^api_token/,
-        /^[a-z0-9]{32}/  // web font hash of onsen ui
+        /^[a-z0-9]{32}/,  // web font hash of onsen ui
+        /^rand/
     ]
 });
 workboxSW.precache([
@@ -42,7 +43,7 @@ workboxSW.precache([
   },
   {
     "url": "js/onsenVue.js",
-    "revision": "9e01b23ab57647b3f0e0db23c21b6778"
+    "revision": "aa0fc21e1fadd4bebfcf05f1d4c971e3"
   },
   {
     "url": "js/preinstall.js",
@@ -262,13 +263,13 @@ workboxSW.precache([
   }
 ]);
 
-let avators_handler = workboxSW.strategies.staleWhileRevalidate({
+let avatars_handler = workboxSW.strategies.staleWhileRevalidate({
     "cacheName": "image-avatars",
     "cacheExpiration": {
         "maxAgeSeconds": 86400
     }
 });
-let avator_network_first_handler = workboxSW.strategies.networkFirst({
+let avatar_network_first_handler = workboxSW.strategies.networkFirst({
     "cacheName": "image-self-avatar",
     "cacheExpiration": {
         "maxAgeSeconds": 86400
@@ -281,28 +282,30 @@ let article_handler = workboxSW.strategies.cacheFirst({
     }
 });
 
-// workboxSW.router.registerRoute(/images\/avatars\/[^\.\/]+\.png$/, avators_handler, 'GET');
+function controlAvatarResponse(response) {
+    console.log('avatar response', response);
+    if (!response || response.type === 'error') {
+        return caches.match('images/error.png');
+    } else if (response.status === 404) {
+        return caches.match('images/avatars/no_image.png');
+    }
+    return response;
+}
+
+workboxSW.router.registerRoute(/https:\/\/res\.cloudinary\.com\/dfkaqj8xl\/image\/upload\/v[0-9]{10}\/.*\.png$/, function (args) {
+    return avatars_handler.handle(args).then(controlAvatarResponse);
+}, 'GET');
+workboxSW.router.registerRoute(/https:\/\/res\.cloudinary\.com\/dfkaqj8xl\/image\/upload\/v[0-9]{10}\/.*\.png\?self&rand=[a-z0-9]{16}$/, function (args) {
+    return avatar_network_first_handler.handle(args).then(controlAvatarResponse);
+}, 'GET');
+
 workboxSW.router.registerRoute(/images\/avatars\/[^\.\/]+\.png$/, function (args) {
     // console.log('args:', args);
     // {url: URL, event: FetchEvent, params: undefined}
-    return avators_handler.handle(args).then(function (response) {
-        if (!response || response.type === 'error') {
-            return caches.match('images/error.png');
-        } else if (response.status === 404) {
-            return caches.match('images/avatars/no_image.png');
-        }
-        return response;
-    });
+    return avatars_handler.handle(args).then(controlAvatarResponse);
 }, 'GET');
-workboxSW.router.registerRoute(/images\/avatars\/[^\.\/]+\.png\?self$/, function (args) {
-    return avator_network_first_handler.handle(args).then(function (response) {
-        if (!response || response.type === 'error') {
-            return caches.match('images/error.png');
-        } else if (response.status === 404) {
-            return caches.match('images/avatars/no_image.png');
-        }
-        return response;
-    });
+workboxSW.router.registerRoute(/images\/avatars\/[^\.\/]+\.png\?self&rand=[a-z0-9]{16}$/, function (args) {
+    return avatar_network_first_handler.handle(args).then(controlAvatarResponse);
 }, 'GET');
 workboxSW.router.registerRoute(/api\/articles\/\d+$/, article_handler, 'GET');
 
