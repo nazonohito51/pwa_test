@@ -15,13 +15,13 @@ export default {
             if ('serviceWorker' in navigator && 'PushManager' in window) {
                 console.log('Service Worker and Push is supported');
 
-                navigator.serviceWorker.register('/sw.js', {scope: '/'}).then(function (registration) {
+                navigator.serviceWorker.register('/sw.js', {scope: '/'}).then((registration) => {
                     console.log('Service Worker is registered', registration);
-
                     this.$store.commit('serviceWorker/setRegistration', registration);
-                    this.checkServiceWorkerUpdate();
+
                     this.checkSubscription();
-                }.bind(this)).catch(function (error) {
+                    this.checkServiceWorkerUpdate();
+                }).catch((error) => {
                     console.error('Service Worker Error', error);
                 });
             } else {
@@ -30,7 +30,7 @@ export default {
         },
         checkSubscription: function () {
             if (this.swRegistration) {
-                this.swRegistration.pushManager.getSubscription().then(function (subscription) {
+                this.swRegistration.pushManager.getSubscription().then((subscription) => {
                     if (subscription !== null) {
                         console.log('is subscribed already.');
                         this.$store.commit('serviceWorker/subscribe');
@@ -38,7 +38,7 @@ export default {
                         console.log('is not subscribed yet.');
                         this.$store.commit('serviceWorker/unsubscribe');
                     }
-                }.bind(this));
+                });
             }
         },
         subscribeUser: function (callback) {

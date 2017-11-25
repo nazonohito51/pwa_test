@@ -40,29 +40,35 @@ const app = new Vue({
     render: h => h(AppNavigator),
     store: new Vuex.Store(storeLike),
     created: function () {
-        this.getCredential();
-        this.registerServiceWorker();
-
-        window.onpopstate = function(event) {
-            console.log('onpopstate', event);
-            this.$store.commit('navigator/pop');
-        }.bind(this);
+        this.bindBrowserBack();
+        this.getCredentialFromLocal().then(() => {
+            this.registerServiceWorker();
+        });
     },
     methods: {
-        getCredential: function () {
-            // const username = document.head.querySelector('meta[name="app-username"]');
-            // const nickname = document.head.querySelector('meta[name="app-nickname"]');
-            // const api_token = document.head.querySelector('meta[name="api-token"]');
+        bindBrowserBack: function () {
+            window.onpopstate = (event) => {
+                this.$store.commit('navigator/pop');
+            };
+        },
+        getCredentialFromLocal: function () {
+            return new Promise((resolve, reject) => {
+                // const username = document.head.querySelector('meta[name="app-username"]');
+                // const nickname = document.head.querySelector('meta[name="app-nickname"]');
+                // const api_token = document.head.querySelector('meta[name="api-token"]');
 
-            const local_storage = window.localStorage;
-            const username = local_storage.getItem('credential:username');
-            const nickname = local_storage.getItem('credential:nickname');
-            const avator_url = local_storage.getItem('credential:avator_url');
-            const api_token = local_storage.getItem('credential:api_token');
+                const local_storage = window.localStorage;
+                const username = local_storage.getItem('credential:username');
+                const nickname = local_storage.getItem('credential:nickname');
+                const avator_url = local_storage.getItem('credential:avator_url');
+                const api_token = local_storage.getItem('credential:api_token');
 
-            if (username && nickname && avator_url && api_token) {
-                this.updateCredential(username, nickname, avator_url, api_token);
-            }
+                if (username && nickname && avator_url && api_token) {
+                    this.updateCredential(username, nickname, avator_url, api_token);
+                }
+
+                resolve();
+            });
         },
     }
 });
