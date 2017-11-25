@@ -112,17 +112,35 @@
         },
         methods: {
             init() {
-//                const local_storage = window.localStorage;
-//                this.notificationSetting = local_storage.getItem('Settings:notificationSetting');
-//                this.postArticleNotification = local_storage.getItem('Settings:postArticleNotification');
-//                this.likeArticleNotification = local_storage.getItem('Settings:likeArticleNotification');
-                this.notificationSetting = this.getNotificationSettingFromLocal();
-                this.getUserInfo();
+                this.getSettingsFromLocal().then(() => {
+                    this.getSettingsFromServer();
+                });
             },
-            getNotificationSettingFromLocal: function () {
-                const local_storage = window.localStorage;
-                console.log('getNotificationSettingFromLocal', local_storage.getItem('Settings:notificationSetting'));
-                return local_storage.getItem('Settings:notificationSetting');
+            getSettingsFromLocal: function () {
+                return new Promise((resolve, reject) => {
+                    const local_storage = window.localStorage;
+                    this.notificationSetting = local_storage.getItem('Settings:notificationSetting');
+
+                    resolve();
+                });
+            },
+            getSettingsFromServer: function () {
+                const username = this.$store.state.credential.username;
+
+                if (username) {
+                    this.getRequest("/api/user/" + username, (response) => {
+                        this.setUserInfoToLocal(response.data.user.nickname, response.data.user.avator_url);
+                        this.setNotificationSettingToLocal(response.data.user.user_setting.notification);
+                    }, () => {
+                        // not registered yet.
+                    });
+                }
+            },
+            setUserInfoToLocal: function (nickname, avator_url) {
+                this.$store.commit('credential/update', {
+                    'nickname': nickname,
+                    'avator_url': avator_url
+                });
             },
             setNotificationSettingToLocal: function (notification) {
                 const bool = (notification === true || notification === "1" || notification === 1);
@@ -131,22 +149,6 @@
                 local_storage.setItem('Settings:notificationSetting', bool);
 //                local_storage.setItem('Settings:postArticleNotification', this.postArticleNotification);
 //                local_storage.setItem('Settings:likeArticleNotification', this.likeArticleNotification);
-            },
-            getUserInfo: function () {
-                const username = this.$store.state.credential.username;
-
-                if (username) {
-                    this.getRequest("/api/user/" + username, function (response) {
-                        this.$store.commit('credential/update', {
-                            'nickname': response.data.user.nickname,
-                            'avator_url': response.data.user.avator_url
-                        });
-
-                        this.setNotificationSettingToLocal(response.data.user.user_setting.notification);
-                    }.bind(this), function () {
-//                        this.$ons.notification.toast('ユーザ情報の取得に失敗しました。', {timeout: 2000});
-                    }.bind(this));
-                }
             },
             pushUserPage() {
                 const username = this.$store.state.credential.username;
