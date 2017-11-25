@@ -17,7 +17,7 @@
                 </div>
                 <hr v-if="displayLikeDiv" style="margin-top: 50px; margin-bottom: 15px; border-top: 1px dashed #8c8b8b;">
                 <div>
-                    <img v-for="user in like_users" v-bind:src="user.avator_url" style="width: 24px; height: 24px; border-radius: 50%;">
+                    <img v-for="user in like_users" v-bind:src="user.avatar_url" style="width: 24px; height: 24px; border-radius: 50%;">
                 </div>
                 <div v-if="isRegistered" style="width: 20%; margin-left: auto;">
                     <button class="button button--material--flat" style="min-height: 1.5em; line-height: 1.5em;" :disabled="isLiked" @click="postLike()">
@@ -35,7 +35,7 @@
             <div class="card">
                 <div class="user">
                     <div class="left">
-                        <img v-bind:src="article.user.avator_url" style="width: 48px; height: 48px; border-radius: 50%;">
+                        <img v-bind:src="article.user.avatar_url" style="width: 48px; height: 48px; border-radius: 50%;">
                         {{article.user.nickname}}
                     </div>
                 </div>
@@ -104,18 +104,18 @@
                     this.postSync('/api/articles/' + this.article.id + '/like', {}, function () {}, function () {});
 
                     const username = this.$store.state.credential.username;
-                    const avator_url = this.$store.state.credential.avator_url;
+                    const avatar_url = this.$store.state.credential.avatar_url;
                     this.like_users.push({
                         name: username,
-                        avator_url: avator_url
+                        avatar_url: avatar_url
                     });
 
 //                    const local_storage = window.localStorage;
 //                    this.nickname = local_storage.getItem('Settings:nickname');
-//                    this.avator_url = local_storage.getItem('Settings:avator_url');
+//                    this.avatar_url = local_storage.getItem('Settings:avatar_url');
 //                    this.article.like_users.push({
 //                        name: nickname,
-//                        avator_url: avator_url
+//                        avatar_url: avatar_url
 //                    });
 
 //                    this.postRequest("/api/articles/" + this.article.id + "/like", {}, function (response) {

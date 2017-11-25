@@ -12,7 +12,7 @@
                 <v-ons-card style="width: 100%;">
                     <div class="user">
                         <div class="left">
-                            <img v-bind:src="avator_url" style="width: 48px; height: 48px; border-radius: 50%;">
+                            <img v-bind:src="avatar_url" style="width: 48px; height: 48px; border-radius: 50%;">
                             {{nickname}}
                         </div>
                     </div>
@@ -21,7 +21,7 @@
             <li class="list-item list-item--tappable list-item--chevron" @click="pushUserPage()" v-if="isRegistered">
                 <div class="list-item__center">ニックネーム</div>
             </li>
-            <li class="list-item list-item--tappable list-item--chevron" @click="pushAvatorPage()" v-if="isRegistered">
+            <li class="list-item list-item--tappable list-item--chevron" @click="pushavatarPage()" v-if="isRegistered">
                 <div class="list-item__center">アバター</div>
             </li>
 
@@ -80,7 +80,7 @@
 
 <script>
     import User from './Settings/User.vue';
-    import Avator from './Settings/Avator.vue';
+    import avatar from './Settings/avatar.vue';
     import serviceWorkerMixin from '../mixins/serviceWorker.js';
     import apiClientMixin from '../mixins/apiClient.js';
 
@@ -99,9 +99,9 @@
             nickname: function () {
                 return this.$store.state.credential.nickname;
             },
-            avator_url: function () {
-                if (this.$store.state.credential.avator_url) {
-                    return this.$store.state.credential.avator_url + '?self&rand=' + this.rand;
+            avatar_url: function () {
+                if (this.$store.state.credential.avatar_url) {
+                    return this.$store.state.credential.avatar_url + '?self&rand=' + this.rand;
                 } else {
                     return '/images/avatars/no_image.png';
                 }
@@ -140,17 +140,17 @@
 
                 if (username) {
                     this.getRequest("/api/user/" + username, (response) => {
-                        this.setUserInfoToLocal(response.data.user.nickname, response.data.user.avator_url);
+                        this.setUserInfoToLocal(response.data.user.nickname, response.data.user.avatar_url);
                         this.setNotificationSettingToLocal(response.data.user.user_setting.notification);
                     }, () => {
                         // not registered yet.
                     });
                 }
             },
-            setUserInfoToLocal: function (nickname, avator_url) {
+            setUserInfoToLocal: function (nickname, avatar_url) {
                 this.$store.commit('credential/update', {
                     'nickname': nickname,
-                    'avator_url': avator_url
+                    'avatar_url': avatar_url
                 });
             },
             setNotificationSettingToLocal: function (notification) {
@@ -166,18 +166,18 @@
                 history.pushState({page: 'User'}, 'user page', '/app/user/' + username);
                 this.$store.commit('navigator/push', User);
             },
-            pushAvatorPage() {
+            pushavatarPage() {
                 const username = this.$store.state.credential.username;
                 history.pushState({page: 'Avatar'}, 'avatar page', '/app/user/' + username + '/avatar');
-                this.$store.commit('navigator/push', Avator);
+                this.$store.commit('navigator/push', avatar);
             },
             checkCredential() {
                 console.log('nickname: ' + this.nickname);
-                console.log('avator_url: ' + this.avator_url);
+                console.log('avatar_url: ' + this.avatar_url);
 
                 console.log('username: ' + this.$store.state.credential.username);
                 console.log('nickname: ' + this.$store.state.credential.nickname);
-                console.log('avator_url: ' + this.$store.state.credential.avator_url);
+                console.log('avatar_url: ' + this.$store.state.credential.avatar_url);
                 console.log('api_token: ' + this.$store.state.credential.api_token);
             },
             subscribeConfirm(event) {
@@ -213,10 +213,10 @@
                     this.$ons.notification.toast('通知設定を更新に失敗しました。', {timeout: 2000});
                 }.bind(this));
             },
-            getAvatorUrlOnError(test1, test2) {
+            getavatarUrlOnError(test1, test2) {
                 console.log('test', test1, test2);
-                if (this.$store.state.credential.avator_url) {
-                    return this.$store.state.credential.avator_url;
+                if (this.$store.state.credential.avatar_url) {
+                    return this.$store.state.credential.avatar_url;
                 } else {
                     return '/images/avatars/no_image.png';
                 }

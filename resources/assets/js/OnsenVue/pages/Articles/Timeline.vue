@@ -7,7 +7,7 @@
         <ul class="list list--material">
             <li class="list-item list-item--material" v-for="article in articles" :key="article.id" @click="pushDetailPage(article)" v-observe-visibility="(isVisible, entry) => visibilityChanged(isVisible, entry, article)">
                 <div class="list-item__left list-item--material__left">
-                    <img class="list-item__thumbnail list-item--material__thumbnail" v-bind:src="article.user.avator_url">
+                    <img class="list-item__thumbnail list-item--material__thumbnail" v-bind:src="article.user.avatar_url">
                 </div>
 
                 <div class="list-item__center list-item--material__center" style="width: 70%;">
@@ -28,7 +28,7 @@
                     <!--<div class="user">-->
                         <!--<div class="left">-->
                             <!--&lt;!&ndash;<v-ons-icon icon="md-face" class="list-item__icon"></v-ons-icon>&ndash;&gt;-->
-                            <!--<img v-bind:src="article.user.avator_url" onerror="this.src='/images/avatars/no_image.png'" style="width: 48px; height: 48px; border-radius: 50%;">-->
+                            <!--<img v-bind:src="article.user.avatar_url" onerror="this.src='/images/avatars/no_image.png'" style="width: 48px; height: 48px; border-radius: 50%;">-->
                             <!--{{article.user.nickname}}-->
                         <!--</div>-->
                     <!--</div>-->

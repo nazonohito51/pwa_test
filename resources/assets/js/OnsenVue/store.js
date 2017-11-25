@@ -6,7 +6,7 @@ export default {
             state: {
                 username: null,
                 nickname: null,
-                avator_url: null,
+                avatar_url: null,
                 api_token: null
             },
             mutations: {
@@ -23,9 +23,9 @@ export default {
                         local_storage.setItem('credential:nickname', payload.nickname);
                     }
 
-                    if (payload.avator_url) {
-                        state.avator_url = payload.avator_url;
-                        local_storage.setItem('credential:avator_url', payload.avator_url);
+                    if (payload.avatar_url) {
+                        state.avatar_url = payload.avatar_url;
+                        local_storage.setItem('credential:avatar_url', payload.avatar_url);
                     }
 
                     if (payload.api_token) {

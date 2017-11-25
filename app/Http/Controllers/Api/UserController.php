@@ -154,7 +154,7 @@ class UserController extends Controller
         return $user;
     }
 
-    public function updateAvator(Request $request, User $user)
+    public function updateavatar(Request $request, User $user)
     {
         $this->validate($request, [
             'image' => ['required']
@@ -164,9 +164,9 @@ class UserController extends Controller
         $filename = $user->name . '.png';
         file_put_contents(public_path() . '/images/avatars/' . $filename, $image_binary);
 
-        $user->avator = asset('/images/avatars/' . $filename);
+        $user->avatar = asset('/images/avatars/' . $filename);
         $user->save();
 
-        return new ApiResponse(new SuccessStatus(), 'uploading avator is succeeded.');
+        return new ApiResponse(new SuccessStatus(), 'uploading avatar is succeeded.');
     }
 }

@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'nickname', 'email', 'password', 'avator', 'role', 'api_token'
+        'name', 'nickname', 'email', 'password', 'avatar', 'role', 'api_token'
     ];
 
     /**
@@ -28,27 +28,27 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    protected $appends = ['avator_url'];
+    protected $appends = ['avatar_url'];
 
     public function isInterimUser()
     {
         return $this->role == 'interim';
     }
 
-    public function getAvatorUrlAttribute()
+    public function getavatarUrlAttribute()
     {
-        if ($this->haveAvator()) {
-            $avator_path = $this->attributes['avator'];
+        if ($this->haveavatar()) {
+            $avatar_path = $this->attributes['avatar'];
         } else {
-            $avator_path = asset('images/avatars/' . 'no_image.png');
+            $avatar_path = asset('images/avatars/' . 'no_image.png');
         }
 
-        return asset($avator_path);
+        return asset($avatar_path);
     }
 
-    public function haveAvator()
+    public function haveavatar()
     {
-        if (isset($this->attributes['avator'])) {
+        if (isset($this->attributes['avatar'])) {
             return true;
         } else {
             return false;

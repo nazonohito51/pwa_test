@@ -9,7 +9,7 @@
 
         <v-ons-list>
             <v-ons-list-item>
-                <img v-bind:src="avator_url" style="display: block; margin: 20px auto; width: 256px; height: 256px; border-radius: 50%;">
+                <img v-bind:src="avatar_url" style="display: block; margin: 20px auto; width: 256px; height: 256px; border-radius: 50%;">
             </v-ons-list-item>
             <v-ons-list-item>
                 <label for="icon-upload">
@@ -52,14 +52,14 @@
             }
         },
         computed: {
-            avator_url: function () {
-                return this.$store.state.credential.avator_url + '?self&rand=' + this.rand;
+            avatar_url: function () {
+                return this.$store.state.credential.avatar_url + '?self&rand=' + this.rand;
             }
         },
         methods: {
             init: function () {
                 this.regenerateRand();
-//                this.getAvatorUrl();
+//                this.getavatarUrl();
             },
             regenerateRand: function () {
                 const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
@@ -119,7 +119,7 @@
 
                     const base64 = resize_canvas.toDataURL('image/png').replace(/^.*,/, ''); // remove "data:image/png;base64,"
 
-                    this.putRequest("/api/user/" + username + "/avator", {image: base64}, function (response) {
+                    this.putRequest("/api/user/" + username + "/avatar", {image: base64}, function (response) {
                         this.$store.commit('navigator/pop');
                         this.$ons.notification.toast('アイコン画像をアップロードしました。', {timeout: 1000});
                     }.bind(this), function () {
@@ -134,12 +134,12 @@
             popHistory: function (event) {
                 history.back();
             }
-//            updateAvatorUrl: function() {
+//            updateavatarUrl: function() {
 //                const api_token = this.$store.state.credential.api_token;
 //
 //                this.putRequest("/api/user/" + api_token, {}, function (response) {
 //                    console.log(response);
-//                    this.$store.commit('credential/update', {'avator_url': response.data.user.avator_url,});
+//                    this.$store.commit('credential/update', {'avatar_url': response.data.user.avatar_url,});
 //                }.bind(this), function () {
 //                });
 //            }

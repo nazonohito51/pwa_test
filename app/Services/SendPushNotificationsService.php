@@ -100,8 +100,8 @@ class SendPushNotificationsService
 
     private function getIconUrl()
     {
-        if ($this->actor && $this->actor->haveAvator()) {
-            return $this->actor->avator_url;
+        if ($this->actor && $this->actor->haveavatar()) {
+            return $this->actor->avatar_url;
         } else {
             return asset('images/icon.png');
         }

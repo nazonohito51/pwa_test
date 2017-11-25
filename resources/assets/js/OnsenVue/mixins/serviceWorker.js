@@ -52,7 +52,7 @@ export default {
                     console.log('getting credential from server is faield.');
                 } else {
                     const user = response.data.user;
-                    this.updateCredential(user.name, user.nickname, user.avator_url, user.api_token);
+                    this.updateCredential(user.name, user.nickname, user.avatar_url, user.api_token);
                 }
             }).catch((error) => {
                 console.log('getting credential from server is failed.', error);
@@ -96,7 +96,7 @@ export default {
                     if (response.error) {
                         console.log('updating subscription on server is failed.');
                     } else {
-                        this.updateCredential(response.data.name, response.data.nickname, response.data.avator_url, response.data.api_token);
+                        this.updateCredential(response.data.name, response.data.nickname, response.data.avatar_url, response.data.api_token);
                         console.log('updating subscription on server is succeeded.');
                     }
                 }.bind(this)).catch(function (err) {
@@ -123,11 +123,11 @@ export default {
             }
             return outputArray;
         },
-        updateCredential: function (username, nickname, avator_url, api_token) {
+        updateCredential: function (username, nickname, avatar_url, api_token) {
             this.$store.commit('credential/update', {
                 'username': username,
                 'nickname': nickname,
-                'avator_url': avator_url,
+                'avatar_url': avatar_url,
                 'api_token': api_token
             });
 
