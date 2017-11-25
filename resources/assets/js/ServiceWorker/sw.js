@@ -1,5 +1,5 @@
-importScripts('workbox-sw.prod.v2.1.1.js');
-importScripts('workbox-background-sync.prod.v2.0.3.js');
+importScripts('workbox-sw.dev.v2.1.1.js');
+importScripts('workbox-background-sync.dev.v2.0.3.js');
 
 const workboxSW = new WorkboxSW({
     cacheId: "pwa-test",
