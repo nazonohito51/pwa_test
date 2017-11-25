@@ -84,6 +84,32 @@ class UserController extends Controller
         return new ApiResponse(new SuccessStatus(), 'updating user settings is succeeded');
     }
 
+    public function getInterimUser(Request $request)
+    {
+        $query = User::where('role', '=', 'interim');
+
+        \Log::info('endpoint', [
+            'endpoint' => $request->get('endpoint')
+        ]);
+
+        if ($request->has('api_token')) {
+            $query->where('api_token', '=', $request->get('api_token'));
+        } else if ($request->has('endpoint')) {
+            $endpoint = $request->get('endpoint');
+            $query->whereHas('push_notifications', function ($query) use ($endpoint) {
+                $query->where('endpoint', '=', $endpoint);
+            });
+        } else {
+            return new ApiResponse(new BadRequest(), 'bad request');
+        }
+
+        if ($user = $query->first()) {
+            return new ApiResponse(new SuccessStatus(), 'getting interim user is succeeded', ['user' => $user]);
+        } else {
+            return new ApiResponse(new NotFoundStatus(), 'not found');
+        }
+    }
+
     public function storeInterimUser(Request $request)
     {
         $this->validate($request, [
