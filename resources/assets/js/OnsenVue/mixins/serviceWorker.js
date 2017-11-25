@@ -34,12 +34,29 @@ export default {
                     if (subscription !== null) {
                         console.log('is subscribed already.');
                         this.$store.commit('serviceWorker/subscribe');
+                        this.getCredentialFromServer(subscription.endpoint);
                     } else {
                         console.log('is not subscribed yet.');
                         this.$store.commit('serviceWorker/unsubscribe');
                     }
                 });
             }
+        },
+        getCredentialFromServer: function (endpoint) {
+            axios.get("/api/interim_user", {
+                params: {
+                    endpoint: endpoint
+                }
+            }).then((response) => {
+                if (response.error) {
+                    console.log('getting credential from server is faield.');
+                } else {
+                    const user = response.data.user;
+                    this.updateCredential(user.name, user.nickname, user.avator_url, user.api_token);
+                }
+            }).catch((error) => {
+                console.log('getting credential from server is failed.', error);
+            });
         },
         subscribeUser: function (callback) {
             const applicationServerKey = this.urlB64ToUint8Array(this.applicationServerPublicKey);
