@@ -41,6 +41,8 @@ class UserSeeder extends Seeder
 
     private function getUserParams()
     {
+        $avatar_dir = '/images/avatars/';
+
         return [
             [
                 'user' => [
@@ -50,7 +52,7 @@ class UserSeeder extends Seeder
                     'nickname' => 'Symfony',
                     'role' => 'interim',
                     'api_token' => 'UhQzk28cIQgApae37MLPKcIOty8srTYTorZVYVROfW4ZKZ0VbOFgaZBJdtgR',
-                    'avator' => 'Symfony.png'
+                    'avator' => 'https://res.cloudinary.com/dfkaqj8xl/image/upload/v1511626892/Symfony_jdqq0e.png'
                 ],
                 'push_notification' => [
                     'endpoint' => 'https://fcm.googleapis.com/fcm/send/etvQVI1Vqeo:APA91bFmPjNmIKVb5j3VS7zGy01xAlekNkCxAZbtlJ0JjK8yOMPxXp0TfsGb0jLXjOLiZxtn0t45_PqF-s7eAjkOEmDMo10in4lTH1d74YggwihpZfZ82tewf-VZIe_tYngTiJeX6cKo',
@@ -67,7 +69,7 @@ class UserSeeder extends Seeder
                     'nickname' => 'FuelPHP',
                     'role' => 'interim',
                     'api_token' => 'jkMdJxMA3oHL6mJpj4FDk8gAN7pOfGZII53MCVGPZdViEN1TObCRW6cMyPmP',
-                    'avator' => 'FuelPHP.png'
+                    'avator' => 'https://res.cloudinary.com/dfkaqj8xl/image/upload/v1511626891/FuelPHP_ssle2s.png'
                 ],
                 'push_notification' => [
                     'endpoint' => 'https://fcm.googleapis.com/fcm/send/cJtN3pWLh_U:APA91bFfLkc1x7x3FpM4uLELpGamNiETUCHEP2oTNO8yoMiodDrAlxH0DKThCbsqVIkwzaKLN_BpvyKtE0NBb1ywHYzz9G7TnKjf2jHLxslNVCRpQ2IfXUqt7_13wJGooQdj-C7_-4jS',
@@ -84,7 +86,7 @@ class UserSeeder extends Seeder
                     'nickname' => 'Slim',
                     'role' => 'interim',
                     'api_token' => '14xVBWB3xoa3qCeWbfeVl23rcLaUcdBNFFHdPzW0snAWemlxkUq2kBPMUSun',
-                    'avator' => 'Slim.png'
+                    'avator' => 'https://res.cloudinary.com/dfkaqj8xl/image/upload/v1511626891/Slim_ja8qdt.png'
                 ],
                 'push_notification' => [
                     'endpoint' => 'https://fcm.googleapis.com/fcm/send/dm3C-_FCqCM:APA91bGdx_QmAxzDmAp2Tk4FpdBfYNqh9OlWLXgkG8Y61VTxsYSLCnCYKuiT-M97hMqwLnmaEwEZL39BKd1hQwc7mZxSRtWii4qcEzhyEy9oRnQ0f4IPYKp6v15B9c-MEm30_qFFTKYc',
@@ -101,7 +103,7 @@ class UserSeeder extends Seeder
                     'nickname' => 'CodeIgniter',
                     'role' => 'interim',
                     'api_token' => 'Xh3HrsgRXLtnQpPsFLST28XuREc5Qy7LFEJVtcMdZqNmh7nRFl0iWexxvZ08',
-                    'avator' => 'CodeIgniter.png'
+                    'avator' => 'https://res.cloudinary.com/dfkaqj8xl/image/upload/v1511627391/CodeIgniter_gvbvwk.png'
                 ],
                 'push_notification' => [
                     'endpoint' => 'https://fcm.googleapis.com/fcm/send/erebaNopBzY:APA91bHPjeL86QSlpm-mDJcAR7VNUZyEWj_n96rm7ob1i01zy0LDu8UnAuTY7Duu9shFG_jela2Gp_xaniJ4EsdAvL1hOUMyJ0qIevBM7aTyA7_QoWEy5y089TM6kgG-4ciWbBfC6wKd',
@@ -118,7 +120,7 @@ class UserSeeder extends Seeder
                     'nickname' => 'Laravel',
                     'role' => 'interim',
                     'api_token' => 'qJvdmQBmtfRYsyQ2rcwLGFpDZ9F8P73Nlj7Ezrn8pjQOyXHVGunS54TlX8O1',
-                    'avator' => 'Laravel.png'
+                    'avator' => 'https://res.cloudinary.com/dfkaqj8xl/image/upload/v1511626892/Laravel_faszof.png'
                 ],
                 'push_notification' => [
                     'endpoint' => 'https://fcm.googleapis.com/fcm/send/f0viFajQ2OQ:APA91bGj9wP6ySatghd65LgU3Cl-q0XPcTo6mB-ChU9ABt2biqNFrGomgrciHi0pghFWxV4MS0nSsPgxETM_A4mC9BgpSb7E5n9uR6STPE9tzjuFwQ43hDiZlfGSnD_PfBWhdvyHALhO',
@@ -135,7 +137,7 @@ class UserSeeder extends Seeder
                     'nickname' => 'Phalcon',
                     'role' => 'interim',
                     'api_token' => '5UBhKLKlTAP37qih4wmHUb0qDj5qwsowZvpOJRY34cuNv33f7hhLTD040ptg',
-                    'avator' => 'Phalcon.png'
+                    'avator' => 'https://res.cloudinary.com/dfkaqj8xl/image/upload/v1511626892/Phalcon_lizqjy.png'
                 ],
                 'push_notification' => [
                     'endpoint' => 'https://fcm.googleapis.com/fcm/send/dp6sBxQKoiE:APA91bFH0jPukNUGEhEU0xjwP4UzixlYe8sfSOoU34SLOzIaKZHXYQ8tklB587LDp6svtIlQHpPjutsF8eowpEaznHno0eS12uGfLniMXU3wFMPDZilmLXndIAuBSFcwBaDyUekzy5Oe',
@@ -152,7 +154,7 @@ class UserSeeder extends Seeder
                     'nickname' => 'CakePHP',
                     'role' => 'interim',
                     'api_token' => 'ONYbO4cKsrmkQnKK9AXpz07BkTg80euTRxmXacTdsLnwvwYMyg9614aXBI7V',
-                    'avator' => 'CakePHP.png'
+                    'avator' => 'https://res.cloudinary.com/dfkaqj8xl/image/upload/v1511626891/CakePHP_v4djyl.png'
                 ],
                 'push_notification' => [
                     'endpoint' => 'https://fcm.googleapis.com/fcm/send/cUAo7Guxtnc:APA91bE5mH1EF7jK-BUGZWeyCQ5Ea9wyiH-w2QYUX9GhEksESxyJTx5ulLLdS3nu4SfUCcZ0ByxWvmGXsoxVKHqDbEAw1CTreQLUKQnnD3uwJVUUaQyPwi-DbhcQtJ6Z-gSeE49FFppy',
@@ -169,7 +171,7 @@ class UserSeeder extends Seeder
                     'nickname' => 'ZendFramework',
                     'role' => 'interim',
                     'api_token' => 'lP6Vb5Qi4Fw2KLXCwL3eVPXzyzmcN9mYl5SKPb5E0AAknhOY8E7DnT0Fi0cR',
-                    'avator' => 'ZendFramework.png'
+                    'avator' => 'https://res.cloudinary.com/dfkaqj8xl/image/upload/v1511626892/ZendFramework_biw111.png'
                 ],
                 'push_notification' => [
                     'endpoint' => 'https://fcm.googleapis.com/fcm/send/fPE_GxO7l2Y:APA91bExBoImILUV0mVh1jphjhpyzDtTNodpA9FiXIBYnGNkoL5arRrVTBvqaBPHLw-INLpdNHPKXhaHIBBJJs7I_sR2O4II2BsauIugiJrEdlMAr8H09_IbWyHIRsQ34zaVOPoXT980',
@@ -186,7 +188,7 @@ class UserSeeder extends Seeder
                     'nickname' => 'barie',
                     'role' => 'interim',
                     'api_token' => 'lP6Vb5Qi4Fw2KLXCwL3eVPXzyzmcN9mYl5SKPb5E0AAknhOY8E7DnT0Fi0cG',
-                    'avator' => 'barie.png'
+                    'avator' => 'https://res.cloudinary.com/dfkaqj8xl/image/upload/v1511626856/barie_x4ynsg.png'
                 ],
                 'push_notification' => [
                     'endpoint' => 'https://fcm.googleapis.com/fcm/send/cab6LfJXCCo:APA91bH8EirVpYoX_q2iKXwCu2ilt7j5pweNFGPY0s3umLiS0aRqpXW9nHwNlTchi8QqPkQvOpK9Fib_c0Ji7k7JT1IiPpIUgJi-R298ZV5oQn8vu4b1huGfxw-gv8TqFJm7UmapovrO',
