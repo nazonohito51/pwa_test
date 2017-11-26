@@ -58,7 +58,12 @@ workboxSW.router.registerRoute(/images\/avatars\/[^\.\/]+\.png$/, function (args
 workboxSW.router.registerRoute(/images\/avatars\/[^\.\/]+\.png\?self&rand=[a-z0-9]{16}$/, function (args) {
     return avatar_network_first_handler.handle(args).then(controlAvatarResponse);
 }, 'GET');
-workboxSW.router.registerRoute(/api\/articles\/\d+$/, article_handler, 'GET');
+workboxSW.router.registerRoute(/api\/articles\/\d+$/, function (args) {
+    return article_handler.handle(args).then(function (response) {
+        console.log('article response', response);
+        return response;
+    })
+}, 'GET');
 
 self.addEventListener('push', function(event) {
     console.log('[Service Worker] Push Received.', event);

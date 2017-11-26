@@ -3,6 +3,12 @@ export default {
         apiClient: function () {
             return axios.create({
                 timeout: 60000,
+                responseType: 'json'
+            });
+        },
+        apiClientWithApiToken: function () {
+            return axios.create({
+                timeout: 60000,
                 params: {
                     api_token: this.$store.state.credential.api_token
                 },
@@ -38,7 +44,7 @@ export default {
             });
         },
         postRequest: function (uri, params, resolve_callback, reject_callback) {
-            this.apiClient.post(uri, params).then(function (response) {
+            this.apiClientWithApiToken.post(uri, params).then(function (response) {
                 this.loggingReponse(response);
 
                 if (response.error) {
@@ -51,7 +57,7 @@ export default {
             });
         },
         putRequest: function (uri, params, resolve_callback, reject_callback) {
-            this.apiClient.put(uri, params).then(function (response) {
+            this.apiClientWithApiToken.put(uri, params).then(function (response) {
                 this.loggingReponse(response);
 
                 if (response.error) {
