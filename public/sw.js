@@ -269,7 +269,7 @@ let avatars_handler = workboxSW.strategies.staleWhileRevalidate({
         "maxAgeSeconds": 86400
     }
 });
-let avatar_network_first_handler = workboxSW.strategies.networkFirst({
+let avatar_network_only_handler = workboxSW.strategies.networkOnly({
     "cacheName": "image-self-avatar",
     "cacheExpiration": {
         "maxAgeSeconds": 86400
@@ -292,20 +292,13 @@ function controlAvatarResponse(response) {
     return response;
 }
 
-workboxSW.router.registerRoute(/https:\/\/res\.cloudinary\.com\/dfkaqj8xl\/image\/upload\/v[0-9]{10}\/.*\.png$/, function (args) {
-    return avatars_handler.handle(args).then(controlAvatarResponse);
-}, 'GET');
-workboxSW.router.registerRoute(/https:\/\/res\.cloudinary\.com\/dfkaqj8xl\/image\/upload\/v[0-9]{10}\/.*\.png\?self&rand=[a-z0-9]{16}$/, function (args) {
-    return avatar_network_first_handler.handle(args).then(controlAvatarResponse);
-}, 'GET');
-
 workboxSW.router.registerRoute(/images\/avatars\/[^\.\/]+\.png$/, function (args) {
     // console.log('args:', args);
     // {url: URL, event: FetchEvent, params: undefined}
     return avatars_handler.handle(args).then(controlAvatarResponse);
 }, 'GET');
 workboxSW.router.registerRoute(/images\/avatars\/[^\.\/]+\.png\?self&rand=[a-z0-9]{16}$/, function (args) {
-    return avatar_network_first_handler.handle(args).then(controlAvatarResponse);
+    return avatar_network_only_handler.handle(args).then(controlAvatarResponse);
 }, 'GET');
 workboxSW.router.registerRoute(/api\/articles\/\d+$/, function (args) {
     return article_handler.handle(args).then(function (response) {
