@@ -27,9 +27,14 @@ Route::get('/user/{user}', function (User $user) {
 });
 
 Route::resource('/user/{user}/articles', 'ArticleController');
-Route::get('/app', 'FrontController@onsenVue')->name('app');
+//Route::get('/app', 'FrontController@onsenVue')->name('app');
 Route::get('/vue', 'FrontController@vue');
 Route::get('/onsen', 'FrontController@onsen');
+
+Route::group(['prefix' => 'app'], function () {
+    Route::get('/', 'FrontController@onsenVue')->name('app');
+    Route::fallback('FrontController@onsenVue');
+});
 
 Route::get('/images/avatars/{user}.png', function (User $user) {
     // Return image binary(png).
