@@ -21,17 +21,17 @@
             return {
                 tabs: [
                     {
-                        icon: this.md() ? null : 'fa-list',
+                        icon: this.md ? null : 'fa-list',
                         label: 'Timeline',
                         page: Timeline
                     },
                     {
-                        icon: this.md() ? null : 'fa-magic',
+                        icon: this.md ? null : 'fa-magic',
                         label: 'Editor',
                         page: Editor
                     },
                     {
-                        icon: this.md() ? null : 'fa-gear',
+                        icon: this.md ? null : 'fa-gear',
                         label: 'Settings',
                         page: Settings
                     }
@@ -46,11 +46,12 @@
                 set: function (index) {
                     this.$store.commit('tabBar/show', index);
                 }
-            }
-        },
-        methods: {
-            md() {
-                return this.$ons.platform.isAndroid();
+            },
+            swipeTheme: function () {
+                return this.md && {
+                    backgroundColor: `rgb(${this.colors.join(',')})`,
+                    transition: `all ${this.animationOptions.duration || 0}s ${this.animationOptions.timing || ''}`
+                };
             }
         }
     };

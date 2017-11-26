@@ -40,6 +40,9 @@ const app = new Vue({
     render: h => h(AppNavigator),
     store: new Vuex.Store(storeLike),
     created: function () {
+        // Shortcut for Material Design
+        Vue.prototype.md = this.$ons.platform.isAndroid();
+
         this.bindBrowserBack();
         this.getCredentialFromLocal().then(() => {
             this.registerServiceWorker();
