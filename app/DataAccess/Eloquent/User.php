@@ -25,7 +25,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'avatar',
     ];
 
     protected $appends = ['avatar_url'];
@@ -38,7 +38,8 @@ class User extends Authenticatable
     public function getAvatarUrlAttribute()
     {
         if ($this->haveAvatar()) {
-            $avatar_path = $this->attributes['avatar'];
+//            $avatar_path = $this->attributes['avatar'];
+            $avatar_path = asset('images/avatars/' . $this->name . '.png');
         } else {
             $avatar_path = asset('images/avatars/' . 'no_image.png');
         }
