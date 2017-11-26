@@ -35,9 +35,9 @@ class User extends Authenticatable
         return $this->role == 'interim';
     }
 
-    public function getavatarUrlAttribute()
+    public function getAvatarUrlAttribute()
     {
-        if ($this->haveavatar()) {
+        if ($this->haveAvatar()) {
             $avatar_path = $this->attributes['avatar'];
         } else {
             $avatar_path = asset('images/avatars/' . 'no_image.png');
@@ -46,7 +46,7 @@ class User extends Authenticatable
         return asset($avatar_path);
     }
 
-    public function haveavatar()
+    public function haveAvatar()
     {
         if (isset($this->attributes['avatar'])) {
             return true;
