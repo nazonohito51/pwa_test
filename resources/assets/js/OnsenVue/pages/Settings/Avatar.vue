@@ -117,7 +117,8 @@
                     resize_canvas.height = 96;
                     resize_canvas_context.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, 96, 96);
 
-                    const base64 = resize_canvas.toDataURL('image/png').replace(/^.*,/, ''); // remove "data:image/png;base64,"
+                    //const base64 = resize_canvas.toDataURL('image/png').replace(/^.*,/, ''); // remove "data:image/png;base64,"
+                    const base64 = resize_canvas.toDataURL('image/png');
 
                     this.putRequest("/api/user/" + username + "/avatar", {image: base64}, function (response) {
                         this.$store.commit('navigator/pop');

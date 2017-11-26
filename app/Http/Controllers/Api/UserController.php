@@ -160,8 +160,9 @@ class UserController extends Controller
             'image' => ['required']
         ]);
 
-        $image_binary = base64_decode($request->get('image'));
-        $user->avatar = $this->saveAvatarImage($user, $image_binary);
+//        $image_binary = base64_decode($request->get('image'));
+//        $user->avatar = $this->saveAvatarImage($user, $image_binary);
+        $user->avatar = $request->get('image');
         $user->save();
 
         return new ApiResponse(new SuccessStatus(), 'uploading avatar is succeeded.');
