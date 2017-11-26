@@ -30,3 +30,12 @@ Route::resource('/user/{user}/articles', 'ArticleController');
 Route::get('/app', 'FrontController@onsenVue')->name('app');
 Route::get('/vue', 'FrontController@vue');
 Route::get('/onsen', 'FrontController@onsen');
+
+Route::get('/images/avatars/{user}.png', function (User $user) {
+    // Return image binary(png).
+    // This is routing to make image uploading easy with Heroku.
+    $png_binary = base64_decode(substr($user->avatar, strlen('data:image/png;base64,')));
+    return response($png_binary, 200, [
+        'Content-Type' => 'image/png'
+    ]);
+});
