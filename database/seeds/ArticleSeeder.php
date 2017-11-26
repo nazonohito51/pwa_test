@@ -94,6 +94,14 @@ class ArticleSeeder extends Seeder
                     'created_at' => Carbon::now()->subHour()
                 ]
             ],
+            'no_image_user' => [
+                [
+                    'title' => 'テスト投稿その２',
+                    'body' => '<p>ですよ</p>',
+                    'published' => true,
+                    'created_at' => Carbon::now()->subHour(2)
+                ]
+            ]
         ];
     }
 }
