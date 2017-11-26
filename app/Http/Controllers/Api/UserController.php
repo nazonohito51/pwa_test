@@ -154,19 +154,40 @@ class UserController extends Controller
         return $user;
     }
 
-    public function updateavatar(Request $request, User $user)
+    public function updateAvatar(Request $request, User $user)
     {
         $this->validate($request, [
             'image' => ['required']
         ]);
 
         $image_binary = base64_decode($request->get('image'));
-        $filename = $user->name . '.png';
-        file_put_contents(public_path() . '/images/avatars/' . $filename, $image_binary);
-
-        $user->avatar = asset('/images/avatars/' . $filename);
+        $user->avatar = $this->saveAvatarImage($user, $image_binary);
         $user->save();
 
         return new ApiResponse(new SuccessStatus(), 'uploading avatar is succeeded.');
+    }
+
+    /**
+     * Originally, this should be defined User Model...
+     * @param User $user
+     * @param string $image_binary
+     * @return string
+     */
+    private function saveAvatarImage(User $user, $image_binary)
+    {
+        $filename = $user->name . '.png';
+        $file_path = '/images/avatars/' . $filename;
+        file_put_contents(public_path() . $file_path, $image_binary);
+
+        if (config('app.env') == 'production') {
+            $ret = \Cloudinary\Uploader::upload(public_path() . $file_path);
+            \Log::info('upload cloudinary.', [
+                'ret' => $ret
+            ]);
+
+            return $ret['secure_url'];
+        } else {
+            return asset($file_path);
+        }
     }
 }
