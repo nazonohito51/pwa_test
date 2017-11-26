@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Cloudinary;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +14,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        if ($this->app->environment() == 'production') {
+            $account = parse_url(getenv('CLOUDINARY_URL'));
+            Cloudinary::config([
+                'cloud_name' => $account['host'],
+                'api_key' => $account['user'],
+                'api_secret' => $account['pass']
+            ]);
+        }
     }
 
     /**

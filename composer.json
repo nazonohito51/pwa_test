@@ -9,7 +9,8 @@
         "doctrine/dbal": "^2.6",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
-        "minishlink/web-push": "^1.4"
+        "minishlink/web-push": "^1.4",
+        "cloudinary/cloudinary_php": "1.8.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.4",
