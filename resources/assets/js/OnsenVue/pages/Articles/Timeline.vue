@@ -4,6 +4,26 @@
             <div class="center">Timeline</div>
         </v-ons-toolbar>
 
+        <v-ons-pull-hook
+                :action="pullToRefresh"
+                @changestate="pullToRefreshState = $event.state"
+        >
+            <svg class="progress-circular" v-show="pullToRefreshState === 'initial'">
+                <circle class="progress-circular__background"/>
+                <circle class="progress-circular__secondary" style="stroke-dasharray: 140%, 251.32%"/>
+                <circle class="progress-circular__primary" style="stroke-dasharray: 100%, 251.32%"/>
+            </svg>
+            <svg class="progress-circular progress-circular--indeterminate" v-show="pullToRefreshState === 'preaction'">
+                <circle class="progress-circular__background"/>
+                <circle class="progress-circular__primary progress-circular--indeterminate__primary"/>
+                <circle class="progress-circular__secondary progress-circular--indeterminate__secondary"/>
+            </svg>
+            <svg class="progress-circular" v-show="pullToRefreshState === 'action'">
+                <circle class="progress-circular__background"/>
+                <circle class="progress-circular__primary" style="stroke-dasharray: 251.32%, 251.32%"/>
+            </svg>
+        </v-ons-pull-hook>
+
         <ul class="list list--material">
             <li class="list-item list-item--material" v-for="article in articles" :key="article.id" @click="pushDetailPage(article)" v-observe-visibility="(isVisible, entry) => visibilityChanged(isVisible, entry, article)">
                 <div class="list-item__left list-item--material__left">
@@ -59,6 +79,7 @@
         data: function () {
             return {
                 loading: false,
+                pullToRefreshState: 'initial',
                 articles: function () { return [] },
                 article_details: {}
             }
@@ -123,6 +144,10 @@
                     });
 //                    entry.target._vue_intersectionObserver.unobserve(entry.target);
                 }
+            },
+            pullToRefresh(done) {
+                this.fetchData();
+                done();
             }
         }
     }
