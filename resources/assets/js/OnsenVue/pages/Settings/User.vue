@@ -14,7 +14,7 @@
                     <v-ons-icon icon="md-face" class="list-item__icon"></v-ons-icon>
                 </div>
                 <label class="center">
-                    <v-ons-input float maxlength="20" placeholder="Name" v-model="nickname"></v-ons-input>
+                    <v-ons-input float maxlength="20" placeholder="Name" v-model="nickname" @click="resetNickname"></v-ons-input>
                 </label>
             </v-ons-list-item>
             <v-ons-list-item v-if="nicknameChanged">
@@ -63,6 +63,11 @@
             },
             popHistory: function (event) {
                 history.back();
+            },
+            resetNickname: function () {
+                if (this.nickname === '名無しの誰かさん') {
+                    this.nickname = '';
+                }
             }
         },
         computed: {
