@@ -43,6 +43,10 @@ function controlAvatarResponse(response) {
     return response;
 }
 
+workboxSW.router.registerRoute(/app\/.*$/, function (args) {
+    // Under /app, always return app html.
+    return caches.match('/app');
+});
 workboxSW.router.registerRoute(/images\/avatars\/[^\.\/]+\.png$/, function (args) {
     // console.log('args:', args);
     // {url: URL, event: FetchEvent, params: undefined}

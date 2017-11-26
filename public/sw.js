@@ -43,7 +43,7 @@ workboxSW.precache([
   },
   {
     "url": "js/onsenVue.js",
-    "revision": "4495de31ac9b61cf8a6885bc12abed50"
+    "revision": "459aed072728eb2b4493c5fba6b9feb7"
   },
   {
     "url": "js/preinstall.js",
@@ -292,6 +292,10 @@ function controlAvatarResponse(response) {
     return response;
 }
 
+workboxSW.router.registerRoute(/app\/.*$/, function (args) {
+    // Under /app, always return app html.
+    return caches.match('/app');
+});
 workboxSW.router.registerRoute(/images\/avatars\/[^\.\/]+\.png$/, function (args) {
     // console.log('args:', args);
     // {url: URL, event: FetchEvent, params: undefined}
