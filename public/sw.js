@@ -269,7 +269,7 @@ let avatars_handler = workboxSW.strategies.staleWhileRevalidate({
         "maxAgeSeconds": 86400
     }
 });
-let avatar_network_only_handler = workboxSW.strategies.networkOnly({
+let avatar_network_first_handler = workboxSW.strategies.networkFirst({
     "cacheName": "image-self-avatar",
     "cacheExpiration": {
         "maxAgeSeconds": 86400
@@ -298,7 +298,7 @@ workboxSW.router.registerRoute(/images\/avatars\/[^\.\/]+\.png$/, function (args
     return avatars_handler.handle(args).then(controlAvatarResponse);
 }, 'GET');
 workboxSW.router.registerRoute(/images\/avatars\/[^\.\/]+\.png\?self&rand=[a-z0-9]{16}$/, function (args) {
-    return avatar_network_only_handler.handle(args).then(controlAvatarResponse);
+    return avatar_network_first_handler.handle(args).then(controlAvatarResponse);
 }, 'GET');
 workboxSW.router.registerRoute(/api\/articles\/\d+$/, function (args) {
     return article_handler.handle(args).then(function (response) {
