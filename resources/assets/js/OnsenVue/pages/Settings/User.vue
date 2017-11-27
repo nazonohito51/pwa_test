@@ -48,6 +48,7 @@
                 }.bind(this), function () {
                     this.$ons.notification.toast('ユーザ情報の取得に失敗しました。', {timeout: 2000});
                     this.$store.commit('navigator/pop');
+                    this.popHistory();
                 }.bind(this));
             },
             updateUserNickName: function() {
@@ -56,12 +57,13 @@
                     this.nickname = response.data.user.nickname;
                     this.originalNickname = response.data.user.nickname;
                     this.$store.commit('navigator/pop');
+                    this.popHistory();
                     this.$ons.notification.toast('ニックネームを更新しました。', {timeout: 2000});
                 }.bind(this), function () {
                     this.$ons.notification.toast('ニックネームの更新に失敗しました。', {timeout: 2000});
                 }.bind(this));
             },
-            popHistory: function (event) {
+            popHistory: function () {
                 history.back();
             },
             resetNickname: function () {

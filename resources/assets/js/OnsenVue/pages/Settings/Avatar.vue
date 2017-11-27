@@ -122,6 +122,7 @@
 
                     this.putRequest("/api/user/" + username + "/avatar", {image: base64}, function (response) {
                         this.$store.commit('navigator/pop');
+                        this.popHistory();
                         this.$ons.notification.toast('アイコン画像をアップロードしました。', {timeout: 1000});
                     }.bind(this), function () {
                         this.$ons.notification.toast('アイコン画像をアップロードに失敗しました。', {timeout: 1000});
@@ -132,7 +133,7 @@
 
                 this.cropperVisible = false;
             },
-            popHistory: function (event) {
+            popHistory: function () {
                 history.back();
             }
 //            updateavatarUrl: function() {

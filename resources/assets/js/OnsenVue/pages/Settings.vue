@@ -163,12 +163,12 @@
             },
             pushUserPage() {
                 const username = this.$store.state.credential.username;
-                history.pushState({page: 'User'}, 'user page', '/app/user/' + username);
+                history.pushState({page: 'User'}, 'user page', '/app/self/');
                 this.$store.commit('navigator/push', User);
             },
             pushavatarPage() {
                 const username = this.$store.state.credential.username;
-                history.pushState({page: 'Avatar'}, 'avatar page', '/app/user/' + username + '/avatar');
+                history.pushState({page: 'Avatar'}, 'avatar page', '/app/self/avatar');
                 this.$store.commit('navigator/push', avatar);
             },
             checkCredential() {
