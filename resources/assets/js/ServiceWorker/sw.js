@@ -66,17 +66,24 @@ self.addEventListener('push', function(event) {
     console.log('[Service Worker] Push Received.', event);
 
     const title = 'PWA TEST';
-    const options = {
+    let options = {
         body: event.data.json().message,
         icon: event.data.json().icon,
         badge: event.data.json().badge
     };
 
-    const uri = event.data.json().fetch_uri;
+    const uri = event.data.json().uri;
     if (uri) {
+        options.data = {
+            uri: uri
+        };
+    }
+
+    const fetch_uri = event.data.json().fetch_uri;
+    if (fetch_uri) {
         // https://developer.mozilla.org/ja/docs/Web/API/FetchEvent/FetchEvent
-        const myFetchEvent = new FetchEvent('fetch', {request: new Request(uri)});
-        const url = new URL(uri, location.host);
+        const myFetchEvent = new FetchEvent('fetch', {request: new Request(fetch_uri)});
+        const url = new URL(fetch_uri, location.host);
         const responsePromise = article_handler.handle({
             url: url,
             event: myFetchEvent
@@ -91,9 +98,11 @@ self.addEventListener('notificationclick', function(event) {
 
     event.notification.close();
 
-    // event.waitUntil(
-    //     clients.openWindow('https://developers.google.com/web/')
-    // );
+    if (event.notification.data && event.notification.data.uri) {
+        event.waitUntil(
+            clients.openWindow(event.notification.data.uri)
+        );
+    }
 });
 
 self.addEventListener('sync', function (event) {
