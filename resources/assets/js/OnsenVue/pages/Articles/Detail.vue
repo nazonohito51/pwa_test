@@ -138,7 +138,7 @@
                 return (this.isRegistered || (this.likeCount > 0));
             },
             isLoaded: function () {
-                return (this.article && this.article_id === this.article.id);
+                return this.article;
             },
             likeCount: function () {
                 return this.like_users.length;
