@@ -35,7 +35,7 @@ workboxSW.precache([
   },
   {
     "url": "js/app.js",
-    "revision": "34c6a123721a8f0932269e19b036f4b9"
+    "revision": "b1a689fa4eca1a1182a69671cb2f62d9"
   },
   {
     "url": "js/main.js",
@@ -43,7 +43,7 @@ workboxSW.precache([
   },
   {
     "url": "js/onsenVue.js",
-    "revision": "1b77d97a46abe33cbec8127ec5541f2b"
+    "revision": "b2f8e16221edf4fb7f840436bf3039ba"
   },
   {
     "url": "js/preinstall.js",
@@ -284,10 +284,10 @@ let article_handler = workboxSW.strategies.cacheFirst({
 
 function controlAvatarResponse(response) {
     console.log('avatar response', response);
-    if (!response || response.type === 'error') {
-        return caches.match('images/error.png');
-    } else if (response.status === 404) {
+    if (response.status === 404) {
         return caches.match('images/avatars/no_image.png');
+    } else if (!response || response.type === 'error' || response.status !== 200) {
+        return caches.match('images/error.png');
     }
     return response;
 }
@@ -315,17 +315,24 @@ self.addEventListener('push', function(event) {
     console.log('[Service Worker] Push Received.', event);
 
     const title = 'PWA TEST';
-    const options = {
+    let options = {
         body: event.data.json().message,
         icon: event.data.json().icon,
         badge: event.data.json().badge
     };
 
-    const uri = event.data.json().fetch_uri;
+    const uri = event.data.json().uri;
     if (uri) {
+        options.data = {
+            uri: uri
+        };
+    }
+
+    const fetch_uri = event.data.json().fetch_uri;
+    if (fetch_uri) {
         // https://developer.mozilla.org/ja/docs/Web/API/FetchEvent/FetchEvent
-        const myFetchEvent = new FetchEvent('fetch', {request: new Request(uri)});
-        const url = new URL(uri, location.host);
+        const myFetchEvent = new FetchEvent('fetch', {request: new Request(fetch_uri)});
+        const url = new URL(fetch_uri, location.host);
         const responsePromise = article_handler.handle({
             url: url,
             event: myFetchEvent
@@ -340,9 +347,11 @@ self.addEventListener('notificationclick', function(event) {
 
     event.notification.close();
 
-    // event.waitUntil(
-    //     clients.openWindow('https://developers.google.com/web/')
-    // );
+    if (event.notification.data && event.notification.data.uri) {
+        event.waitUntil(
+            clients.openWindow(event.notification.data.uri)
+        );
+    }
 });
 
 self.addEventListener('sync', function (event) {
