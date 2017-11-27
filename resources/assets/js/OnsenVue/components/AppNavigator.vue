@@ -17,7 +17,7 @@
             this.$store.commit('navigator/push', AppTabbar);
 
             if (/^\/app\/article\/\d+$/.test(location.pathname)) {
-                const matches = location.pathname.match(/\d$/);
+                const matches = location.pathname.match(/\d+$/);
 
                 history.replaceState({page: 'Timeline'}, 'timeline page', '/app');
                 history.pushState({page: 'Detail', article_id: matches[0]}, 'article detail page', '/app/article/' + matches[0]);
