@@ -35,9 +35,11 @@ let article_handler = workboxSW.strategies.cacheFirst({
 
 function controlAvatarResponse(response) {
     console.log('avatar response', response);
-    if (response.status === 404) {
+    if (!response || response.type === 'error') {
+        return caches.match('images/error.png');
+    } else if (response.status === 404) {
         return caches.match('images/avatars/no_image.png');
-    } else if (!response || response.type === 'error' || response.status !== 200) {
+    } else if (response.status !== 200) {
         return caches.match('images/error.png');
     }
     return response;
