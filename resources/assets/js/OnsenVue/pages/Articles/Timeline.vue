@@ -6,21 +6,23 @@
 
         <v-ons-pull-hook
                 :action="pullToRefresh"
+                :on-pull="updatePullToRefreshStyle"
+                :fixed-content="true"
                 @changestate="pullToRefreshState = $event.state"
         >
-            <svg class="progress-circular" v-show="pullToRefreshState === 'initial'">
-                <circle class="progress-circular__background"/>
-                <circle class="progress-circular__secondary" style="stroke-dasharray: 140%, 251.32%"/>
-                <circle class="progress-circular__primary" style="stroke-dasharray: 100%, 251.32%"/>
+            <svg class="progress-circular progress-circular--material" v-show="pullToRefreshState === 'initial'">
+                <circle class="progress-circular__background progress-circular--material__background"/>
+                <circle class="progress-circular__primary progress-circular--material__primary" v-bind:style="pullToRefreshStyle"/>
             </svg>
-            <svg class="progress-circular progress-circular--indeterminate" v-show="pullToRefreshState === 'preaction'">
-                <circle class="progress-circular__background"/>
-                <circle class="progress-circular__primary progress-circular--indeterminate__primary"/>
-                <circle class="progress-circular__secondary progress-circular--indeterminate__secondary"/>
+            <svg class="progress-circular progress-circular--material progress-circular--indeterminate" v-show="pullToRefreshState === 'preaction'">
+                <circle class="progress-circular__background progress-circular--material__background"/>
+                <circle class="progress-circular__primary progress-circular--material__primary progress-circular--indeterminate__primary"/>
+                <circle class="progress-circular__secondary progress-circular--material__secondary progress-circular--indeterminate__secondary"/>
             </svg>
-            <svg class="progress-circular" v-show="pullToRefreshState === 'action'">
-                <circle class="progress-circular__background"/>
-                <circle class="progress-circular__primary" style="stroke-dasharray: 251.32%, 251.32%"/>
+            <svg class="progress-circular progress-circular--material progress-circular--indeterminate" v-show="pullToRefreshState === 'action'">
+                <circle class="progress-circular__background progress-circular--material__background"/>
+                <circle class="progress-circular__primary progress-circular--material__primary progress-circular--indeterminate__primary"/>
+                <circle class="progress-circular__secondary progress-circular--material__secondary progress-circular--indeterminate__secondary"/>
             </svg>
         </v-ons-pull-hook>
 
@@ -80,6 +82,9 @@
             return {
                 loading: false,
                 pullToRefreshState: 'initial',
+                pullToRefreshStyle: {
+                    strokeDasharray: "80%, 251.32%"
+                },
                 articles: function () { return [] },
                 article_details: {}
             }
@@ -91,25 +96,27 @@
                     this.articles = JSON.parse(local_storage.getItem('Timeline:articles'));
                 }
 
-                this.fetchData();
+                this.fetchData().then(function () {}).catch(function () {});
             },
             fetchData: function () {
-                if (this.articles.length === 0) {
-                    this.loading = true;
-                }
+                return new Promise((resolve, reject) => {
+                    if (this.articles.length === 0) {
+                        this.loading = true;
+                    }
 
-//                setTimeout(function () {
-                this.getRequest("/api/articles", function (response) {
-                    this.articles = response.data.articles;
-                    this.resetArticleDetails();
-                    const local_storage = window.localStorage;
-                    local_storage.setItem('Timeline:articles', JSON.stringify(this.articles));
-                    this.loading = false;
-                }.bind(this), function () {
+                    this.getRequest("/api/articles", (response) => {
+                        this.articles = response.data.articles;
+                        this.resetArticleDetails();
+                        const local_storage = window.localStorage;
+                        local_storage.setItem('Timeline:articles', JSON.stringify(this.articles));
+                        this.loading = false;
+                        resolve();
+                    }, () => {
 //                    this.$ons.notification.toast('記事の一覧の取得に失敗しました。', {timeout: 2000});
-                    this.loading = false;
-                }.bind(this));
-//                }.bind(this), 5000);
+                        this.loading = false;
+                        reject();
+                    });
+                });
             },
             resetArticleDetails: function () {
                 const detail_ids = Object.keys(this.article_details);
@@ -146,8 +153,17 @@
                 }
             },
             pullToRefresh(done) {
-                this.fetchData();
-                done();
+                this.fetchData().then(function () {
+                    done();
+                }).catch(function () {
+                    done();
+                });
+            },
+            updatePullToRefreshStyle(event) {
+                const newProgress = 251.32 * event;
+                this.pullToRefreshStyle = {
+                    strokeDasharray: newProgress + "%, 251.32%"
+                }
             }
         }
     }
