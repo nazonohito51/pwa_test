@@ -148,6 +148,7 @@
                 this.fetchData().then(function () {
                     done();
                 }).catch(function () {
+                    this.$ons.notification.toast('記事の一覧の取得に失敗しました。', {timeout: 2000});
                     done();
                 });
             },
