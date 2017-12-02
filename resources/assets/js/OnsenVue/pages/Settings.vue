@@ -6,7 +6,7 @@
 
         <ul class="list">
             <li class="list-header" v-if="isRegistered">
-                アカウント設定
+                ユーザ情報
             </li>
             <li class="list-item" v-if="isRegistered">
                 <v-ons-card style="width: 100%;">
@@ -73,7 +73,8 @@
         </ul>
 
         <v-ons-dialog cancelable :visible.sync="registrationDialogVisible">
-            <p style="text-align: center">アプリが利用可能になりました！</p>
+            <p style="margin: 10px auto 5px; text-align: center; font-size: 3em;">🎉</p>
+            <p style="text-align: center;">記事の投稿が可能になりました！</p>
         </v-ons-dialog>
     </v-ons-page>
 </template>
