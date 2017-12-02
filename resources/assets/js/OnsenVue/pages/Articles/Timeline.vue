@@ -6,24 +6,18 @@
 
         <v-ons-pull-hook
                 :action="pullToRefresh"
-                :on-pull="updatePullToRefreshStyle"
-                :fixed-content="true"
+                :fixed-content="md"
+                :height="md ? 84 : 64"
+                :on-pull="md && updatePullToRefreshStyle || null"
                 @changestate="pullToRefreshState = $event.state"
         >
-            <svg class="progress-circular progress-circular--material" v-show="pullToRefreshState === 'initial'">
-                <circle class="progress-circular__background progress-circular--material__background"/>
-                <circle class="progress-circular__primary progress-circular--material__primary" v-bind:style="pullToRefreshStyle"/>
-            </svg>
-            <svg class="progress-circular progress-circular--material progress-circular--indeterminate" v-show="pullToRefreshState === 'preaction'">
-                <circle class="progress-circular__background progress-circular--material__background"/>
-                <circle class="progress-circular__primary progress-circular--material__primary progress-circular--indeterminate__primary"/>
-                <circle class="progress-circular__secondary progress-circular--material__secondary progress-circular--indeterminate__secondary"/>
-            </svg>
-            <svg class="progress-circular progress-circular--material progress-circular--indeterminate" v-show="pullToRefreshState === 'action'">
-                <circle class="progress-circular__background progress-circular--material__background"/>
-                <circle class="progress-circular__primary progress-circular--material__primary progress-circular--indeterminate__primary"/>
-                <circle class="progress-circular__secondary progress-circular--material__secondary progress-circular--indeterminate__secondary"/>
-            </svg>
+            <div class="pull-hook-progress">
+                <v-ons-progress-circular
+                        :value="ratio * 100"
+                        :indeterminate="pullToRefreshState === 'action'"
+                        :style="{ transform: `rotate(${ratio}turn)` }"
+                ></v-ons-progress-circular>
+            </div>
         </v-ons-pull-hook>
 
         <ul class="list list--material">
@@ -82,9 +76,7 @@
             return {
                 loading: false,
                 pullToRefreshState: 'initial',
-                pullToRefreshStyle: {
-                    strokeDasharray: "80%, 251.32%"
-                },
+                ratio: 0,
                 articles: function () { return [] },
                 article_details: {}
             }
@@ -159,12 +151,40 @@
                     done();
                 });
             },
-            updatePullToRefreshStyle(event) {
-                const newProgress = 251.32 * event;
-                this.pullToRefreshStyle = {
-                    strokeDasharray: newProgress + "%, 251.32%"
-                }
+            updatePullToRefreshStyle(ratio) {
+                this.ratio = ratio;
             }
         }
     }
 </script>
+
+<style>
+    .pull-hook-spinner {
+        color: #666;
+        transition: transform .25s ease-in-out;
+    }
+
+    .pull-hook-progress {
+        background-color: white;
+        width: 32px;
+        height: 32px;
+        margin: 30px auto 0;
+        border-radius: 100%;
+        position: relative;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        display: inline-block;
+        line-height: 0px;
+    }
+
+    .pull-hook-progress .progress-circular {
+        width: 24px;
+        height: 24px;
+        position: absolute;
+        top: 4px;
+        left: 4px;
+    }
+
+    .pull-hook-progress .progress-circular__primary {
+        transition: stroke-dashoffset 0s;
+    }
+</style>
