@@ -1,17 +1,13 @@
 <template>
     <v-ons-page @show="init()">
-        <!--<v-ons-toolbar>-->
-            <!--<div class="center">Editor</div>-->
-            <!--<div class="right">-->
-                <!--<v-ons-toolbar-button @click="postArticle()" v-if="articleInput">-->
-                    <!--投稿する-->
-                <!--</v-ons-toolbar-button>-->
-            <!--</div>-->
-        <!--</v-ons-toolbar>-->
-
-        <v-ons-fab position='top right' @click="postArticle()" :disabled="!articleInput">
-            <v-ons-icon icon="md-upload"></v-ons-icon>
-        </v-ons-fab>
+        <v-ons-toolbar>
+            <div class="center">Editor</div>
+            <div class="right">
+                <v-ons-toolbar-button @click="postArticle()" v-if="articleInput">
+                    投稿する
+                </v-ons-toolbar-button>
+            </div>
+        </v-ons-toolbar>
 
         <div class="article">
             <ul class="list">
