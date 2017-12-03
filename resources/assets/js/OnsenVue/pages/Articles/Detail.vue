@@ -8,7 +8,7 @@
         </v-ons-toolbar>
 
         <div v-if="isLoaded">
-            <div class="card">
+            <div class="card card--material">
                 <div class="article">
                     <div v-html="article.title" class="article__title">
                     </div>
@@ -32,7 +32,7 @@
                 <!--<v-ons-icon icon="fa-thumbs-o-up"></v-ons-icon>-->
             <!--</v-ons-fab>-->
 
-            <div class="card">
+            <div class="card card--material">
                 <div class="user">
                     <div class="left">
                         <img v-bind:src="article.user.avatar_url" style="width: 48px; height: 48px; border-radius: 50%;">
