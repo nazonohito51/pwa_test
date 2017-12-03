@@ -9,7 +9,7 @@
 
         <v-ons-list>
             <v-ons-list-item>
-                <img v-bind:src="avatar_url" style="display: block; margin: 20px auto; width: 256px; height: 256px; border-radius: 50%;">
+                <img v-bind:src="avatar_url" style="display: block; margin: 20px auto 10px; width: 128px; height: 128px; border-radius: 50%;">
             </v-ons-list-item>
             <v-ons-list-item>
                 <label for="icon-upload">
