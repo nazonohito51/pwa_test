@@ -1,4 +1,4 @@
-importScripts('workbox-sw.dev.v2.1.1.js');
+importScripts('workbox-sw.dev.v2.1.2.js');
 importScripts('workbox-background-sync.dev.v2.0.3.js');
 
 const workboxSW = new WorkboxSW({
@@ -35,19 +35,19 @@ workboxSW.precache([
   },
   {
     "url": "js/app.js",
-    "revision": "b1a689fa4eca1a1182a69671cb2f62d9"
+    "revision": "cd56eb0b822ed56a84c30bf0d4f02cd3"
   },
   {
     "url": "js/main.js",
-    "revision": "18b52d679d1837e62c6e65330d38945e"
+    "revision": "1ec4f696436d03f55ac5b8c9dadd7434"
   },
   {
     "url": "js/onsenVue.js",
-    "revision": "6f2fd1bf93b668ff2d49ef6fbbcce0d2"
+    "revision": "6ebbb673e5058540b84cad96deaa977b"
   },
   {
     "url": "js/preinstall.js",
-    "revision": "b359a70bbec89def12dd2e4de65343ee"
+    "revision": "f53c314bd00a69069b9250b0dc07b786"
   },
   {
     "url": "js/pushNotification.js",
