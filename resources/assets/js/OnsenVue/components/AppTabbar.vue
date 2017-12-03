@@ -21,7 +21,8 @@
 
     const red = [244, 67, 54];
     const blue = [30, 136, 229];
-    const green = [20, 150, 22];
+    const green = [20, 190, 22];
+    const gray = [100, 100, 100];
     // Just a linear interpolation formula
     const lerp = (x0, x1, t) => parseInt((1 - t) * x0 + t * x1, 10);
 
