@@ -1,9 +1,5 @@
 <template>
     <v-ons-page @show="init()">
-        <v-ons-toolbar>
-            <div class="center">Settings</div>
-        </v-ons-toolbar>
-
         <ul class="list">
             <li class="list-header" v-if="isRegistered">
                 ユーザ情報

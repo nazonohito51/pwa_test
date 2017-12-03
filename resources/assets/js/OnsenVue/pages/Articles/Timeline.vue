@@ -1,9 +1,5 @@
 <template>
     <v-ons-page @show="init()">
-        <v-ons-toolbar>
-            <div class="center">Timeline</div>
-        </v-ons-toolbar>
-
         <v-ons-pull-hook
                 :action="pullToRefresh"
                 :fixed-content="md"
