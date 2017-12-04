@@ -28,6 +28,10 @@
             </div>
         </div>
 
+        <!--<div class="bottom-bar">-->
+            <!--<button class="button" @click="test">Button</button>-->
+        <!--</div>-->
+
         <v-ons-modal :visible="postingVisible" @click="cancelPostArticle()">
             <p style="text-align: center">
                 投稿中...
@@ -53,7 +57,7 @@
                     placeholder: '本文を入力してください',
                     modules: {
                         toolbar: [
-                            [{header: 1}, {header: 2}],
+                            [{header: 1}, {header: 2}, 'blockquote'],
                             [{align: 'center'}, {align: 'right'}],
                             ['image']
                         ],
@@ -158,7 +162,50 @@
             },
             cancelPostArticle() {
                 this.postingVisible = false;
+            },
+            test() {
+                console.log(Quill.imports);
+                // this.editor.formatLine(1, 2, 'align', 'right');
             }
         }
     };
 </script>
+
+<style>
+    .article .article__body blockquote {
+        position: relative;
+        display: block;
+        padding: 0 15px;
+        width: auto;
+        line-height: 24px;
+        color: #19283C;
+        text-align: center;
+        background: #F6F6F6;
+        border: 3px solid #19283C;
+        z-index: 0;
+    }
+    .article .article__body blockquote:before {
+        content: "";
+        position: absolute;
+        bottom: -8px; left: 50%;
+        margin-left: -9px;
+        width: 0px;
+        height: 0px;
+        border-style: solid;
+        border-width: 9px 9px 0 9px;
+        border-color: #F6F6F6 transparent transparent transparent;
+        z-index: 0;
+    }
+    .article .article__body blockquote:after {
+        content: "";
+        position: absolute;
+        bottom: -12px; left: 50%;
+        margin-left: -10px;
+        width: 0px;
+        height: 0px;
+        border-style: solid;
+        border-width: 10px 10px 0 10px;
+        border-color: #19283C transparent transparent transparent;
+        z-index: -1;
+    }
+</style>
