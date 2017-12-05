@@ -39,15 +39,15 @@ workboxSW.precache([
   },
   {
     "url": "js/main.js",
-    "revision": "5eca2fa90f89bbd6c4e09e096aed89da"
+    "revision": "210c77a3e7f32df55a966b9df749b1dc"
   },
   {
     "url": "js/onsenVue.js",
-    "revision": "186aa5082ff73974a9db63d6408bd32d"
+    "revision": "419f944dc35cee734f973c3b07c88256"
   },
   {
     "url": "js/preinstall.js",
-    "revision": "f5fa00cde91df1177d3ac095021867c8"
+    "revision": "289744ed2d9b90f1661462ea027a1a15"
   },
   {
     "url": "js/pushNotification.js",
