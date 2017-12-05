@@ -43,6 +43,7 @@
 
 <script>
     import apiClientMixin from '../../mixins/apiClient.js';
+    import Emoji from 'quill-emoji/dist/quill-emoji';
     import Quill from 'quill';
 
     export default {
@@ -56,11 +57,15 @@
                 editorOption: {
                     placeholder: '本文を入力してください',
                     modules: {
-                        toolbar: [
-                            [{header: 1}, {header: 2}, 'blockquote'],
-                            [{align: 'center'}, {align: 'right'}],
-                            ['image']
-                        ],
+                        toolbar: {
+                            container: [
+                                [{header: 1}, {header: 2}, 'blockquote'],
+                                [{align: 'center'}, {align: 'right'}],
+                                ['image', 'emoji']
+                            ],
+                            handlers: {'emoji': function() {}}
+                        },
+                        toolbar_emoji: true
                     }
                 }
             }
@@ -172,6 +177,7 @@
 </script>
 
 <style>
+    @import "../../../../../../node_modules/quill-emoji/dist/quill-emoji.css";
     .article .article__body blockquote {
         position: relative;
         display: block;
