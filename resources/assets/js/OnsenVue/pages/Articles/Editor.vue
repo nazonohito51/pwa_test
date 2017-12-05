@@ -181,13 +181,15 @@
     .article .article__body blockquote {
         position: relative;
         display: block;
+        margin: 5px auto;
         padding: 0 15px;
         width: auto;
         line-height: 24px;
         color: #19283C;
         text-align: center;
-        background: #F6F6F6;
-        border: 3px solid #19283C;
+        background: #FFFFFF;
+        border: 3px solid #444444;
+        border-radius: 10px;
         z-index: 0;
     }
     .article .article__body blockquote:before {
@@ -199,7 +201,7 @@
         height: 0px;
         border-style: solid;
         border-width: 9px 9px 0 9px;
-        border-color: #F6F6F6 transparent transparent transparent;
+        border-color: #FFFFFF transparent transparent transparent;
         z-index: 0;
     }
     .article .article__body blockquote:after {
@@ -211,7 +213,7 @@
         height: 0px;
         border-style: solid;
         border-width: 10px 10px 0 10px;
-        border-color: #19283C transparent transparent transparent;
+        border-color: #444444 transparent transparent transparent;
         z-index: -1;
     }
 </style>
