@@ -17,6 +17,7 @@ class ArticleController extends Controller
 
     public function create(User $user)
     {
+        // edit
         return view('articles.create', [
             'user' => $user
         ]);
@@ -71,6 +72,7 @@ class ArticleController extends Controller
 
     public function destroy(User $user, Article $article)
     {
+        // edit
         if ($article->delete()) {
             return redirect()->route('articles.index', ['user' => $user->name]);
         }
